@@ -68,8 +68,9 @@ func quicksort(array []int, begin, end int, mark string) {
 		}
 
 		array[begin], array[i] = array[i], array[begin]
-		//fmt.Printf("%s>sort:%v\n", mark, array[begin:end])
+
 		fmt.Printf("%s>%v,%d,%v\n", mark, array[begin:i], array[i], array[j:end])
+
 		quicksort(array, begin, i, mark+"--")
 		quicksort(array, j, end, mark+"--")
 	}
@@ -77,7 +78,7 @@ func quicksort(array []int, begin, end int, mark string) {
 
 func main() {
 
-	nums := []int{12, 85, 25, 16, 34, 23, 49, 95, 17, 61}
+	nums := []int{25, 16, 34, 23, 12, 85, 49, 95, 17, 61}
 	fmt.Printf("begin:%#v\n", nums)
 
 	// 缩进
