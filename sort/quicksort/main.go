@@ -1,4 +1,5 @@
 /*
+   快速排序
    Created by jinhan on 17-11-15.
    Tip: http://blog.csdn.net/zhengqijun_/article/details/53038831
    See: https://github.com/hunterhug/GoAlgorithm
