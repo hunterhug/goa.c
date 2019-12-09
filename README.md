@@ -38,6 +38,7 @@
     * [求最长回文子串](acm/mala.md)
     * [回溯法：八皇后](acm/queen.md)
 * [文档部署](doc/install.md)
+* [书籍推荐](doc/book.md)
 * [参考](basic/refer.md)
 
 ## 作者寄语
