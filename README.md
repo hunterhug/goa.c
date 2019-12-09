@@ -9,6 +9,7 @@
 ## 目录
 
 * [目录](README.md)
+* [一小时入门Golang](golang/README.md)
 * [基础知识](basic/README.md)
     * [复杂度及渐进符号](basic/dregee.md)
     * [复杂度主方法](basic/master_method.md)
