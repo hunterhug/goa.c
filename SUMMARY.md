@@ -23,7 +23,7 @@
         * [深度搜索和广度搜索](algorithm/graph/search.md)
         * [求点到点最短路径：Dijkstra算法](algorithm/graph/dijkstra.md)
         * [求全部点最短路径：Floyd算法](algorithm/graph/floyd.md)
-        * [最小生成树:Prim和Kruskal算法](algorithm/graph/minicost_span_tree.md)
+        * [最小生成树：Prim和Kruskal算法](algorithm/graph/minicost_span_tree.md)
     * [不常见算法](algorithm/other.md)
         * [堆合并：左偏树](algorithm/heaplike/leftist.md)
 * [编程智商题](acm/README.md)
