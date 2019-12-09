@@ -1,0 +1,82 @@
+{
+  "title": "算法分析：Golang实现",
+  "description": "数据结构和算法在计算机科学里，有非常重要的地位。此仓库尝试使用 Golang 来实现各种数据结构和算法，并且进行分析。",
+  "author": "hunterhug",
+  "output.name": "site",
+  "language": "zh-hans",
+  "gitbook": "3.2.3",
+  "links": {
+    "sidebar": {
+      "首页": "https://github.com/hunterhug/GoAlgorithm"
+    }
+  },
+  "plugins": [
+    "advanced-emoji@^0.2.1",
+    "-lunr",
+    "-search",
+    "search-plus@^1.0.3",
+    "-highlight",
+    "prism@^2.4.0",
+    "prism-themes@^0.0.2",
+    "-livereload",
+    "simple-page-toc@^0.1.2",
+    "anchors@^0.7.1",
+    "anchor-navigation-ex@0.1.8",
+    "include-codeblock@^3.0.2",
+    "ace@^0.3.2",
+    "katex@^1.1.4",
+    "splitter@^0.0.8",
+    "tbfed-pagefooter@^0.0.1",
+    "-expandable-chapters-small@^0.1.7",
+    "sectionx@^3.1.0",
+    "local-video@^1.0.1",
+    "-versions-select@^0.1.1",
+    "-sharing",
+    "sharing-plus@^0.0.2"
+  ],
+  "pluginsConfig": {
+    "theme-default": {
+      "showLevel": true
+    },
+    "prism": {
+      "css": [
+        "prism-themes/themes/prism-base16-ateliersulphurpool.light.css"
+      ]
+    },
+    "include-codeblock": {
+      "template": "ace",
+      "unindent": true,
+      "edit": true
+    },
+    "sharing": {
+      "facebook": false,
+      "google": false,
+      "linkedin": false,
+      "qq": true,
+      "twitter": false,
+      "weibo": true,
+      "all": [
+        "weibo",
+        "qq"
+      ]
+    },
+    "tbfed-pagefooter": {
+      "copyright": "Copyright © https://github.com/hunterhug/GoAlgorithm",
+      "modify_label": "该文件修订时间：",
+      "modify_format": "YYYY-MM-DD HH:mm:ss"
+    },
+    "simple-page-toc": {
+      "maxDepth": 3,
+      "skipFirstH1": true
+    },
+    "anchor-navigation-ex": {
+      "isRewritePageTitle": false,
+      "tocLevel1Icon": "fa fa-hand-o-right",
+      "tocLevel2Icon": "fa fa-hand-o-right",
+      "tocLevel3Icon": "fa fa-hand-o-right"
+    },
+    "sectionx": {
+      "tag": "b"
+    }
+  }
+}
