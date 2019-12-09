@@ -14,7 +14,7 @@
     * [复杂度及渐进符号](basic/dregee.md)
     * [复杂度主方法](basic/master_method.md)
 * [常见数据结构及算法](basic/README.md)
-    * [栈和队列](algorithm/stack_queues.md)
+    * [链表，栈和队列](algorithm/stack_queues.md)
     * [排序算法](algorithm/sort.md)
         * [冒泡排序](algorithm/sort/bubble_sort.md)
         * [选择排序](algorithm/sort/select_sort.md)
