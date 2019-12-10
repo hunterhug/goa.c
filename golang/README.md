@@ -1,18 +1,18 @@
 # 一小时入门Golang
 
-## 前言
+## 一、前言
 
 Golang 语言是谷歌公司在2009年正式发布并开源的高级编程语言，开源地址：[https://github.com/golang/go](https://github.com/golang/go)，官网地址：[https://golang.org](https://golang.org)。
 
 Golang 语言语法简单，支持多平台交叉编译（Linux/Mac/Windows），支持内存自动 `GC`（垃圾回收），支持嵌 `C/C++` 开发，并且实现了语法层面的线程调度，开发多线程程序十分方便。语法很像 `C/Python/JavaScript` 等高级编程语言。
 
-## 正文
+## 二、正文
 
 入门 Golang 语言。可以不要求你拥有其他编程语言经验，但如果已经学会 `Java/C/Python` 等计算机编程语言，你会觉得相对亲切。阅读完本章并理解，需要一小时。
 
 Golang 语言语法十分简单，你可以只使用函数式编程（类似 C 语言），也可以使用面向接口编程（类似面向对象语言 Java/C++）。
 
-### 安装并简单使用
+### 2.1.安装并简单使用
 
 安装 [Golang：https://golang.org/dl](https://golang.org/dl)：Windows 操作系统点击 `msi` 按提示安装，Mac 操作系统可以使用 `brew install golang` 安装。
 
@@ -70,7 +70,7 @@ hello world
 today times:2019-12-09 13:14:14.383118 +0800 CST m=+0.000199077
 ```
 
-### 深入了解
+### 2.2.深入了解
 
 每学一门编程语言，都离不开学习它的语言特征：
 

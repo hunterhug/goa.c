@@ -4,7 +4,7 @@
 
 数据结构和算法在计算机科学里，有非常重要的地位。此仓库尝试使用 Golang 编程语言来实现各种数据结构和算法，并且适当进行算法分析。
 
-中文版为该仓库，英文版请见分支 `en`。仓库地址见：[https://github.com/hunterhug/GoAlgorithm](https://github.com/hunterhug/GoAlgorithm)
+中文版为该仓库，英文版请见分支 `en`。仓库地址见：[https://github.com/hunterhug/goa](https://github.com/hunterhug/goa**)
 
 ## 目录
 
