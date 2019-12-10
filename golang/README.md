@@ -18,19 +18,19 @@ Golang 语言语法十分简单，你可以只使用函数式编程（类似 C �
 
 打开命令行终端输入：
 
-```
+```shell script
 go version
 ```
 
 显示以下结果即为成功：
 
-```
+```shell script
 go version go1.13 darwin/amd64
 ```
 
 在任一文件夹下新建一个文件 `main.go`（Golang 语言编写的程序文件后缀必须都为 `.go`）：
 
-```
+```go
 package main
 
 import (
@@ -50,7 +50,7 @@ func main() {
 
 打开命令行终端进行编译：
 
-```
+```shell script
 go build main.go
 ```
 
@@ -58,13 +58,13 @@ go build main.go
 
 执行二进制：
 
-```
+```shell script
 ./main
 ```
 
 将会打印出以下结果：
 
-```
+```shell script
 init will be before hello world
 hello world
 today times:2019-12-09 13:14:14.383118 +0800 CST m=+0.000199077
@@ -82,7 +82,7 @@ today times:2019-12-09 13:14:14.383118 +0800 CST m=+0.000199077
 
 现在我们来看一个完整的程序 `all.go`：
 
-```
+```go
 package main
 
 import (
