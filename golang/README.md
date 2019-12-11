@@ -1,5 +1,17 @@
 # 一小时入门Golang
 
+我们只学 Golang 语言的一个子集，足以开展接下来数据结构和算法的实现即可。如果想更全面的学习，请安装 docker 后，打开终端输入：
+
+```
+# 拉镜像
+docker pull hunterhug/gotourzh
+
+# 后台运行
+docker run -d -p 9999:9999 hunterhug/gotourzh
+```
+
+打开浏览器输入：[127.0.0.1:9999](http://127.0.0.1:9999) ，即可学习。
+
 ## 一、前言
 
 Golang 语言是谷歌公司在2009年正式发布并开源的高级编程语言，开源地址：[https://github.com/golang/go](https://github.com/golang/go)，官网地址：[https://golang.org](https://golang.org)。

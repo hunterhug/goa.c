@@ -19,3 +19,5 @@
 ## 二、渐进符号
 
 如何量化一个复杂度，到底有多复杂，计算机科学抽象出了几个时间复杂度渐进符号。
+
+https://blog.csdn.net/so_geili/article/details/53353593
