@@ -70,7 +70,7 @@ hello world
 today times:2019-12-09 13:14:14.383118 +0800 CST m=+0.000199077
 ```
 
-### 2.2.深入了解
+### 2.2.如何学习
 
 每学一门编程语言，都离不开学习它的语言特征：
 
@@ -79,6 +79,8 @@ today times:2019-12-09 13:14:14.383118 +0800 CST m=+0.000199077
 3. 语言函数的定义是怎样的，如何传递函数参数，有没有面向对象的语言特征等。 
 4. `package` 包管理是怎样的，如何管理一个工程，官方提供哪些标准库，如时间处理，字符串处理，HTTP 库，加密库等。
 5. 有没有特殊的语言特征，其他语言没有的，比如某些语法糖。
+
+### 2.3.取个栗子
 
 现在我们来建立一个完整的程序 `all.go`：
 
@@ -250,13 +252,68 @@ func sum(a, b int64) int64 {
 }
 ```
 
-执行：
+进入文件所在目录，打开命令行终端，执行：
 
 ```
 go mod init
+go run main.go
+
+
+init hello world
+1 2 3
+hello world
+type:int:3
+type:float64:6
+type:string:hi
+type:[3]int64:[1 2 3]
+type:[]int64:[1 2 3]
+type:map[string]int64:map[a:3 b:4]
+5 true
+0 false
+a>0
+for
+i=9
+i=10
+0 1
+1 2
+2 3
+3 3
+a 3
+b 4
+f 5
+sum(h+i),h=4,i=6,10
+type:diy.Diy:{2 0}
+type:diy.Diy:{1 1}
+type:diy.Diy:{1 1}
+type:*diy.Diy:&{2 0}
+type:*diy.Diy:&{1 1}
+type:*diy.Diy:&{1 1}
+type:*diy.Diy:&{2 0}
 ```
 
-Golang语言的 `go mod` 包管理及其会解析 `package main // import "golang"`，将项目的入口定义
+会显示一些打印结果，我们在接下来会分析这个栗子。
+
+### 2.4 工程管理：包机制
+
+每一个大型的软件工程项目，都需要进行工程管理。工程管理的一个环节就是代码层次的管理。
+
+在高级编程语言层次，也就是代码本身，各种语言发明了包（`package`）机制来更好的管理代码，将代码按功能分类归属于不同的包。
+
+比如，我们常常听到某程序员说：嘿，X哥，我知道 `Github` 上有一个更好用的数据加密库，几千颗星呢。
+
+包，也称为库，如代码的一个包，代码的一个库，英文：`library` 或者 `package`。
+
+最新的 Golang 语言已经支持了 `go mod` 的包管理新机制，之前的老机制 `GOPATH` 方式可参考该文章：[Golang高阶：Golang1.5到Golang1.12包管理](https://www.lenggirl.com/language/gomod.html)。
+
+我们在代码文件所在的文件夹下，打开命令终端执行：
+
+```
+go mod int
+```
+
+该命令将解析 `package main // import "golang"`，将项目的入口定义
+
+### 2.5 基本数据类型和变量
 
 作为一门静态语言，Golang 在编译前会检查哪些变量和包未被引用，强制禁止游离的变量和包，从而避免某些人类低级错误。如：
 
@@ -273,3 +330,5 @@ go run main.go
 
 ./all.go:26:2: cannot declared and not used
 ```
+
+提示声明变量未使用。
