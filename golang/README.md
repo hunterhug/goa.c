@@ -92,7 +92,7 @@ today times:2019-12-09 13:14:14.383118 +0800 CST m=+0.000199077
 
 ## 四、从例子中学习
 
-现在我们来建立一个完整的程序 `all.go`：
+现在我们来建立一个完整的程序 `main.go`：
 
 ```go
 // Golang程序入口的包名必须为 main
@@ -301,13 +301,15 @@ type:*diy.Diy:&{1 1}
 type:*diy.Diy:&{2 0}
 ```
 
-会显示一些打印结果，我们在接下来会分析这个栗子。
+会显示一些打印结果。
+
+我们看到 Golang 语言只有小括号和大括号，不需要使用逗号来分隔代码，只有一种循环 `for`，接下来我们会分析这个栗子。
 
 ### 4.1 工程管理：包机制
 
 每一个大型的软件工程项目，都需要进行工程管理。工程管理的一个环节就是代码层次的管理。
 
-包，也称为库，如代码的一个包，代码的一个库，英文：`library` 或者 `package`。
+包，也称为库，如代码的一个包，代码的一个库，英文：`Library` 或者 `Package`。
 
 比如，我们常常听到某程序员说：嘿，X哥，我知道 `Github` 上有一个更好用的数据加密库，几千颗星呢。
 
@@ -315,13 +317,60 @@ type:*diy.Diy:&{2 0}
 
 Golang 语言目前的包管理新机制叫 `go mod`，之前的老机制 `GOPATH` 方式可参考该文章：[Golang高阶：Golang1.5到Golang1.12包管理](https://www.lenggirl.com/language/gomod.html)。
 
-我们在例子代码的文件夹下，打开命令终端执行：
+每一个 `*.go` 源码文件，必须属于一个包，假设包名叫 `diy` ，在代码最顶端必须有 `package diy`，在此之前不能有其他代码片段。作为执行入口的源码，则强制包名必须为 `main`，入口函数为 `func main()`。
+
+我们的项目结构是：
+
+```
+├── diy
+│   └── diy.go
+└── main.go
+```
+
+在入口文件 `main.go` 文件夹下执行：
 
 ```
 go mod int
 ```
 
-该命令将解析 `package main // import "golang"`，将项目的入口定义
+该命令将解析 `main.go` 文件 `package main // import "golang"`，会生成 `go.mod` 文件：
+
+```
+module golang
+
+go 1.13
+```
+
+这样 Golang 编译器将会把这个项目认为是包 `golang`，是最上层的包，而底下的文件夹 `diy` 作为 `package diy`，包名全路径就是 `golang/diy`。
+
+接着，`main.go` 为了导入包，使用 `import`：
+
+```
+// 导入其他地方的包，包通过 go mod 机制寻找
+import (
+	"fmt"
+	"golang/diy"
+)
+```
+
+导入了官方的包 `fmt` 和我们自已定义的包 `golang/diy`，官方的包会自动寻找到，不需要任何额外处理。
+
+在包 `diy` 中，我们定义了一个结构体和函数：
+
+```golang
+// 结构体
+type Diy struct {
+	A int64   // 大写导出成员
+	b float64 // 小写不可以导出
+}
+
+// 小写函数，不能导出，只能在同一包下使用
+func sum(a, b int64) int64 {
+	return a + b
+}
+```
+
+对于包中小写的函数或者结构体中小写的字段，不能导出，其他包不能使用它，`Golang` 用它实现了私有或公有控制，毕竟有些包的内容我们不想在其他包中被使用，类似 `Java` 的 `private` 关键字。
 
 ### 4.2 基本数据类型和变量
 
@@ -340,7 +389,18 @@ func main(){
 ```shell script
 go run main.go
 
-./all.go:26:2: cannot declared and not used
+./main.go:26:2: cannot declared and not used
 ```
 
 提示声明变量未使用。
+
+基本的数据类型有：
+
+```golang
+    a := 3                                // int
+	b := 6.0                              // float64
+	c := "hi"                             // string
+	d := [3]int64{1, 2, 3}                // array，基本不用到
+	e := []int64{1, 2, 3}                 // slice
+	f := map[string]int64{"a": 3, "b": 4} // map
+```
