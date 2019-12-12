@@ -7,7 +7,7 @@
   "gitbook": "3.2.3",
   "links": {
     "sidebar": {
-      "首页": "https://github.com/hunterhug/GoAlgorithm"
+      "首页": "https://github.com/hunterhug/goa"
     }
   },
   "plugins": [
@@ -61,7 +61,7 @@
       ]
     },
     "tbfed-pagefooter": {
-      "copyright": "Copyright © https://github.com/hunterhug/GoAlgorithm",
+      "copyright": "Copyright © https://github.com/hunterhug/goa",
       "modify_label": "该文件修订时间：",
       "modify_format": "YYYY-MM-DD HH:mm:ss"
     },

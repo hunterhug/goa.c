@@ -28,13 +28,13 @@ Golang 语言语法十分简单，你可以只使用函数式编程（类似 C �
 
 打开命令行终端输入：
 
-```shell script
+```
 go version
 ```
 
 显示以下结果即为成功：
 
-```shell script
+```
 go version go1.13 darwin/amd64
 ```
 
@@ -60,7 +60,7 @@ func main() {
 
 打开命令行终端进行编译：
 
-```shell script
+```
 go build main.go
 ```
 
@@ -68,13 +68,13 @@ go build main.go
 
 执行二进制：
 
-```shell script
+```
 ./main
 ```
 
 将会打印出以下结果：
 
-```shell script
+```go
 init will be before hello world
 hello world
 today times:2019-12-09 13:14:14.383118 +0800 CST m=+0.000199077
@@ -345,7 +345,7 @@ go 1.13
 
 接着，`main.go` 为了导入包，使用 `import`：
 
-```
+```go
 // 导入其他地方的包，包通过 go mod 机制寻找
 import (
 	"fmt"
@@ -357,7 +357,7 @@ import (
 
 在包 `diy` 中，我们定义了一个结构体和函数：
 
-```golang
+```go
 // 结构体
 type Diy struct {
 	A int64   // 大写导出成员
@@ -376,7 +376,7 @@ func sum(a, b int64) int64 {
 
 作为一门静态语言，Golang 在编译前会检查哪些变量和包未被引用，强制禁止游离的变量和包，从而避免某些人类低级错误。如：
 
-```golang
+```go
 package main
 
 func main(){
@@ -386,7 +386,7 @@ func main(){
 
 这样执行：
 
-```shell script
+```
 go run main.go
 
 ./main.go:26:2: cannot declared and not used
@@ -396,7 +396,7 @@ go run main.go
 
 基本的数据类型有：
 
-```golang
+```go
     a := 3                                // int
 	b := 6.0                              // float64
 	c := "hi"                             // string
