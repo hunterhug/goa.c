@@ -384,7 +384,7 @@ func main(){
 }
 ```
 
-这样执行：
+如果执行将会报错：
 
 ```
 go run main.go
@@ -392,15 +392,15 @@ go run main.go
 ./main.go:26:2: cannot declared and not used
 ```
 
-提示声明变量未使用。
+提示声明变量未使用，这是 Golang 语言与其他语言最大的区别之一。
 
-基本的数据类型有：
+我们再来看看基本的数据类型有那些：
 
 ```go
     a := 3                                // int
-	b := 6.0                              // float64
-	c := "hi"                             // string
-	d := [3]int64{1, 2, 3}                // array，基本不用到
-	e := []int64{1, 2, 3}                 // slice
-	f := map[string]int64{"a": 3, "b": 4} // map
+    b := 6.0                              // float64
+    c := "hi"                             // string
+    d := [3]int64{1, 2, 3}                // array，基本不用到
+    e := []int64{1, 2, 3}                 // slice
+    f := map[string]int64{"a": 3, "b": 4} // map
 ```
