@@ -590,7 +590,7 @@ Golang 只有一种判断和一种循环：`if` 和 `for`。
 
 判断语句如：
 
-```
+```go
 	// 判断语句
 	if a > 0 {
 		fmt.Println("a>0")
@@ -603,7 +603,7 @@ Golang 只有一种判断和一种循环：`if` 和 `for`。
 
 循环语句：
 
-```
+```go
 	// 循环语句
 	for i := 9; i <= 10; i++ {
 		fmt.Printf("i=%d\n", i)
@@ -614,7 +614,7 @@ Golang 只有一种判断和一种循环：`if` 和 `for`。
 
 你也可以死循环：
 
-```
+```go
 	// 死循环语句
 	a = 0
 	for {
@@ -894,7 +894,7 @@ map[string]int64{},len:0
 
 我们可以查看到其里面的实现：
 
-```
+```go
 package fmt
 
 // Printf formats according to a format specifier and writes to standard output.
