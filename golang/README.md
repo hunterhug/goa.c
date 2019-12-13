@@ -126,12 +126,14 @@ func main() {
 	fmt.Println("hello world")
 
 	// 定义基本数据类型
+	p := true                             // bool
 	a := 3                                // int
 	b := 6.0                              // float64
 	c := "hi"                             // string
-	d := [3]string{"1","2","3"}                // array，基本不用到
+	d := [3]string{"1", "2", "3"}         // array，基本不用到
 	e := []int64{1, 2, 3}                 // slice
 	f := map[string]int64{"a": 3, "b": 4} // map
+	fmt.Printf("type:%T:%v\n", p, p)
 	fmt.Printf("type:%T:%v\n", a, a)
 	fmt.Printf("type:%T:%v\n", b, b)
 	fmt.Printf("type:%T:%v\n", c, c)
@@ -160,13 +162,23 @@ func main() {
 		fmt.Println("a<=0")
 	}
 
-	// 循环语句
+	// 死循环语句
+	a = 0
 	for {
-		if true {
-			fmt.Println("for")
+		if a >= 10 {
+			fmt.Println("out")
 			// 退出循环
 			break
 		}
+
+		a = a + 1
+		if a > 5 {
+			continue
+		} else {
+			fmt.Println(a)
+		}
+
+
 	}
 
 	// 循环语句
@@ -245,7 +257,6 @@ func main() {
 	fmt.Println(ll[:2])
 	fmt.Println(ll[0:])
 	fmt.Println(ll[:])
-
 }
 ```
 
@@ -311,10 +322,36 @@ type:map[string]int64:map[a:3 b:4]
 5 true
 0 false
 a>0
-for
+0
+1
+2
+3
+4
+5
+^Csignal: interrupt
+zhujiangdeMac-mini:example2 sachsen$ go run main.go 
+init hello world
+1 2 3
+hello world
+type:bool:true
+type:int:3
+type:float64:6
+type:string:hi
+type:[3]string:[1 2 3]
+type:[]int64:[1 2 3]
+type:map[string]int64:map[a:3 b:4]
+5 true
+0 false
+a>0
+1
+2
+3
+4
+5
+out
 i=9
 i=10
-0 1
+0 9
 1 2
 2 3
 3 3
@@ -578,18 +615,25 @@ Golang 只有一种判断和一种循环：`if` 和 `for`。
 你也可以死循环：
 
 ```
-	// 循环语句
+	// 死循环语句
+	a = 0
 	for {
-		if true {
-			fmt.Println("for")
+		if a >= 10 {
+			fmt.Println("out")
 			// 退出循环
 			break
 		}
-	}
 
+		a = a + 1
+		if a > 5 {
+			continue
+		} 
+		
+        fmt.Println(a)
+	}
 ```
 
-死循环直接 `for`，后面不需要加条件，然后跳出循环可以使用 `break`。
+死循环直接 `for`，后面不需要加条件，然后当 `a>=10` 时跳出循环可以使用 `break`，表示跳出 `for {}`，对于 `a > 5`，我们不想打印出值，可以使用 `continue` 跳过后面的语句 `fmt.Println(a)`，提前再一次进入循环。
 
 切片和 `map` 都可以使用循环来遍历数据:
 

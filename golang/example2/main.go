@@ -65,13 +65,20 @@ func main() {
 		fmt.Println("a<=0")
 	}
 
-	// 循环语句
+	// 死循环语句
+	a = 0
 	for {
-		if true {
-			fmt.Println("for")
+		if a >= 10 {
+			fmt.Println("out")
 			// 退出循环
 			break
 		}
+
+		a = a + 1
+		if a > 5 {
+			continue
+		}
+		fmt.Println(a)
 	}
 
 	// 循环语句
