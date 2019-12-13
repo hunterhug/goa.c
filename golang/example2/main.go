@@ -29,12 +29,14 @@ func main() {
 	fmt.Println("hello world")
 
 	// 定义基本数据类型
+	p := true                             // bool
 	a := 3                                // int
 	b := 6.0                              // float64
 	c := "hi"                             // string
-	d := [3]int64{1, 2, 3}                // array，基本不用到
+	d := [3]string{"1", "2", "3"}         // array，基本不用到
 	e := []int64{1, 2, 3}                 // slice
 	f := map[string]int64{"a": 3, "b": 4} // map
+	fmt.Printf("type:%T:%v\n", p, p)
 	fmt.Printf("type:%T:%v\n", a, a)
 	fmt.Printf("type:%T:%v\n", b, b)
 	fmt.Printf("type:%T:%v\n", c, c)
@@ -42,6 +44,8 @@ func main() {
 	fmt.Printf("type:%T:%v\n", e, e)
 	fmt.Printf("type:%T:%v\n", f, f)
 
+	// 切片放值
+	e[0] = 9
 	// 切片增加值
 	e = append(e, 3)
 
@@ -123,4 +127,27 @@ func main() {
 	m := new(diy.Diy)
 	m.A = 2
 	fmt.Printf("type:%T:%v\n", m, m)
+
+	s := make([]int64, 5)
+	s1 := make([]int64, 0, 5)
+	m1 := make(map[string]int64, 5)
+	m2 := make(map[string]int64)
+	fmt.Printf("%#v,cap:%#v,len:%#v\n", s, cap(s), len(s))
+	fmt.Printf("%#v,cap:%#v,len:%#v\n", s1, cap(s1), len(s1))
+	fmt.Printf("%#v,len:%#v\n", m1, len(m1))
+	fmt.Printf("%#v,len:%#v\n", m2, len(m2))
+
+	var ll []int64
+	fmt.Printf("%#v\n", ll)
+	ll = append(ll, 1)
+	fmt.Printf("%#v\n", ll)
+	ll = append(ll, 2, 3, 4, 5, 6)
+	fmt.Printf("%#v\n", ll)
+	ll = append(ll, []int64{7, 8, 9}...)
+	fmt.Printf("%#v\n", ll)
+
+	fmt.Println(ll[0:2])
+	fmt.Println(ll[:2])
+	fmt.Println(ll[0:])
+	fmt.Println(ll[:])
 }
