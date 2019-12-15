@@ -17,6 +17,7 @@
     * [延伸-计算理论：P和NP问题](basic/p.md)   
 * [常见数据结构及算法](algorithm/README.md)
     * [链表，栈和队列](algorithm/stack_queues.md)
+    * [顺序表和动态字符串](algorithm/string.md)
     * [字典](algorithm/dict.md)
     * [排序算法](algorithm/sort.md)
         * [冒泡排序](algorithm/sort/bubble_sort.md)
