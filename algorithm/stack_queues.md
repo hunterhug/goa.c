@@ -50,6 +50,151 @@ func main() {
 2. 双链表，每个节点既可以找到它之前的节点，也可以找到之后的节点，是双向的。
 3. 循环链表，就是它一直往下找数据节点，最后回到了自己那个节点，形成了一个回路。循环单链表和循环双链表的区别就是，一个只能一个方向走，一个两个方向都可以走。
 
+我们来实现一个循环链表，参见 `Golang` 标准库 `container/ring`：：
+
+```go
+// Copyright 2009 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package ring implements operations on circular lists.
+package ring
+
+// A Ring is an element of a circular list, or ring.
+// Rings do not have a beginning or end; a pointer to any ring element
+// serves as reference to the entire ring. Empty rings are represented
+// as nil Ring pointers. The zero value for a Ring is a one-element
+// ring with a nil Value.
+//
+type Ring struct {
+	next, prev *Ring
+	Value      interface{} // for use by client; untouched by this library
+}
+
+func (r *Ring) init() *Ring {
+	r.next = r
+	r.prev = r
+	return r
+}
+
+// Next returns the next ring element. r must not be empty.
+func (r *Ring) Next() *Ring {
+	if r.next == nil {
+		return r.init()
+	}
+	return r.next
+}
+
+// Prev returns the previous ring element. r must not be empty.
+func (r *Ring) Prev() *Ring {
+	if r.next == nil {
+		return r.init()
+	}
+	return r.prev
+}
+
+// Move moves n % r.Len() elements backward (n < 0) or forward (n >= 0)
+// in the ring and returns that ring element. r must not be empty.
+//
+func (r *Ring) Move(n int) *Ring {
+	if r.next == nil {
+		return r.init()
+	}
+	switch {
+	case n < 0:
+		for ; n < 0; n++ {
+			r = r.prev
+		}
+	case n > 0:
+		for ; n > 0; n-- {
+			r = r.next
+		}
+	}
+	return r
+}
+
+// New creates a ring of n elements.
+func New(n int) *Ring {
+	if n <= 0 {
+		return nil
+	}
+	r := new(Ring)
+	p := r
+	for i := 1; i < n; i++ {
+		p.next = &Ring{prev: p}
+		p = p.next
+	}
+	p.next = r
+	r.prev = p
+	return r
+}
+
+// Link connects ring r with ring s such that r.Next()
+// becomes s and returns the original value for r.Next().
+// r must not be empty.
+//
+// If r and s point to the same ring, linking
+// them removes the elements between r and s from the ring.
+// The removed elements form a subring and the result is a
+// reference to that subring (if no elements were removed,
+// the result is still the original value for r.Next(),
+// and not nil).
+//
+// If r and s point to different rings, linking
+// them creates a single ring with the elements of s inserted
+// after r. The result points to the element following the
+// last element of s after insertion.
+//
+func (r *Ring) Link(s *Ring) *Ring {
+	n := r.Next()
+	if s != nil {
+		p := s.Prev()
+		// Note: Cannot use multiple assignment because
+		// evaluation order of LHS is not specified.
+		r.next = s
+		s.prev = r
+		n.prev = p
+		p.next = n
+	}
+	return n
+}
+
+// Unlink removes n % r.Len() elements from the ring r, starting
+// at r.Next(). If n % r.Len() == 0, r remains unchanged.
+// The result is the removed subring. r must not be empty.
+//
+func (r *Ring) Unlink(n int) *Ring {
+	if n <= 0 {
+		return nil
+	}
+	return r.Link(r.Move(n + 1))
+}
+
+// Len computes the number of elements in ring r.
+// It executes in time proportional to the number of elements.
+//
+func (r *Ring) Len() int {
+	n := 0
+	if r != nil {
+		n = 1
+		for p := r.Next(); p != r; p = p.next {
+			n++
+		}
+	}
+	return n
+}
+
+// Do calls function f on each element of the ring, in forward order.
+// The behavior of Do is undefined if f changes *r.
+func (r *Ring) Do(f func(interface{})) {
+	if r != nil {
+		f(r.Value)
+		for p := r.Next(); p != r; p = p.next {
+			f(p.Value)
+		}
+	}
+}
+```
 ## 二、数组和链表
 
 数组是编程语言作为一种基本类型提供出来的，相同数据类型的元素按一定顺序排列的集合。
@@ -138,12 +283,19 @@ Army
 1. 栈：先进后出，先进队的数据最后才出来。在英文的意思里，`stack` 可以作为一叠的意思，这个排列是垂直的，你将一张纸放在另外一张纸上面，先放的纸肯定是最后才会被拿走，因为上面有一张纸挡住了它。
 2. 队列：先进先出，先进队的数据先出来。在英文的意思里，`queue` 和现实世界的排队意思一样，这个排列是水平的，先排先得。
 
-我们可以用数据结构：`链表`（可连续或不连续的将数据与数据关联起来的结构），或 `数组`（连续的内存空间，按索引取值） 来实现队列（实现栈，只要把出队的方向改一下即可）：
+我们可以用数据结构：`链表`（可连续或不连续的将数据与数据关联起来的结构），或 `数组`（连续的内存空间，按索引取值） 来实现 `队列`（实现 `栈`，只要把出队的方向改一下即可）：
+
+数组形式的队列:
 
 ```go
 
 ```
 
+链表形式的队列：
+
+```go
+
+```
 
 ## 四、集合 Set 和列表 List
 
@@ -154,10 +306,258 @@ Army
 1. 列表 `List` ：存放数据，数据按顺序排列，可以依次入队和出队，有序号关系，可以取出某序号的数据。先进先出的 `队列 (queue)` 和先进后出的 `栈（stack）` 都是列表。
 2. 集合 `Set` ：存放数据，特点就是没有数据会重复，会去重。你放一个数据进去，再放一个数据进去，如果两个数据一样，那么只会保存一份数据。集合可以没有顺序关系，也可以按值排序，算一种特殊的列表。
 
-我们可以实现一个双端队列：既可以先进先出 ` (queue)`，也可以先进后出 `（stack）` 的数据结构。它是由双向链表来实现的，在实际工程应用上，缓存数据库 `Redis` 的 `列表List` 基本类型就是用它来实现的：
+大家也经常听说一种叫 `线性表` 的数据结构，表示具有相同特性的数据元素的有限序列，实际上是上述的 `列表`，有 `顺序表示` 或 `链式表示`。
 
+顺序表示：指的是用一组 `地址连续的存储单元` 依次存储线性表的数据元素，称为线性表的 `顺序存储结构`。它以 `物理位置相邻` 来表示线性表中数据元素间的逻辑关系，可随机存取表中任一元素。顺序表示的又叫 `顺序表`，也就是用数组来实现的列表。
+
+链式表示：指的是用一组 `任意的存储单元` 存储线性表中的数据元素，称为线性表的 `链式存储结构`。它的存储单元可以是连续的，也可以是不连续的。在表示数据元素之间的逻辑关系时，除了存储其本身的信息之外，还需存储一个指示其直接后继的信息，也就是用链表来实现的列表。
+
+我们可以实现一个链式的双向列表（也叫双端队列）：既可以先进先出 ` (queue)`，也可以先进后出 `（stack）` 的数据结构。它是由双向链表来实现的，参见 `Golang` 标准库 `container/list`：
+
+```go
+// Copyright 2009 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package list implements a doubly linked list.
+//
+// To iterate over a list (where l is a *List):
+//	for e := l.Front(); e != nil; e = e.Next() {
+//		// do something with e.Value
+//	}
+//
+package list
+
+// Element is an element of a linked list.
+type Element struct {
+	// Next and previous pointers in the doubly-linked list of elements.
+	// To simplify the implementation, internally a list l is implemented
+	// as a ring, such that &l.root is both the next element of the last
+	// list element (l.Back()) and the previous element of the first list
+	// element (l.Front()).
+	next, prev *Element
+
+	// The list to which this element belongs.
+	list *List
+
+	// The value stored with this element.
+	Value interface{}
+}
+
+// Next returns the next list element or nil.
+func (e *Element) Next() *Element {
+	if p := e.next; e.list != nil && p != &e.list.root {
+		return p
+	}
+	return nil
+}
+
+// Prev returns the previous list element or nil.
+func (e *Element) Prev() *Element {
+	if p := e.prev; e.list != nil && p != &e.list.root {
+		return p
+	}
+	return nil
+}
+
+// List represents a doubly linked list.
+// The zero value for List is an empty list ready to use.
+type List struct {
+	root Element // sentinel list element, only &root, root.prev, and root.next are used
+	len  int     // current list length excluding (this) sentinel element
+}
+
+// Init initializes or clears list l.
+func (l *List) Init() *List {
+	l.root.next = &l.root
+	l.root.prev = &l.root
+	l.len = 0
+	return l
+}
+
+// New returns an initialized list.
+func New() *List { return new(List).Init() }
+
+// Len returns the number of elements of list l.
+// The complexity is O(1).
+func (l *List) Len() int { return l.len }
+
+// Front returns the first element of list l or nil if the list is empty.
+func (l *List) Front() *Element {
+	if l.len == 0 {
+		return nil
+	}
+	return l.root.next
+}
+
+// Back returns the last element of list l or nil if the list is empty.
+func (l *List) Back() *Element {
+	if l.len == 0 {
+		return nil
+	}
+	return l.root.prev
+}
+
+// lazyInit lazily initializes a zero List value.
+func (l *List) lazyInit() {
+	if l.root.next == nil {
+		l.Init()
+	}
+}
+
+// insert inserts e after at, increments l.len, and returns e.
+func (l *List) insert(e, at *Element) *Element {
+	n := at.next
+	at.next = e
+	e.prev = at
+	e.next = n
+	n.prev = e
+	e.list = l
+	l.len++
+	return e
+}
+
+// insertValue is a convenience wrapper for insert(&Element{Value: v}, at).
+func (l *List) insertValue(v interface{}, at *Element) *Element {
+	return l.insert(&Element{Value: v}, at)
+}
+
+// remove removes e from its list, decrements l.len, and returns e.
+func (l *List) remove(e *Element) *Element {
+	e.prev.next = e.next
+	e.next.prev = e.prev
+	e.next = nil // avoid memory leaks
+	e.prev = nil // avoid memory leaks
+	e.list = nil
+	l.len--
+	return e
+}
+
+// move moves e to next to at and returns e.
+func (l *List) move(e, at *Element) *Element {
+	if e == at {
+		return e
+	}
+	e.prev.next = e.next
+	e.next.prev = e.prev
+
+	n := at.next
+	at.next = e
+	e.prev = at
+	e.next = n
+	n.prev = e
+
+	return e
+}
+
+// Remove removes e from l if e is an element of list l.
+// It returns the element value e.Value.
+// The element must not be nil.
+func (l *List) Remove(e *Element) interface{} {
+	if e.list == l {
+		// if e.list == l, l must have been initialized when e was inserted
+		// in l or l == nil (e is a zero Element) and l.remove will crash
+		l.remove(e)
+	}
+	return e.Value
+}
+
+// PushFront inserts a new element e with value v at the front of list l and returns e.
+func (l *List) PushFront(v interface{}) *Element {
+	l.lazyInit()
+	return l.insertValue(v, &l.root)
+}
+
+// PushBack inserts a new element e with value v at the back of list l and returns e.
+func (l *List) PushBack(v interface{}) *Element {
+	l.lazyInit()
+	return l.insertValue(v, l.root.prev)
+}
+
+// InsertBefore inserts a new element e with value v immediately before mark and returns e.
+// If mark is not an element of l, the list is not modified.
+// The mark must not be nil.
+func (l *List) InsertBefore(v interface{}, mark *Element) *Element {
+	if mark.list != l {
+		return nil
+	}
+	// see comment in List.Remove about initialization of l
+	return l.insertValue(v, mark.prev)
+}
+
+// InsertAfter inserts a new element e with value v immediately after mark and returns e.
+// If mark is not an element of l, the list is not modified.
+// The mark must not be nil.
+func (l *List) InsertAfter(v interface{}, mark *Element) *Element {
+	if mark.list != l {
+		return nil
+	}
+	// see comment in List.Remove about initialization of l
+	return l.insertValue(v, mark)
+}
+
+// MoveToFront moves element e to the front of list l.
+// If e is not an element of l, the list is not modified.
+// The element must not be nil.
+func (l *List) MoveToFront(e *Element) {
+	if e.list != l || l.root.next == e {
+		return
+	}
+	// see comment in List.Remove about initialization of l
+	l.move(e, &l.root)
+}
+
+// MoveToBack moves element e to the back of list l.
+// If e is not an element of l, the list is not modified.
+// The element must not be nil.
+func (l *List) MoveToBack(e *Element) {
+	if e.list != l || l.root.prev == e {
+		return
+	}
+	// see comment in List.Remove about initialization of l
+	l.move(e, l.root.prev)
+}
+
+// MoveBefore moves element e to its new position before mark.
+// If e or mark is not an element of l, or e == mark, the list is not modified.
+// The element and mark must not be nil.
+func (l *List) MoveBefore(e, mark *Element) {
+	if e.list != l || e == mark || mark.list != l {
+		return
+	}
+	l.move(e, mark.prev)
+}
+
+// MoveAfter moves element e to its new position after mark.
+// If e or mark is not an element of l, or e == mark, the list is not modified.
+// The element and mark must not be nil.
+func (l *List) MoveAfter(e, mark *Element) {
+	if e.list != l || e == mark || mark.list != l {
+		return
+	}
+	l.move(e, mark)
+}
+
+// PushBackList inserts a copy of an other list at the back of list l.
+// The lists l and other may be the same. They must not be nil.
+func (l *List) PushBackList(other *List) {
+	l.lazyInit()
+	for i, e := other.Len(), other.Front(); i > 0; i, e = i-1, e.Next() {
+		l.insertValue(e.Value, l.root.prev)
+	}
+}
+
+// PushFrontList inserts a copy of an other list at the front of list l.
+// The lists l and other may be the same. They must not be nil.
+func (l *List) PushFrontList(other *List) {
+	l.lazyInit()
+	for i, e := other.Len(), other.Back(); i > 0; i, e = i-1, e.Prev() {
+		l.insertValue(e.Value, &l.root)
+	}
+}
 ```
-```
+
+在实际工程应用上，缓存数据库 `Redis` 的 `列表List` 基本类型就是用双端队列来实现的。
 
 我们来实现集合 `Set` ：
 
@@ -168,13 +568,6 @@ Army
 
 
 ## 五、总结
-
-大家也经常听说一种叫 `线性表` 的数据结构，表示具有相同特性的数据元素的有限序列，实际上是上述的 `列表`，有 `顺序表示` 或 `链式表示`。
-
-顺序表示：指的是用一组 `地址连续的存储单元` 依次存储线性表的数据元素，称为线性表的 `顺序存储结构`。它以 `物理位置相邻` 来表示线性表中数据元素间的逻辑关系，可随机存取表中任一元素。顺序表示的又叫 `顺序表`，也就是用数组来实现的列表。
-
-链式表示：指的是用一组 `任意的存储单元` 存储线性表中的数据元素，称为线性表的 `链式存储结构`。它的存储单元可以是连续的，也可以是不连续的。在表示数据元素之间的逻辑关系时，除了存储其本身的信息之外，还需存储一个指示其直接后继的信息，也就是用链表来实现的列表。
-
 
 `链表` 和 `数组` 可以用来辅助构建各种基本数据结构。
 
