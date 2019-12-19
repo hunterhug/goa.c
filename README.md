@@ -1,22 +1,26 @@
-# 算法分析：Golang实现
+# 数据结构和算法：Golang实现
 
 ## 前言
 
 数据结构和算法在计算机科学里，有非常重要的地位。此仓库尝试使用 `Golang` 编程语言来实现各种数据结构和算法，并且适当进行算法分析。
 
-中文版为该仓库，英文版请见分支 `en`。仓库地址见：[https://github.com/hunterhug/goa](https://github.com/hunterhug/goa**)
+仓库地址见：[https://github.com/hunterhug/goa](https://github.com/hunterhug/goa**)
 
 正在努力完善中，请不要 `fork`，请 `star`。
+
 ## 目录
 
 * [目录](README.md)
+* [前言](basic/before.md)
 * [一小时入门Golang](golang/README.md)
 * [基础知识](basic/README.md)
+    * [分治法和递归](basic/rescuvie.md)
     * [算法复杂度及渐进符号](basic/dregee.md)
     * [算法复杂度主方法](basic/master_method.md)
     * [延伸-计算理论：P和NP问题](basic/p.md)   
 * [常见数据结构及算法](algorithm/README.md)
     * [链表](algorithm/link.md)
+    * [可变长数组](algorithm/array_change.md)
     * [字典](algorithm/dict.md)
     * [栈和队列](algorithm/stack_queues.md)
     * [排序算法](algorithm/sort.md)

@@ -1,13 +1,16 @@
 # Summary
 
 * [目录](README.md)
+* [前言](basic/before.md)
 * [一小时入门Golang](golang/README.md)
 * [基础知识](basic/README.md)
+    * [分治法和递归](basic/rescuvie.md)
     * [算法复杂度及渐进符号](basic/dregee.md)
     * [算法复杂度主方法](basic/master_method.md)
     * [延伸-计算理论：P和NP问题](basic/p.md)
 * [常见数据结构及算法](algorithm/README.md)
     * [链表](algorithm/link.md)
+    * [可变长数组](algorithm/array_change.md)
     * [字典](algorithm/dict.md)
     * [栈和队列](algorithm/stack_queues.md)
     * [排序算法](algorithm/sort.md)

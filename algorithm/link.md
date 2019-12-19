@@ -4,7 +4,9 @@
 
 ## 一、链表
 
-链表，是由一个个数据节点组成的，它是一个递归结构，要么它是空的，要么它存在一个指向另外一个数据节点的引用。
+定义：
+
+>链表由一个个数据节点组成的，它是一个递归结构，要么它是空的，要么它存在一个指向另外一个数据节点的引用。
 
 链表，可以说是最基础的数据结构。
 
@@ -13,7 +15,9 @@
 ```go
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type LinkNode struct {
 	Data     int64
@@ -26,8 +30,11 @@ func main() {
 	node1 := new(LinkNode)
 	node1.Data = 3
 	node.NextNode = node1
-	
-    // 按顺序打印数据
+	node2 := new(LinkNode)
+	node2.Data = 4
+	node1.NextNode = node2
+
+	// 按顺序打印数据
 	nowNode := node
 	for {
 		if nowNode != nil {
@@ -40,6 +47,14 @@ func main() {
 }
 ```
 
+打印出：
+
+```go
+2
+3
+4
+```
+
 结构体 `LinkNode` 有两个字段，一个字段存放数据 `Data`，另一个字典指向下一个节点 `NextNode` 。这种从一个数据节点指向下一个数据节点的结构，都可以叫做链表。
 
 有些书籍，把链表做了很细的划分，比如单链表，双链表，循环单链表，循环双链表，其实没有必要强行分类，链表就是从一个数据指向另外一个数据，一种将数据和数据关联起来的结构而已。
@@ -50,34 +65,71 @@ func main() {
 2. 双链表，每个节点既可以找到它之前的节点，也可以找到之后的节点，是双向的。
 3. 循环链表，就是它一直往下找数据节点，最后回到了自己那个节点，形成了一个回路。循环单链表和循环双链表的区别就是，一个只能一个方向走，一个两个方向都可以走。
 
-我们来实现一个循环链表（集链表大成者），参见 `Golang` 标准库 `container/ring`：：
+我们来实现一个循环链表 `Ring`（集链表大成者），参见 `Golang` 标准库 `container/ring`：：
 
 ```go
-// Copyright 2009 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
-
-// Package ring implements operations on circular lists.
-package ring
-
-// A Ring is an element of a circular list, or ring.
-// Rings do not have a beginning or end; a pointer to any ring element
-// serves as reference to the entire ring. Empty rings are represented
-// as nil Ring pointers. The zero value for a Ring is a one-element
-// ring with a nil Value.
-//
+// 循环链表
 type Ring struct {
-	next, prev *Ring
-	Value      interface{} // for use by client; untouched by this library
+	next, prev *Ring       // 前驱和后驱节点
+	Value      interface{} // 数据
 }
+```
 
+我们来分析各操作它的时间复杂度。
+
+### 1.1.初始化循环链表
+
+初始化一个空的循环链表：
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+// 初始化空的循环链表，前驱和后驱都指向自己，因为是循环的
 func (r *Ring) init() *Ring {
 	r.next = r
 	r.prev = r
 	return r
 }
 
-// Next returns the next ring element. r must not be empty.
+
+func main() {
+	r := new(Ring)
+	r.init()
+}
+```
+
+因为绑定前驱和后驱节点为自己，没有循环，时间复杂度为：`O(1)`。
+
+创建一个指定大小 `N` 的循环链表，值全为空：
+
+```go
+// 创建N个节点的循环链表
+func New(n int) *Ring {
+	if n <= 0 {
+		return nil
+	}
+	r := new(Ring)
+	p := r
+	for i := 1; i < n; i++ {
+		p.next = &Ring{prev: p}
+		p = p.next
+	}
+	p.next = r
+	r.prev = p
+	return r
+}
+```
+
+要连续绑定前驱和后驱节点，时间复杂度为：`O(n)`。
+
+### 1.2.获取上一个或下一个节点
+
+```go
+// 获取下一个节点
 func (r *Ring) Next() *Ring {
 	if r.next == nil {
 		return r.init()
@@ -85,17 +137,22 @@ func (r *Ring) Next() *Ring {
 	return r.next
 }
 
-// Prev returns the previous ring element. r must not be empty.
+// 获取上一个节点
 func (r *Ring) Prev() *Ring {
 	if r.next == nil {
 		return r.init()
 	}
 	return r.prev
 }
+```
 
-// Move moves n % r.Len() elements backward (n < 0) or forward (n >= 0)
-// in the ring and returns that ring element. r must not be empty.
-//
+获取前驱或后驱节点，时间复杂度为：`O(1)`。
+
+### 1.2.获取第 n 个节点
+
+因为链表是循环的，所以 `n` 为负数，表示从前面往前数，否则往后面数：
+
+```go
 func (r *Ring) Move(n int) *Ring {
 	if r.next == nil {
 		return r.init()
@@ -112,45 +169,18 @@ func (r *Ring) Move(n int) *Ring {
 	}
 	return r
 }
+```
 
-// New creates a ring of n elements.
-func New(n int) *Ring {
-	if n <= 0 {
-		return nil
-	}
-	r := new(Ring)
-	p := r
-	for i := 1; i < n; i++ {
-		p.next = &Ring{prev: p}
-		p = p.next
-	}
-	p.next = r
-	r.prev = p
-	return r
-}
+因为需要遍历，所以时间复杂度为：`O(n)`。
 
-// Link connects ring r with ring s such that r.Next()
-// becomes s and returns the original value for r.Next().
-// r must not be empty.
-//
-// If r and s point to the same ring, linking
-// them removes the elements between r and s from the ring.
-// The removed elements form a subring and the result is a
-// reference to that subring (if no elements were removed,
-// the result is still the original value for r.Next(),
-// and not nil).
-//
-// If r and s point to different rings, linking
-// them creates a single ring with the elements of s inserted
-// after r. The result points to the element following the
-// last element of s after insertion.
-//
+### 1.3.添加或删除节点
+
+```go
+// 往节点A，链接一个节点，并且返回之前节点A的后驱节点
 func (r *Ring) Link(s *Ring) *Ring {
 	n := r.Next()
 	if s != nil {
 		p := s.Prev()
-		// Note: Cannot use multiple assignment because
-		// evaluation order of LHS is not specified.
 		r.next = s
 		s.prev = r
 		n.prev = p
@@ -158,21 +188,149 @@ func (r *Ring) Link(s *Ring) *Ring {
 	}
 	return n
 }
+```
 
-// Unlink removes n % r.Len() elements from the ring r, starting
-// at r.Next(). If n % r.Len() == 0, r remains unchanged.
-// The result is the removed subring. r must not be empty.
-//
+如果节点 `s` 是一个新的节点，那么也就是在 `r` 节点后插入一个新节点 `s`，然后把之前 `r` 节点后面的节点，链接到新节点后面，并返回 `r` 节点之前的后驱节点 `n`，如：
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func linkNewTest() {
+	r := new(Ring)
+	r.init()
+	r.Value = -1 // -1表示第一次创建的节点
+
+	// 链接新的五个节点
+	r.Link(&Ring{Value: 1})
+	r.Link(&Ring{Value: 2})
+	r.Link(&Ring{Value: 3})
+	r.Link(&Ring{Value: 4})
+
+	a := r
+	for i := 10; i >= 0; i-- {
+		fmt.Println(a.Value)
+		a = a.Next()
+	}
+}
+
+func main() {
+	linkNewTest()
+}
+```
+
+输出:
+
+```go
+-1
+4
+3
+2
+1
+-1
+4
+3
+2
+1
+-1
+```
+
+每次链接的是一个新节点，那么链会越来越长，仍然是一个环。因为只是更改链接位置，时间复杂度为：`O(1)`。
+
+但如果节点 `s` 不是一个新的节点呢，可以看下面的删除节点：
+
+```go
+// 删除节点后面的 n 个节点
 func (r *Ring) Unlink(n int) *Ring {
-	if n <= 0 {
+	if n < 0 {
 		return nil
 	}
 	return r.Link(r.Move(n + 1))
 }
+```
 
-// Len computes the number of elements in ring r.
-// It executes in time proportional to the number of elements.
-//
+执行：
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func deleteTest() {
+	r := new(Ring)
+	r.init()
+	r.Value = -1 // -1表示第一次创建的节点
+
+	// 链接新的五个节点
+	r.Link(&Ring{Value: 1})
+	r.Link(&Ring{Value: 2})
+	r.Link(&Ring{Value: 3})
+	r.Link(&Ring{Value: 4})
+
+	temp := r.Unlink(2) // 解除了后面两个节点
+
+	a := r
+	for i := 10; i >= 0; i-- {
+		fmt.Println(a.Value)
+		a = a.Next()
+	}
+
+	fmt.Println("--------------")
+	fmt.Println(temp.Value)
+	fmt.Println("--------------")
+	a = temp
+	for i := 10; i >= 0; i-- {
+		fmt.Println(a.Value)
+		a = a.Next()
+	}
+}
+
+func main() {
+	deleteTest()
+}
+```
+
+输出：
+
+```go
+-1
+2
+1
+-1
+2
+1
+-1
+2
+1
+-1
+2
+--------------
+4
+--------------
+4
+3
+4
+3
+4
+3
+4
+3
+4
+3
+4
+```
+
+可以看到节点 `r` 后面的两个节点被切断了，然后分成了两个循环链表，`r` 所在的链表是 `-1，2，1`，而切除的那部分形成一个新循环链表是 `4 3`。
+
+### 1.4.获取链表长度
+
+```go
+// 查看循环链表长度
 func (r *Ring) Len() int {
 	n := 0
 	if r != nil {
@@ -183,23 +341,13 @@ func (r *Ring) Len() int {
 	}
 	return n
 }
-
-// Do calls function f on each element of the ring, in forward order.
-// The behavior of Do is undefined if f changes *r.
-func (r *Ring) Do(f func(interface{})) {
-	if r != nil {
-		f(r.Value)
-		for p := r.Next(); p != r; p = p.next {
-			f(p.Value)
-		}
-	}
-}
 ```
 
+通过循环，当引用回到自己，那么计数完毕，时间复杂度：`O(n)`。
 
-我们来分析各操作它的时间复杂度：
+因为循环链表还不够强壮，不知道起始节点是哪个，计数链表长度还要遍历，所以用循环链表实现的双端队列就出现了，一般具体编程都使用更高层次的数据结构。
 
-1. 添加数据节点到循环链表的头部或尾部，时间复杂度为1，记： `O(1)`。
+详细可查看栈和队列章节。
 
 ## 二、数组和链表
 
@@ -241,7 +389,7 @@ package main
 
 import "fmt"
 
-func main() {
+func ArrayLink() {
 	type Value struct {
 		Data      string
 		NextIndex int64
@@ -261,6 +409,11 @@ func main() {
 		}
 		node = array[node.NextIndex]
 	}
+
+}
+
+func main() {
+	ArrayLink()
 }
 ```
 
@@ -280,180 +433,7 @@ Army
 
 很多其他的数据结构都由数组和链表配合实现的。
 
-## 三、可变长数组
-
-因为数组大小是固定的，当数据元素特别多时，固定的数组无法储存这么多的值，所以可变长数组出现了，这也是一种数据结构。在 `Golang `语言中，可变长数组被内置在语言里面：切片 `slice`。
-
-`slice` 是对底层数组的抽象和控制。它是一个结构体：
-
-````go
-type slice struct {
-	array unsafe.Pointer
-	len   int
-	cap   int
-}
-````
-
-1. 指向底层数组的指针。( `Golang` 语言是没有指针的数据类型，所以 `unsafe` 包提供相关的操作，一般情况下非专业人员勿用)
-2. 切片的真正长度。
-3. 切片的容量。
-
-首先初始化一个切片时：
-
-```go
-func makeslice(et *_type, len, cap int) unsafe.Pointer {
-	mem, overflow := math.MulUintptr(et.size, uintptr(cap))
-	if overflow || mem > maxAlloc || len < 0 || len > cap {
-		// NOTE: Produce a 'len out of range' error instead of a
-		// 'cap out of range' error when someone does make([]T, bignumber).
-		// 'cap out of range' is true too, but since the cap is only being
-		// supplied implicitly, saying len is clearer.
-		// See golang.org/issue/4085.
-		mem, overflow := math.MulUintptr(et.size, uintptr(len))
-		if overflow || mem > maxAlloc || len < 0 {
-			panicmakeslicelen()
-		}
-		panicmakeslicecap()
-	}
-
-	return mallocgc(mem, et, true)
-}
-```
-
-内部会
-
-```go
-// growslice handles slice growth during append.
-// It is passed the slice element type, the old slice, and the desired new minimum capacity,
-// and it returns a new slice with at least that capacity, with the old data
-// copied into it.
-// The new slice's length is set to the old slice's length,
-// NOT to the new requested capacity.
-// This is for codegen convenience. The old slice's length is used immediately
-// to calculate where to write new values during an append.
-// TODO: When the old backend is gone, reconsider this decision.
-// The SSA backend might prefer the new length or to return only ptr/cap and save stack space.
-func growslice(et *_type, old slice, cap int) slice {
-	if raceenabled {
-		callerpc := getcallerpc()
-		racereadrangepc(old.array, uintptr(old.len*int(et.size)), callerpc, funcPC(growslice))
-	}
-	if msanenabled {
-		msanread(old.array, uintptr(old.len*int(et.size)))
-	}
-
-	if cap < old.cap {
-		panic(errorString("growslice: cap out of range"))
-	}
-
-	if et.size == 0 {
-		// append should not create a slice with nil pointer but non-zero len.
-		// We assume that append doesn't need to preserve old.array in this case.
-		return slice{unsafe.Pointer(&zerobase), old.len, cap}
-	}
-
-	newcap := old.cap
-	doublecap := newcap + newcap
-	if cap > doublecap {
-		newcap = cap
-	} else {
-		if old.len < 1024 {
-			newcap = doublecap
-		} else {
-			// Check 0 < newcap to detect overflow
-			// and prevent an infinite loop.
-			for 0 < newcap && newcap < cap {
-				newcap += newcap / 4
-			}
-			// Set newcap to the requested cap when
-			// the newcap calculation overflowed.
-			if newcap <= 0 {
-				newcap = cap
-			}
-		}
-	}
-
-	var overflow bool
-	var lenmem, newlenmem, capmem uintptr
-	// Specialize for common values of et.size.
-	// For 1 we don't need any division/multiplication.
-	// For sys.PtrSize, compiler will optimize division/multiplication into a shift by a constant.
-	// For powers of 2, use a variable shift.
-	switch {
-	case et.size == 1:
-		lenmem = uintptr(old.len)
-		newlenmem = uintptr(cap)
-		capmem = roundupsize(uintptr(newcap))
-		overflow = uintptr(newcap) > maxAlloc
-		newcap = int(capmem)
-	case et.size == sys.PtrSize:
-		lenmem = uintptr(old.len) * sys.PtrSize
-		newlenmem = uintptr(cap) * sys.PtrSize
-		capmem = roundupsize(uintptr(newcap) * sys.PtrSize)
-		overflow = uintptr(newcap) > maxAlloc/sys.PtrSize
-		newcap = int(capmem / sys.PtrSize)
-	case isPowerOfTwo(et.size):
-		var shift uintptr
-		if sys.PtrSize == 8 {
-			// Mask shift for better code generation.
-			shift = uintptr(sys.Ctz64(uint64(et.size))) & 63
-		} else {
-			shift = uintptr(sys.Ctz32(uint32(et.size))) & 31
-		}
-		lenmem = uintptr(old.len) << shift
-		newlenmem = uintptr(cap) << shift
-		capmem = roundupsize(uintptr(newcap) << shift)
-		overflow = uintptr(newcap) > (maxAlloc >> shift)
-		newcap = int(capmem >> shift)
-	default:
-		lenmem = uintptr(old.len) * et.size
-		newlenmem = uintptr(cap) * et.size
-		capmem, overflow = math.MulUintptr(et.size, uintptr(newcap))
-		capmem = roundupsize(capmem)
-		newcap = int(capmem / et.size)
-	}
-
-	// The check of overflow in addition to capmem > maxAlloc is needed
-	// to prevent an overflow which can be used to trigger a segfault
-	// on 32bit architectures with this example program:
-	//
-	// type T [1<<27 + 1]int64
-	//
-	// var d T
-	// var s []T
-	//
-	// func main() {
-	//   s = append(s, d, d, d, d)
-	//   print(len(s), "\n")
-	// }
-	if overflow || capmem > maxAlloc {
-		panic(errorString("growslice: cap out of range"))
-	}
-
-	var p unsafe.Pointer
-	if et.ptrdata == 0 {
-		p = mallocgc(capmem, nil, false)
-		// The append() that calls growslice is going to overwrite from old.len to cap (which will be the new length).
-		// Only clear the part that will not be overwritten.
-		memclrNoHeapPointers(add(p, newlenmem), capmem-newlenmem)
-	} else {
-		// Note: can't use rawmem (which avoids zeroing of memory), because then GC can scan uninitialized memory.
-		p = mallocgc(capmem, et, true)
-		if lenmem > 0 && writeBarrier.enabled {
-			// Only shade the pointers in old.array since we know the destination slice p
-			// only contains nil pointers because it has been cleared during alloc.
-			bulkBarrierPreWriteSrcOnly(uintptr(p), uintptr(old.array), lenmem)
-		}
-	}
-	memmove(p, old.array, lenmem)
-
-	return slice{p, old.len, newcap}
-}
-```
-
-具体可查看标准库 `runtime` 下的 `slice.go` 文件。
-
-## 四、总结
+## 三、总结
 
 `链表` 和 `数组` 可以用来辅助构建各种基本数据结构。
 
