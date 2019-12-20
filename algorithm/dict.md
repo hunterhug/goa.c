@@ -26,6 +26,6 @@ fmt.Println(v, ok)
 
 字典的实现有两种方式：哈希表 `HashTable` 和红黑树 `RBTree`。
 
-在 `Golang` 语言中字典 `map` 的实现由哈希表实现，具体可查看标准库 `runtime` 下的 `map.go` 文件。
+在 `Golang` 语言中字典 `map` 的实现由哈希表实现，具体可参考标准库 `runtime` 下的 `map.go` 文件。
 
 我们会在《查找算法》章节：散列查找和红黑树具体分析字典的两种实现方式。

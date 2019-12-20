@@ -13,6 +13,7 @@
     * [可变长数组](algorithm/array_change.md)
     * [字典](algorithm/dict.md)
     * [栈和队列](algorithm/stack_queues.md)
+    * [列表和集合](algorithm/list_set.md)
     * [排序算法](algorithm/sort.md)
         * [冒泡排序](algorithm/sort/bubble_sort.md)
         * [选择排序](algorithm/sort/select_sort.md)

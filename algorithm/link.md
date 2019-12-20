@@ -25,24 +25,32 @@ type LinkNode struct {
 }
 
 func main() {
+	// 新的节点
 	node := new(LinkNode)
 	node.Data = 2
+
+	// 新的节点
 	node1 := new(LinkNode)
 	node1.Data = 3
-	node.NextNode = node1
+	node.NextNode = node1 // node1 链接到 node 节点上
+
+	// 新的节点
 	node2 := new(LinkNode)
 	node2.Data = 4
-	node1.NextNode = node2
+	node1.NextNode = node2 // node2 链接到 node1 节点上
 
 	// 按顺序打印数据
 	nowNode := node
 	for {
 		if nowNode != nil {
+			// 打印节点值
 			fmt.Println(nowNode.Data)
+			// 获取下一个节点
 			nowNode = nowNode.NextNode
-		} else {
-			break
 		}
+
+		// 如果下一个节点为空，表示链表结束了
+		break
 	}
 }
 ```
@@ -65,7 +73,7 @@ func main() {
 2. 双链表，每个节点既可以找到它之前的节点，也可以找到之后的节点，是双向的。
 3. 循环链表，就是它一直往下找数据节点，最后回到了自己那个节点，形成了一个回路。循环单链表和循环双链表的区别就是，一个只能一个方向走，一个两个方向都可以走。
 
-我们来实现一个循环链表 `Ring`（集链表大成者），参见 `Golang` 标准库 `container/ring`：：
+我们来实现一个循环链表 `Ring`（集链表大成者），参考 `Golang` 标准库 `container/ring`：：
 
 ```go
 // 循环链表
@@ -75,7 +83,9 @@ type Ring struct {
 }
 ```
 
-我们来分析各操作它的时间复杂度。
+该循环链表有一个三个字段，`next` 表示后驱节点，`prev` 表示前驱节点，`Value` 表示值。
+
+我们来分析该结构各操作的时间复杂度。
 
 ### 1.1.初始化循环链表
 
@@ -124,7 +134,7 @@ func New(n int) *Ring {
 }
 ```
 
-要连续绑定前驱和后驱节点，时间复杂度为：`O(n)`。
+会连续绑定前驱和后驱节点，时间复杂度为：`O(n)`。
 
 ### 1.2.获取上一个或下一个节点
 
@@ -150,7 +160,7 @@ func (r *Ring) Prev() *Ring {
 
 ### 1.2.获取第 n 个节点
 
-因为链表是循环的，所以 `n` 为负数，表示从前面往前数，否则往后面数：
+因为链表是循环的，当 `n` 为负数，表示从前面往前遍历，否则往后面遍历：
 
 ```go
 func (r *Ring) Move(n int) *Ring {
@@ -171,9 +181,9 @@ func (r *Ring) Move(n int) *Ring {
 }
 ```
 
-因为需要遍历，所以时间复杂度为：`O(n)`。
+因为需要遍历 `n` 次，所以时间复杂度为：`O(n)`。
 
-### 1.3.添加或删除节点
+### 1.3.添加节点
 
 ```go
 // 往节点A，链接一个节点，并且返回之前节点A的后驱节点
@@ -190,7 +200,15 @@ func (r *Ring) Link(s *Ring) *Ring {
 }
 ```
 
-如果节点 `s` 是一个新的节点，那么也就是在 `r` 节点后插入一个新节点 `s`，然后把之前 `r` 节点后面的节点，链接到新节点后面，并返回 `r` 节点之前的后驱节点 `n`，如：
+添加节点的操作比较复杂，如果节点 `s` 是一个新的节点。
+
+那么也就是在 `r` 节点后插入一个新节点 `s`，而 `r` 节点之前的后驱节点，将会链接到新节点后面，并返回 `r` 节点之前的第一个后驱节点 `n`，图如下：
+
+![](../picture/link.png)
+
+可以看到插入新节点，会重新形成一个环，新节点 `s` 被插入了中间。
+
+执行以下程序：
 
 ```go
 package main
@@ -199,23 +217,30 @@ import (
 	"fmt"
 )
 
-func linkNewTest() {
-	r := new(Ring)
-	r.init()
-	r.Value = -1 // -1表示第一次创建的节点
-
-	// 链接新的五个节点
-	r.Link(&Ring{Value: 1})
-	r.Link(&Ring{Value: 2})
-	r.Link(&Ring{Value: 3})
-	r.Link(&Ring{Value: 4})
-
-	a := r
-	for i := 10; i >= 0; i-- {
-		fmt.Println(a.Value)
-		a = a.Next()
-	}
-}
+ffunc linkNewTest() {
+ 	// 第一个节点
+ 	r := &Ring{Value: -1}
+ 
+ 	// 链接新的五个节点
+ 	r.Link(&Ring{Value: 1})
+ 	r.Link(&Ring{Value: 2})
+ 	r.Link(&Ring{Value: 3})
+ 	r.Link(&Ring{Value: 4})
+ 
+ 	node := r
+ 	for {
+ 		// 打印节点值
+ 		fmt.Println(node.Value)
+ 
+ 		// 移到下一个节点
+ 		node = node.Next()
+ 
+ 		//  如果节点回到了起点，结束
+ 		if node == r {
+ 			return
+ 		}
+ 	}
+ }
 
 func main() {
 	linkNewTest()
@@ -230,17 +255,11 @@ func main() {
 3
 2
 1
--1
-4
-3
-2
-1
--1
 ```
 
 每次链接的是一个新节点，那么链会越来越长，仍然是一个环。因为只是更改链接位置，时间复杂度为：`O(1)`。
 
-但如果节点 `s` 不是一个新的节点呢，可以看下面的删除节点：
+### 1.4.删除节点
 
 ```go
 // 删除节点后面的 n 个节点
@@ -252,6 +271,8 @@ func (r *Ring) Unlink(n int) *Ring {
 }
 ```
 
+将循环链表的后面几个节点删除。
+
 执行：
 
 ```go
@@ -262,9 +283,8 @@ import (
 )
 
 func deleteTest() {
-	r := new(Ring)
-	r.init()
-	r.Value = -1 // -1表示第一次创建的节点
+	// 第一个节点
+	r := &Ring{Value: -1}
 
 	// 链接新的五个节点
 	r.Link(&Ring{Value: 1})
@@ -272,21 +292,36 @@ func deleteTest() {
 	r.Link(&Ring{Value: 3})
 	r.Link(&Ring{Value: 4})
 
-	temp := r.Unlink(2) // 解除了后面两个节点
+	temp := r.Unlink(3) // 解除了后面两个节点
 
-	a := r
-	for i := 10; i >= 0; i-- {
-		fmt.Println(a.Value)
-		a = a.Next()
+	// 打印原来的节点
+	node := r
+	for {
+		// 打印节点值
+		fmt.Println(node.Value)
+		// 移到下一个节点
+		node = node.Next()
+
+		//  如果节点回到了起点，结束
+		if node == r {
+			break
+		}
 	}
 
-	fmt.Println("--------------")
-	fmt.Println(temp.Value)
-	fmt.Println("--------------")
-	a = temp
-	for i := 10; i >= 0; i-- {
-		fmt.Println(a.Value)
-		a = a.Next()
+	fmt.Println("------")
+	
+	// 打印被切断的节点
+	node = temp
+	for {
+		// 打印节点值
+		fmt.Println(node.Value)
+		// 移到下一个节点
+		node = node.Next()
+
+		//  如果节点回到了起点，结束
+		if node == temp {
+			break
+		}
 	}
 }
 
@@ -299,35 +334,22 @@ func main() {
 
 ```go
 -1
-2
 1
--1
+------
+4
+3
 2
-1
--1
-2
-1
--1
-2
---------------
-4
---------------
-4
-3
-4
-3
-4
-3
-4
-3
-4
-3
-4
 ```
 
-可以看到节点 `r` 后面的两个节点被切断了，然后分成了两个循环链表，`r` 所在的链表是 `-1，2，1`，而切除的那部分形成一个新循环链表是 `4 3`。
+删除循环链表后面的三个节点：`r.Unlink(3)`。
 
-### 1.4.获取链表长度
+可以看到节点 `r` 后面的两个节点被切断了，然后分成了两个循环链表，`r` 所在的链表变成了 `-1，1`。
+
+而切除的那部分形成一个新循环链表是 `4 3 2`，并且返回给了用户。
+
+因为只要定位要删除的节点位置，然后进行链接：`r.Link(r.Move(n + 1))`，所以时间复杂度为：`O(n)+O(1)=O(n)`
+
+### 1.5.获取链表长度
 
 ```go
 // 查看循环链表长度
