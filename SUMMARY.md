@@ -23,7 +23,7 @@
         * [快速排序](algorithm/sort/quick_sort.md)
         * [优先队列及堆排序](algorithm/heaplike/heaps.md)
     * [查找算法](algorithm/search.md)
-        * [散列查找：拉链法](algorithm/search/hash_find.md)
+        * [哈希表：拉链法散列查找](algorithm/search/hash_find.md)
         * [树及二叉查找树](algorithm/search/bs_tree.md)
         * [AVL树和红黑树](algorithm/search/avl_rb_tree.md)
         * [B树及B+树](algorithm/search/b_tree.md)
