@@ -157,4 +157,17 @@ func main() {
 	fmt.Println(ll[:2])
 	fmt.Println(ll[0:])
 	fmt.Println(ll[:])
+
+	// 打印一行空行
+	fmt.Println()
+	// 打印 4 5 6
+	fmt.Println(4, 5, 6)
+	// 占位符 %d 打印数字，\n换行
+	fmt.Printf("%d\n", 2)
+	// 占位符 %s 打印字符串，\n换行
+	fmt.Printf("%s\n", "cat")
+	// 占位符 %v或者%#v 打印任何类型，\n换行
+	fmt.Printf("%#v,%v\n", "cat", 33)
+	// 更多示例
+	fmt.Printf("%s,%d,%s,%#v\n", "cat", 2, "3", map[int]string{1: "s"})
 }

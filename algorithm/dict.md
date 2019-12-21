@@ -5,23 +5,53 @@
 ```
 键=>值
 
-"a"=>1
-"b"=>2
-"c"=>1
-"d"=>2
+"cat"=>2
+"dog"=>1
+"hen"=>3
 ```
 
-我们拿出键 `a` 的值，就是 `1` 了。`Golang` 提供了这一数据结构：`map`：
+我们拿出键 `cat` 的值，就是 `2` 了。`Golang` 提供了这一数据结构：`map`：
 
 ```go
 
-f := map[string]int64{"a": 3, "b": 4} // map
+package main
 
-// 查找map键值
-v, ok := f["f"]
-fmt.Println(v, ok)
-v, ok = f["ff"]
-fmt.Println(v, ok)
+import "fmt"
+
+func main() {
+	// 新建一个容量为4的字典 map
+	m := make(map[string]int64, 4)
+
+	// 放三个键值对
+	m["dog"] = 1
+	m["cat"] = 2
+	m["hen"] = 3
+
+	fmt.Println(m)
+
+	// 查找 hen
+	which := "hen"
+	v, ok := m[which]
+	if ok {
+		// 找到了
+		fmt.Println("find:", which, "value:", v)
+	} else {
+		// 找不到
+		fmt.Println("not find:", which)
+	}
+
+	// 查找 ccc
+	which = "ccc"
+	v, ok = m[which]
+	if ok {
+		// 找到了
+		fmt.Println("find:", which, "value:", v)
+	} else {
+		// 找不到
+		fmt.Println("not find:", which)
+	}
+}
+
 ```
 
 字典的实现有两种方式：哈希表 `HashTable` 和红黑树 `RBTree`。

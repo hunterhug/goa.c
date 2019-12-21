@@ -2,7 +2,11 @@
 
 * [目录](README.md)
 * [前言](basic/before.md)
-* [一小时入门Golang](golang/README.md)
+* [简单入门Golang](golang/README.md)
+    * [包、变量和函数](golang/basic.md)
+    * [流程控制语句](golang/logic.md)
+    * [结构体和方法](golang/struct.md)
+    * [标准库](golang/lib.md)
 * [基础知识](basic/README.md)
     * [分治法和递归](basic/rescuvie.md)
     * [算法复杂度及渐进符号](basic/dregee.md)
