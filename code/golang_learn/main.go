@@ -170,4 +170,17 @@ func main() {
 	fmt.Printf("%#v,%v\n", "cat", 33)
 	// 更多示例
 	fmt.Printf("%s,%d,%s,%#v\n", "cat", 2, "3", map[int]string{1: "s"})
+
+	num := 4
+	switch num {
+	case 3:
+		fmt.Println(3)
+	case 4:
+		fmt.Println(4)
+	case 5:
+		fmt.Println(5)
+	default:
+		fmt.Println("not found")
+
+	}
 }
