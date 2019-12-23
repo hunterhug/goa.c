@@ -20,11 +20,6 @@ func Make(len, cap int) *Array {
 		panic("len large than cap")
 	}
 
-	// 默认容量为6
-	if cap == 0 {
-		cap = 6
-	}
-
 	// 把切片当数组用
 	array := make([]int, cap, cap)
 
@@ -43,8 +38,14 @@ func (a *Array) Append(element int) {
 
 	// 大小等于容量，表示没多余位置了
 	if a.len == a.cap {
-		// 没容量，数组要扩容
+		// 没容量，数组要扩容，扩容到两倍
 		newCap := 2 * a.len
+
+		// 如果之前的容量为0，那么新容量为1
+		if a.cap == 0 {
+			newCap = 1
+		}
+
 		newArray := make([]int, newCap, newCap)
 
 		// 把老数组的数据移动到新数组

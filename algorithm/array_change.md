@@ -105,11 +105,6 @@ func Make(len, cap int) *Array {
 		panic("len large than cap")
 	}
 
-	// 默认容量为6
-	if cap == 0 {
-		cap = 6
-	}
-
 	// 把切片当数组用
 	array := make([]int, cap, cap)
 
@@ -121,9 +116,7 @@ func Make(len, cap int) *Array {
 }
 ```
 
-主要利用满容量和满大小的切片来充当固定数组，结构体 `Array` 里面的字段 `len` 和 `cap` 来控制值的存取。
-
-不允许设置 `len > cap` 的可变长数组，如果容量传入的为0，那么默认容量为6。
+主要利用满容量和满大小的切片来充当固定数组，结构体 `Array` 里面的字段 `len` 和 `cap` 来控制值的存取。不允许设置 `len > cap` 的可变长数组。
 
 时间复杂度为：`O(1)`，因为分配内存空间和设置几个值是常数时间。
 
@@ -138,8 +131,14 @@ func (a *Array) Append(element int) {
 
 	// 大小等于容量，表示没多余位置了
 	if a.len == a.cap {
-		// 没容量，数组要扩容
+		// 没容量，数组要扩容，扩容到两倍
 		newCap := 2 * a.len
+
+		// 如果之前的容量为0，那么新容量为1
+		if a.cap == 0 {
+			newCap = 1
+		}
+
 		newArray := make([]int, newCap, newCap)
 
 		// 把老数组的数据移动到新数组
@@ -161,9 +160,9 @@ func (a *Array) Append(element int) {
 }
 ```
 
-首先添加一个元素到可变长数组里，会加锁，这样会保证并发安全。然后将值放在数组里：`a.array[a.len] = element`，然后 `len+1`，表示真实大小又多了一个。
+首先添加一个元素到可变长数组里，会加锁，这样会保证并发安全。然后将值放在数组里：`a.array[a.len] = element`，然后 `len + 1`，表示真实大小又多了一个。
 
-当真实大小 `len=cap` 时，表明位置都用完了，没有多余的空间放新值，那么会创建一个固定大小 `2*len` 的新数组来替换老数组：`a.array = newArray`，当然容量也会变大：`a.cap = newCap`。
+当真实大小 `len = cap` 时，表明位置都用完了，没有多余的空间放新值，那么会创建一个固定大小 `2*len` 的新数组来替换老数组：`a.array = newArray`，当然容量也会变大：`a.cap = newCap`。如果一开始设置的容量 `cap = 0`，那么新的容量会是从 1 开始。
 
 添加元素中，耗时主要在老数组中的数据移动到新数组，时间复杂度为：`O(n)`。当然，如果容量够的情况下，时间复杂度会变为：`O(1)`。
 
@@ -240,11 +239,6 @@ func Make(len, cap int) *Array {
 		panic("len large than cap")
 	}
 
-	// 默认容量为6
-	if cap == 0 {
-		cap = 6
-	}
-
 	// 把切片当数组用
 	array := make([]int, cap, cap)
 
@@ -263,8 +257,14 @@ func (a *Array) Append(element int) {
 
 	// 大小等于容量，表示没多余位置了
 	if a.len == a.cap {
-		// 没容量，数组要扩容
+		// 没容量，数组要扩容，扩容到两倍
 		newCap := 2 * a.len
+
+		// 如果之前的容量为0，那么新容量为1
+		if a.cap == 0 {
+			newCap = 1
+		}
+
 		newArray := make([]int, newCap, newCap)
 
 		// 把老数组的数据移动到新数组
@@ -363,7 +363,3 @@ cap 6 len 4 array: [10 9 8 7]
 可变长数组在实际开发上，经常会使用到，其在固定大小数组的基础上，会自动进行容量扩展。
 
 因为这一数据结构的使用频率太高了，所以，`Golang` 自动提供了这一数据类型：切片（可变长数组）。大家一般开发过程中，直接使用这一类型即可。
-
-
-
-https://www.jianshu.com/p/f268bebc722f

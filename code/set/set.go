@@ -1,21 +1,23 @@
-package set
+package main
 
 import (
 	"fmt"
 	"sync"
+	"unsafe"
 )
 
 // 集合结构体
 type Set struct {
-	m            map[int]bool // 用字典来实现，因为字段键不能重复
-	len          int          // 集合的大小
-	sync.RWMutex              // 锁，实现并发安全
+	m            map[int]struct{} // 用字典来实现，因为字段键不能重复
+	len          int              // 集合的大小
+	sync.RWMutex                  // 锁，实现并发安全
 }
 
 // 新建一个空集合
-func New() *Set {
+func NewSet(cap int64) *Set {
+	temp := make(map[int]struct{}, cap)
 	return &Set{
-		m: map[int]bool{},
+		m: temp,
 	}
 }
 
@@ -23,8 +25,8 @@ func New() *Set {
 func (s *Set) Add(item int) {
 	s.Lock()
 	defer s.Unlock()
-	s.m[item] = true  // 实际往字典添加这个键
-	s.len = s.len + 1 // 集合大小增加
+	s.m[item] = struct{}{} // 实际往字典添加这个键
+	s.len = s.len + 1      // 集合大小增加
 }
 
 // 移除一个元素
@@ -52,8 +54,8 @@ func (s *Set) Len() int {
 func (s *Set) Clear() {
 	s.Lock()
 	defer s.Unlock()
-	s.m = map[int]bool{} // 字典置空
-	s.len = 0            // 大小归零
+	s.m = map[int]struct{}{} // 字典重新赋值
+	s.len = 0                // 大小归零
 }
 
 // 集合是够为空
@@ -75,13 +77,27 @@ func (s *Set) List() []int {
 	return list
 }
 
-func SetTest() {
-	// 初始化
-	s := New()
+// 为什么使用空结构体
+func other() {
+	a := struct{}{}
+	b := struct{}{}
+	if a == b {
+		fmt.Printf("right:%p\n", &a)
+	}
+
+	fmt.Println(unsafe.Sizeof(a))
+}
+
+func main() {
+	//other()
+
+	// 初始化一个容量为5的不可重复集合
+	s := NewSet(5)
 
 	s.Add(1)
 	s.Add(1)
 	s.Add(2)
+	fmt.Println("list of all items", s.List())
 
 	s.Clear()
 	if s.IsEmpty() {
