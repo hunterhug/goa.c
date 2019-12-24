@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	// 创建一个容量为2的切片
@@ -24,8 +26,8 @@ func main() {
 	fmt.Println("cap", cap(array), "len", len(array), "array:", array)
 	array = append(array, 1)
 	fmt.Println("cap", cap(array), "len", len(array), "array:", array)
-	array = append(array, 1,1,1,1)
+	array = append(array, 1, 1, 1, 1)
 	fmt.Println("cap", cap(array), "len", len(array), "array:", array)
-	array = append(array, 1,1,1,1,1,1,1,1,1)
+	array = append(array, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 	fmt.Println("cap", cap(array), "len", len(array), "array:", array)
 }

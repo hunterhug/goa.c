@@ -45,9 +45,9 @@ func main() {
 	fmt.Println("cap", cap(array), "len", len(array), "array:", array)
 	array = append(array, 1)
 	fmt.Println("cap", cap(array), "len", len(array), "array:", array)
-	array = append(array, 1,1,1,1)
+	array = append(array, 1, 1, 1, 1)
 	fmt.Println("cap", cap(array), "len", len(array), "array:", array)
-	array = append(array, 1,1,1,1,1,1,1,1,1)
+	array = append(array, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 	fmt.Println("cap", cap(array), "len", len(array), "array:", array)
 }
 ```
