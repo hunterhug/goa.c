@@ -33,6 +33,11 @@ func (s *Set) Add(item int) {
 func (s *Set) Remove(item int) {
 	s.Lock()
 	s.Unlock()
+
+	// 集合没元素直接返回
+	if s.len == 0{
+		return
+	}
 	delete(s.m, item) // 实际从字典删除这个键
 	s.len = s.len - 1 // 集合大小减少
 }
