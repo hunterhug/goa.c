@@ -62,7 +62,7 @@
 1. xxhash:  [https://code.google.com/p/xxhash](https://code.google.com/p/xxhash)
 2. cityhash: [https://code.google.com/p/cityhash](https://code.google.com/p/cityhash)
 
-当然还有其他哈希算法如 `MurmurHash`: [https://code.google.com/p/smhasher](https://code.google.com/p/smhasher)
+当然还有其他哈希算法如 `MurmurHash`: [https://code.google.com/p/smhasher](https://code.google.com/p/smhasher) 以及常见的 `Md4` 和 `Md5`。
 
 因为研究均匀随机分布的哈希算法，是属于数学专家们的工作，我们在此不展开了。
 
