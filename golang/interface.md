@@ -1,4 +1,4 @@
-# 接口 interface
+# 接口
 
 在 `Golang` 世界中，有一种叫 `interface` 的东西，很是神奇。
 

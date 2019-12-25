@@ -188,4 +188,13 @@ func main() {
 		fmt.Println("not found")
 
 	}
+
+	input := 2
+
+	output := func(num int) int {
+		num = num * 2
+		return num
+	}(input)
+
+	fmt.Println(output)
 }

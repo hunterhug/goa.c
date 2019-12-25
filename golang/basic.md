@@ -608,3 +608,42 @@ func main() {
 ```
 
 变量是有作用域的，作用域主要被约束在各级大括号 `{}` 里面，所以函数里面的变量和函数体外的变量是没有关系的，互相独立。
+
+我们还可以实现匿名的函数如：
+
+```go
+	input := 2
+
+	output := func(num int) int {
+		num = num * 2
+		return num
+	}(input)
+
+	fmt.Println(output)
+```
+
+打印出：
+
+```go
+4
+```
+
+本来函数在外部是这样的：
+
+```go
+func A(num int) int {
+		num = num * 2
+		return num
+	}
+```
+
+现在省略了函数名，定义后直接使用：
+
+```go
+	output := func(num int) int {
+		num = num * 2
+		return num
+	}(input)
+```
+
+`input` 是匿名函数的输入参数，匿名函数返回的值会赋予 `output`。
