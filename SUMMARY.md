@@ -6,7 +6,7 @@
     * [包、变量和函数](golang/basic.md)
     * [流程控制语句](golang/logic.md)
     * [结构体和方法](golang/struct.md)
-    * [接口](golang/interface.md)
+    * [接口interface](golang/interface.md)
     * [并发](golang/concurrent.md)
     * [标准库](golang/lib.md)
 * [基础知识](basic/README.md)
