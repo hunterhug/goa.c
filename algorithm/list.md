@@ -38,7 +38,8 @@ type listNode struct {
 
 设计指向队列头部 `head` 和尾部 `tail` 的指针字段，方便找到链表最前和最后的节点，并且链表节点之前是双向链接，链表的第一个元素的前驱节点为 `nil`，最后一个元素的后驱节点也为 `nil`。如图：
 
-![](../picture/double_list.png)
+![](../picture/double_list.png
+)
 
 我们实现的双端队列和 `Golang` 标准库 `container/list` 中实现的不一样，感兴趣的可以阅读标准库的实现。
 

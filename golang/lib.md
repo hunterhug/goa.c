@@ -39,16 +39,21 @@ func Fprintln(w io.Writer, a ...interface{}) (n int, err error) {
 ```go
 	// 打印一行空行
 	fmt.Println()
+	
 	// 打印 4 5 6
 	fmt.Println(4, 5, 6)
+	
 	// 占位符 %d 打印数字，\n换行
 	fmt.Printf("%d\n", 2)
+	
 	// 占位符 %s 打印字符串，\n换行
 	fmt.Printf("%s\n", "cat")
+	
 	// 占位符 %v或者%#v 打印任何类型，\n换行
 	fmt.Printf("%#v,%v\n", "cat", 33)
+	
 	// 更多示例
-	fmt.Printf("%s,%d,%s,%#v\n", "cat", 2, "3", map[int]string{1: "s"})
+	fmt.Printf("%s,%d,%s,%v,%#v\n", "cat", 2, "3", map[int]string{1: "s"}, map[int]string{1: "s"})
 ```
 
 输出：
@@ -61,17 +66,24 @@ cat
 cat,2,3,map[int]string{1:"s"}
 ```
 
-函数 `Printf` 使用到了另外一个函数，而函数又使用了另外的函数。
+函数 `Printf` 使用到了另外一个函数 `Fprintf`，而函数 `Fprintf` 内部又调用了其他的结构体方法。
 
-我们在某些时候，可以使用官方库或别人写的库，毕竟轮子重造需要时间。
+对于我们经常使用的 `func Printf(format string, a ...interface{})`，我们传入 `format` 和许多变量 `a ...interface{}`，就可以在控制台打印出我们想要的结果。如：
 
-同时，如果想开发速度提高，建议安装 IDE(集成开发环境)，如 `Goland`，请自行百度。
+```go
+fmt.Printf("%s,%d,%s,%v,%#v\n", "cat", 2, "3", map[int]string{1: "s"}, map[int]string{1: "s"})
+```
+
+其中 `%` 是占位符，表示后面的变量逐个占位。占位符后面的小写字母表示占位的类型，`%s` 表示字符串的占位，`%d` 表示数字类型的占位, `%v` 或 `%#v` 表示未知类型的占位，会自动判断类型后打印，加 `#` 会打印得更详细一点。因为该打印不会换行，我们需要使用 `\n` 换行符来换行。
+
+
+在某些时候，我们可以使用官方库或别人写的库，毕竟轮子重造需要时间。
+
+同时，如果想开发速度提高，建议安装 `IDE`，也就是 `Integrated Development Environment` (集成开发环境)，如 `Goland`(原生支持 `Golang`) 或 `IDEA` 软件(需安装插件)。
 
 ## 二、总结
 
-我们只学习了 `Golang` 语言的一个子集，很多关键特征如 `interface` 还有 `go func()` 以及 `chan` 都没有讲解。
-
-想更详细的学习，可以安装 `docker` 后，打开终端：
+我们只学习了 `Golang` 语言的一个子集，想更详细的学习，可以安装 `docker` 后，打开终端：
 
 ```
 # 拉镜像
