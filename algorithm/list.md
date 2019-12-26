@@ -164,6 +164,10 @@ func (list *DoubleList) AddNodeFromHead(n int, v string) {
 
 接着初始化新节点：`newNode := new(ListNode)`。
 
+定位到的节点有三种情况，我们需要在该节点之前插入新节点：
+
+![](../picture/double_list_add.png)
+
 判断定位到的节点 `node` 是否为空，如果为空，表明列表没有元素，将新节点设置为新头部和新尾部。
 
 否则找到定位到的节点的前驱节点：`pre := node.pre`。
@@ -263,7 +267,7 @@ func (list *DoubleList) AddNodeFromTail(n int, v string) {
 }
 ```
 
-操作和头部插入节点一样，自行分析。
+操作和头部插入节点相似，自行分析。
 
 ### 2.4.从头部开始某个位置获取列表节点
 
@@ -334,11 +338,6 @@ func (list *DoubleList) PopFromHead(n int) *ListNode {
 	// 获取头部
 	node := list.head
 
-	// 如果头部节点为空，那么直接返回
-	if node.IsNil() {
-		return nil
-	}
-
 	// 往后遍历拿到第 N+1 个位置的元素
 	for i := 1; i <= n; i++ {
 		node = node.next
@@ -374,9 +373,11 @@ func (list *DoubleList) PopFromHead(n int) *ListNode {
 
 首先加并发锁实现并发安全。先判断索引是否超出列表长度：`n >= list.len`，如果超出直接返回空指针。
 
-否则，取出列表的头部，如果列表头部为空，那么列表没有元素，也直接返回空指针。
+获取头部，然后遍历定位到第 `N+1` 个位置的元素：`node = node.next`。
 
-如果列表非空，那么遍历定位到第 `N+1` 个位置的元素：`node = node.next`。
+定位到的并要移除的节点有三种情况发生：
+
+![](../picture/double_list_delte.png)
 
 查看要移除的节点的前驱和后驱：
 
@@ -421,11 +422,6 @@ func (list *DoubleList) PopFromTail(n int) *ListNode {
 	// 获取尾部
 	node := list.tail
 
-	// 如果尾部节点为空，那么直接返回
-	if node.IsNil() {
-		return nil
-	}
-
 	// 往前遍历拿到第 N+1 个位置的元素
 	for i := 1; i <= n; i++ {
 		node = node.pre
@@ -459,7 +455,7 @@ func (list *DoubleList) PopFromTail(n int) *ListNode {
 }
 ```
 
-操作和从头部移除节点一样，请自行分析。
+操作和从头部移除节点相似，请自行分析。
 
 ### 2.8.完整例子
 
@@ -693,11 +689,6 @@ func (list *DoubleList) PopFromHead(n int) *ListNode {
 	// 获取头部
 	node := list.head
 
-	// 如果头部节点为空，那么直接返回
-	if node.IsNil() {
-		return nil
-	}
-
 	// 往后遍历拿到第 N+1 个位置的元素
 	for i := 1; i <= n; i++ {
 		node = node.next
@@ -743,11 +734,6 @@ func (list *DoubleList) PopFromTail(n int) *ListNode {
 
 	// 获取尾部
 	node := list.tail
-
-	// 如果尾部节点为空，那么直接返回
-	if node.IsNil() {
-		return nil
-	}
 
 	// 往前遍历拿到第 N+1 个位置的元素
 	for i := 1; i <= n; i++ {

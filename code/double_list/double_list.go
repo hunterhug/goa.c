@@ -227,11 +227,6 @@ func (list *DoubleList) PopFromHead(n int) *ListNode {
 	// 获取头部
 	node := list.head
 
-	// 如果头部节点为空，那么直接返回
-	if node.IsNil() {
-		return nil
-	}
-
 	// 往后遍历拿到第 N+1 个位置的元素
 	for i := 1; i <= n; i++ {
 		node = node.next
@@ -277,11 +272,6 @@ func (list *DoubleList) PopFromTail(n int) *ListNode {
 
 	// 获取尾部
 	node := list.tail
-
-	// 如果尾部节点为空，那么直接返回
-	if node.IsNil() {
-		return nil
-	}
 
 	// 往前遍历拿到第 N+1 个位置的元素
 	for i := 1; i <= n; i++ {
