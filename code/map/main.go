@@ -34,4 +34,9 @@ func main() {
 		// 找不到
 		fmt.Println("not find:", which)
 	}
+
+	m1 := make(map[int]int, 9)
+	fmt.Printf("len:%v", len(m1))
+	m1[5] = 9
+	fmt.Printf("len:%v", len(m1))
 }
