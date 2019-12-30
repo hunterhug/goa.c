@@ -14,7 +14,7 @@
 
 它们的复杂度如下：
 
-![](../picture/sort.png)
+![](../picture/sort2.png)
 
 冒泡排序可以说是最差的排序算法。
 
