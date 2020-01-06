@@ -90,16 +90,14 @@ T(n) = T(n-1) + n
 最差时间复杂度为：O(n^2)。
 ```
 
-根据熵的概念，数量越大，随机性越高，越自发无序，所以待排序数据规模非常大时，出现最差情况的情形较少。在综合情况下，快速排序的平均时间复杂度为：`O(nlogn)`。
+根据熵的概念，数量越大，随机性越高，越自发无序，所以待排序数据规模非常大时，出现最差情况的情形较少。在综合情况下，快速排序的平均时间复杂度为：`O(nlogn)`。对比之前介绍的排序算法，快速排序比那些动不动就是平方级别的初级排序算法更佳。
 
-为了避免切分非常不均匀情况的发生，有几种方法：
+切分的结果极大地影响快速排序的性能，为了避免切分不均匀情况的发生，有几种方法改进：
 
-1. 每次进行快速排序切分时，先将数列随机打乱，再进行快速排序，这样随机加了个震荡，减少不均匀的情况。当然，也可以随机选择一个基准数，而不是选第一个数。
+1. 每次进行快速排序切分时，先将数列随机打乱，再进行切分，这样随机加了个震荡，减少不均匀的情况。当然，也可以随机选择一个基准数，而不是选第一个数。
 2. 每次取数列头部，中部，尾部三个数，取三个数的中位数进行切分。
 
-方法 1 相对好，而方法 2 引入了额外的比较操作。
-
-对比之前介绍的排序算法，快速排序是综合最好的，平均情况下时间复杂度是 `O(nlogn)`，比那些平方级别的初级排序算法更佳，这也是为什么大部分编程语言内置排序都使用它的原因。
+方法 1 相对好，而方法 2 引入了额外的比较操作，一般情况下我们可以随机选择一个基准数。
 
 快速排序使用原地排序，存储空间复杂度为：`O(1)`。而因为递归栈的影响，递归的程序栈开辟的层数范围在 `logn~n`，所以递归栈的空间复杂度为：`O(logn)~log(n)`，最坏为：`log(n)`，当元素较多时，程序栈可能溢出。通过改进算法，使用伪尾递归进行优化，递归栈的空间复杂度可以减小到 `O(logn)`，可以见下面算法优化。
 
@@ -655,3 +653,156 @@ func main() {
 ```
 
 使用人工栈替代递归的程序栈，换汤不换药，速度并没有什么变化，但是代码可读性降低。
+
+## 五、补充：内置库使用快速排序的原因
+
+首先堆排序，归并排序最好最坏时间复杂度都是：`O(nlogn)`，而快速排序最坏的时间复杂度是：`O(n^2)`，但是很多编程语言内置的排序算法使用的仍然是快速排序，这是为什么？
+
+1. 这个问题有偏颇，选择排序算法要看具体的场景，`Linux` 内核用的排序算法就是堆排序，而 `Java` 对于数量比较多的复杂对象排序，内置排序使用的是归并排序，只是一般情况下，快速排序更快。
+2. 归并排序有两个稳定，第一个稳定是排序前后相同的元素位置不变，第二个稳定是，每次都是很平均地进行排序，读取数据也是顺序读取，能够利用存储器缓存的特征，比如从磁盘读取数据进行排序。因为排序过程需要占用额外的辅助数组空间，所以这部分有代价损耗，但是原地排序的改进克服了这个缺陷。
+3. 复杂度中，大 `O` 有一个常数项被省略了，堆排序每次取最大的值之后，都需要进行节点翻转，重新恢复堆的特征，做了大量无用功，常数项比快速排序高，大部分情况下比快速排序慢很多。但是堆排序时间较稳定，不会出现快排最坏 `O(n^2)` 的情况，且省空间，不需要额外的存储空间和栈空间。
+4. 快速排序最坏情况下复杂度高，主要在于切分不像归并排序一样平均，而是很依赖基准数的现在，我们通过改进，比如随机数，三切分等，这种最坏情况的概率极大的降低。大多数情况下，它并不会那么地坏，大多数快才是真的块。
+5. 归并排序和快速排序都是分治法，排序的数据都是相邻的，而堆排序比较的数可能跨越很大的范围，导致局部性命中率降低，不能利用现代存储器缓存的特征，加载数据过程会损失性能。
+
+对稳定性有要求的，要求排序前后相同元素位置不变，可以使用归并排序，`Java` 中的复杂对象类型，要求排序前后位置不能发生变化，所以小规模数据下使用了直接插入排序，大规模数据下使用了归并排序。
+
+对栈，存储空间有要求的可以使用堆排序，比如 `Linux` 内核栈小，快速排序占用程序栈太大了，使用快速排序可能栈溢出，所以使用了堆排序。
+
+在 `Golang` 中，标准库 `sort` 中对切片进行稳定排序：
+
+```go
+func SliceStable(slice interface{}, less func(i, j int) bool) {
+	rv := reflectValueOf(slice)
+	swap := reflectSwapper(slice)
+	stable_func(lessSwap{less, swap}, rv.Len())
+}
+
+func stable_func(data lessSwap, n int) {
+	blockSize := 20
+	a, b := 0, blockSize
+	for b <= n {
+		insertionSort_func(data, a, b)
+		a = b
+		b += blockSize
+	}
+	insertionSort_func(data, a, n)
+	for blockSize < n {
+		a, b = 0, 2*blockSize
+		for b <= n {
+			symMerge_func(data, a, a+blockSize, b)
+			a = b
+			b += 2 * blockSize
+		}
+		if m := a + blockSize; m < n {
+			symMerge_func(data, a, m, n)
+		}
+		blockSize *= 2
+	}
+}
+```
+
+会先按照 20 个元素的范围，对整个切片分段进行插入排序，因为小数组插入排序效率高，然后再对这些已排好序的小数组进行归并排序。
+
+而一般的排序:
+
+```go
+func Slice(slice interface{}, less func(i, j int) bool) {
+	rv := reflectValueOf(slice)
+	swap := reflectSwapper(slice)
+	length := rv.Len()
+	quickSort_func(lessSwap{less, swap}, 0, length, maxDepth(length))
+}
+
+func quickSort_func(data lessSwap, a, b, maxDepth int) {
+	for b-a > 12 {
+		if maxDepth == 0 {
+			heapSort_func(data, a, b)
+			return
+		}
+		maxDepth--
+		mlo, mhi := doPivot_func(data, a, b)
+		if mlo-a < b-mhi {
+			quickSort_func(data, a, mlo, maxDepth)
+			a = mhi
+		} else {
+			quickSort_func(data, mhi, b, maxDepth)
+			b = mlo
+		}
+	}
+	if b-a > 1 {
+		for i := a + 6; i < b; i++ {
+			if data.Less(i, i-6) {
+				data.Swap(i, i-6)
+			}
+		}
+		insertionSort_func(data, a, b)
+	}
+}
+
+func doPivot_func(data lessSwap, lo, hi int) (midlo, midhi int) {
+	m := int(uint(lo+hi) >> 1)
+	if hi-lo > 40 {
+		s := (hi - lo) / 8
+		medianOfThree_func(data, lo, lo+s, lo+2*s)
+		medianOfThree_func(data, m, m-s, m+s)
+		medianOfThree_func(data, hi-1, hi-1-s, hi-1-2*s)
+	}
+	medianOfThree_func(data, lo, m, hi-1)
+	pivot := lo
+	a, c := lo+1, hi-1
+	for ; a < c && data.Less(a, pivot); a++ {
+	}
+	b := a
+	for {
+		for ; b < c && !data.Less(pivot, b); b++ {
+		}
+		for ; b < c && data.Less(pivot, c-1); c-- {
+		}
+		if b >= c {
+			break
+		}
+		data.Swap(b, c-1)
+		b++
+		c--
+	}
+	protect := hi-c < 5
+	if !protect && hi-c < (hi-lo)/4 {
+		dups := 0
+		if !data.Less(pivot, hi-1) {
+			data.Swap(c, hi-1)
+			c++
+			dups++
+		}
+		if !data.Less(b-1, pivot) {
+			b--
+			dups++
+		}
+		if !data.Less(m, pivot) {
+			data.Swap(m, b-1)
+			b--
+			dups++
+		}
+		protect = dups > 1
+	}
+	if protect {
+		for {
+			for ; a < b && !data.Less(b-1, pivot); b-- {
+			}
+			for ; a < b && data.Less(a, pivot); a++ {
+			}
+			if a >= b {
+				break
+			}
+			data.Swap(a, b-1)
+			a++
+			b--
+		}
+	}
+	data.Swap(pivot, b-1)
+	return b - 1, c
+}
+```
+
+限制程序栈的层数为： `2*ceil(log(n+1))`，当快速排序递归超过该层，那么转为堆排序。
+
+上述快速排序还使用了三种优化，第一种是递归时小数组转为插入排序，第二种是使用了中位数基准数，第三种使用了三切分。
