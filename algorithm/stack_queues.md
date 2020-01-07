@@ -432,7 +432,7 @@ func (queue *LinkQueue) Add(v string) {
 		}
 
 		// 新节点放在链表尾部
-		nowNode.Next = nowNode
+		nowNode.Next = newNode
 	}
 
 	// 队中元素数量+1
