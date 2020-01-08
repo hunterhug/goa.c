@@ -51,7 +51,7 @@
 
 ## 五、哈希函数
 
-当哈希冲突不严重的时候，查找某个键，时间复杂度为：`O(1)`，因为求哈希值，然后取余，定位到数组的某个下标即可。
+当哈希冲突不严重的时候，查找某个键，只需要求哈希值，然后取余，定位到数组的某个下标即可，时间复杂度为：`O(1)`。
 
 当哈希冲突十分严重的时候，每个数组元素对应的链表会越来越长，即使定位到数组的某个下标，也要遍历一条很长很长的链表，就退化为查找链表了，时间复杂度为：`O(n)`。
 
@@ -62,21 +62,84 @@
 1. xxhash:  [https://code.google.com/p/xxhash](https://code.google.com/p/xxhash)
 2. cityhash: [https://code.google.com/p/cityhash](https://code.google.com/p/cityhash)
 
-当然还有其他哈希算法如 `MurmurHash`: [https://code.google.com/p/smhasher](https://code.google.com/p/smhasher) 以及常见的 `Md4` 和 `Md5`。
+当然还有其他哈希算法如 `MurmurHash`: [https://code.google.com/p/smhasher](https://code.google.com/p/smhasher) 。
+
+还有哈希算法如 `Md4` 和 `Md5` 等。
 
 因为研究均匀随机分布的哈希算法，是属于数学专家们的工作，我们在此不展开了。
 
-我们使用号称计算速度最快的哈希 `xxhash`：
+我们使用号称计算速度最快的哈希 `xxhash`，我们直接用该库来实现哈希：[https://github.com/OneOfOne/xxhash](https://github.com/OneOfOne/xxhash)：
 
 ![](../../picture/hash_speed.png)
 
 实现如下:
 
 ```go
+package main
+
+import (
+	"fmt"
+	"github.com/OneOfOne/xxhash"
+)
+
+// 将一个键进行Hash
+func XXHash(key []byte) uint64 {
+	h := xxhash.New64()
+	h.Write(key)
+	return h.Sum64()
+}
+
+func main() {
+	keys := []string{"hi", "my", "friend", "I", "love", "you", "my", "apple"}
+	for _, key := range keys {
+		fmt.Printf("xxhash('%s')=%d\n", key, XXHash([]byte(key)))
+	}
+}
 
 ```
 
-拿到哈希值之后，我们要对数组取余，那么数组的长度又要求吗？
+输出：
+
+```
+xxhash('hi')=16899831174130972922
+xxhash('my')=13223332975333369668
+xxhash('friend')=4642001949237932008
+xxhash('I')=12677399051867059349
+xxhash('love')=12577149608739438547
+xxhash('you')=943396405629834470
+xxhash('my')=13223332975333369668
+xxhash('apple')=6379808199001010847
+
+```
+
+拿到哈希值之后，我们要对结果取余，方便定位到数组下标 `index`。如果数组的长度为 `len`，那么 `index = xxhash(key) % len`。
+
+我们已经寻找到了计算较快，且均匀随机分布的哈希算法 `xxhash` 了，现在就是要解决取余操作中的数组长度选择的问题，数组的长度 `len` 应该如何选择？
+
+比如数组长度 `len=8`，那么取余之后可能有这些结果:
+
+```
+xxhash(key) % 8 = 0，1，2，3，4，5，6，7
+```
+
+如果我们选择 `2^x` 作为数组长度有一个很好的优点，就是计算速度变快了，取余 `%` 将变成按位 `&` 操作如：
+
+```
+数组长度是 8 = 2^3
+哈希值是 165，二进制表示为 1010 0101
+
+因为 hash % 2^k = 截断二进制的前 N 位，保留后面的 k 位：
+
+这样  165 % 8 = 1010 0101 & 0000 0111 = 0000 0101 = 5
+```
+
+虽然计算变快了，但是一个哈希值莫名其妙前 `N` 位的二进制信息被损失了，导致如果二进制后 `k` 位都一样的那些数都会哈希冲突。
+
+所以我们需要使用另外的长度，一般很多编程库使用了 `2^x-1` 的长度，然后
+
+
+
+
 
 ## 六、实现拉链哈希表
 
@@ -92,8 +155,6 @@
 
 
 
-
-https://www.cnblogs.com/maji233/p/11070853.html'
 
 https://www.cnblogs.com/lantianxun/p/8549677.html
 
