@@ -497,7 +497,7 @@ type:map[string]int64:map[a:3 b:4]
 
 结构如 `map[string]int64` 表示键为字符串 `string`，值为整数 `int64`，然后你可以将 `f = 5` 这种关系进行绑定，需要时可以拿出键 `f` 对应的值。
 
-### 五、slice 和 map 的特殊说明
+## 五、slice 和 map 的特殊说明
 
 键值结构字典：`map` 使用前必须初始化，如：
 
