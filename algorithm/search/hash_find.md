@@ -198,3 +198,127 @@ m=6时下标：1 3 5 1 3 5 1 3 5...
 3. 获取键值：进行 `hash(key) & (2^x-1)`，定位到数组下标，查找数组下标对应的链表，如果链表不存在该键，返回 false，否则返回该值以及 true。
 4. 删除键值：进行 `hash(key) & (2^x-1)`，定位到数组下标，查找数组下标对应的链表，如果链表不存在该键，直接返回，否则删除该键。
 5. 进行键值增删时如果数组容量太大或者太小，需要相应缩容或扩容。
+
+哈希查找的速度快，主要是利用空间换时间的优点，如果哈希表的大小特别大特别大，那么哈希冲突的几率就会降低。哈希冲突和哈希表的大小成线性关系。
+
+如果哈希表中的数组太大或太小都不行，太大浪费了空间，太小则哈希冲突太严重。所以需要对哈希表中的数组进行缩容和扩容。
+
+如何伸缩主要根据哈希表的大小和已添加的元素数量来决定。假设哈希表的大小为 `16`，已添加到哈希表中的键值对数量是 `8`，我们称 `8/16=0.5` 为加载因子 `factor`。
+
+当加载因子 `factor <= 1/8`，那么进行数组缩容，当加载因子 `factor >= 1/2`，那么进行数组扩容。
+
+我们使用结构体 `HashMap` 来表示哈希表：
+
+```go
+const (
+	// 扩容因子
+	expandFactor = 1.0 / 2.0
+	// 缩容因子
+	shrinkFactor = 1.0 / 8.0
+)
+
+// 哈希表
+type HashMap struct {
+	current *hashMap // 当前的哈希表
+	old     *hashMap // 老的哈希表，伸缩时使用
+	reHash  bool     // 正在伸缩中
+	// 当前元素数量，如果 reHash 为 false 等于 current.len，
+	// 否则等于两个 current.len+old.len
+	len int
+	// 增删键值对时，需要考虑并发安全
+	lock sync.Mutex
+}
+
+// 底层哈希表
+type hashMap struct {
+	array        []*keyPairs // 哈希表数组，每个元素是一个键值对
+	capacity     int         // 数组容量
+	len          int         // 已添加键值对元素数量
+	capacityMask int         // 掩码，等于 capacity-1
+}
+
+// 键值对，连成一个链表
+type keyPairs struct {
+	key   string      // 键
+	value interface{} // 值
+	next  *keyPairs   // 下一个键值对
+}
+```
+
+我们使用了 `current` 和 `old` 字段来表示伸缩前后的哈希表数组。因为在伸缩过程中，需要对哈希表中的元素重新哈希，假设元素数量特别多，那么速度是极慢的，我们使用这两个字段来进行延后处理。
+
+当  `reHash` 字段是 `true` 时表示正在哈希中，那么获取键值对时会先去老数组获取，老数组存在时将其移到新数组。如果键值对不存在，那么直接添加到新数组中。
+
+我们还使用了 `lock` 来实现并发安全，防止并发或者缩容时产生混乱。
+
+### 6.1. 初始化哈希表
+
+```go
+// 创建大小为 capacity 的哈希表
+func NewHashMap(capacity int) *HashMap {
+	// 默认大小为 16
+	defaultCapacity := 1 << 4
+	if capacity <= defaultCapacity {
+		// 如果传入的大小小于默认大小，那么使用默认大小16
+		capacity = defaultCapacity
+	} else {
+		// 否则，实际大小为大于 capacity 的第一个 2^k
+		capacity = 1 << (int(math.Ceil(math.Log2(float64(capacity)))))
+	}
+
+	// 新建一个哈希表
+	m := new(HashMap)
+	// 当前底层哈希表
+	m.current = new(hashMap)
+	m.current.array = make([]*keyPairs, capacity, capacity)
+	m.current.capacity = capacity
+	m.current.capacityMask = capacity - 1
+	return m
+}
+
+// 返回哈希表已添加元素数量
+func (m *HashMap) Len() int {
+	return m.len
+}
+```
+
+我们可以传入 `capacity` 来初始化哈希表数组容量，容量掩码 `capacityMask = capacity-1` 主要用来计算数组下标。
+
+如果传入的容量小于默认容量 `16`，那么将 `16` 作为哈希表的初始数组大小。否则将第一个大于 `capacity` 的 `2 ^ k` 值作为数组的初始大小。
+
+### 6.2. 添加键值
+
+```go
+// 求 key 的哈希值
+var xxhash = func (key []byte) uint64 {
+	h := xxhash.New64()
+	h.Write(key)
+	return h.Sum64()
+}
+
+// 对键进行哈希求值，并计算下标
+func (m *HashMap) hashIndex(key string,mask int) int {
+	// 求哈希
+	hash := xxHash([]byte(key))
+	// 求下标
+	index := hash & uint64(mask)
+	return int(index)
+}
+```
+
+首先，为结构体生成一个 `hashIndex` 方法，使用 `xxhash` 哈希算法来计算键 `key` 的哈希值，并且和容量掩码进行 `&` 求得数组的下标，用来定位键值对该放在哪个数组下标。
+
+接着进入核心方法：
+
+```go
+// 哈希表添加键值对
+func (m *HashMap) Put(key string, value interface{}) {
+	// 并发安全
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	// 如果还在重新哈希，需要将老数组中的元素移到新数组
+	if m.reHash {
+
+		m.hashIndex(key,m.old.capacityMask)
+```
