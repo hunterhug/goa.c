@@ -219,22 +219,12 @@ const (
 
 // 哈希表
 type HashMap struct {
-	current *hashMap // 当前的哈希表
-	old     *hashMap // 老的哈希表，伸缩时使用
-	reHash  bool     // 正在伸缩中
-	// 当前元素数量，如果 reHash 为 false 等于 current.len，
-	// 否则等于两个 current.len+old.len
-	len int
-	// 增删键值对时，需要考虑并发安全
-	lock sync.Mutex
-}
-
-// 底层哈希表
-type hashMap struct {
 	array        []*keyPairs // 哈希表数组，每个元素是一个键值对
 	capacity     int         // 数组容量
 	len          int         // 已添加键值对元素数量
 	capacityMask int         // 掩码，等于 capacity-1
+	// 增删键值对时，需要考虑并发安全
+	lock sync.Mutex
 }
 
 // 键值对，连成一个链表
@@ -245,12 +235,9 @@ type keyPairs struct {
 }
 ```
 
-我们使用了 `current` 和 `old` 字段来表示伸缩前后的哈希表数组。
+其中 `array` 为哈希表数组，`capacity` 为哈希表的容量，`capacityMask` 为容量掩码，主要用来计算数组下标，`len` 为实际添加的元素数量。
 
 我们还使用了 `lock` 来实现并发安全，防止并发增删元素时数组伸缩，产生混乱。
-
-在增删键值对过程中，会先加并发锁后处理元素，而查找键值对时不加锁，获取键值对时，当 `reHash` 字段是 `true` 时表示正在重新哈希中，那么获取键值对时会先去老数组获取，老数组获取不到会去新数组中获取。
-
 
 ### 6.1. 初始化哈希表
 
@@ -269,11 +256,9 @@ func NewHashMap(capacity int) *HashMap {
 
 	// 新建一个哈希表
 	m := new(HashMap)
-	// 当前底层哈希表
-	m.current = new(hashMap)
-	m.current.array = make([]*keyPairs, capacity, capacity)
-	m.current.capacity = capacity
-	m.current.capacityMask = capacity - 1
+	m.array = make([]*keyPairs, capacity, capacity)
+	m.capacity = capacity
+	m.capacityMask = capacity - 1
 	return m
 }
 
@@ -311,7 +296,7 @@ func (m *HashMap) hashIndex(key string,mask int) int {
 
 ### 6.2. 添加键值对
 
-接着进入核心方法：
+以下是添加键值对核心方法：
 
 ```go
 // 哈希表添加键值对
@@ -320,8 +305,6 @@ func (m *HashMap) Put(key string, value interface{}) {
 	m.lock.Lock()
 	defer m.lock.Unlock()
 
-	// 如果还在重新哈希，需要将老数组中的元素移到新数组
-	if m.reHash {
-
-		m.hashIndex(key,m.old.capacityMask)
+	// 数组下标
+	index := m.hashIndex(key)
 ```
