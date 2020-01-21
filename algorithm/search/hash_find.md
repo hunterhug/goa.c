@@ -276,16 +276,16 @@ func (m *HashMap) Len() int {
 
 ```go
 // 求 key 的哈希值
-var xxhash = func (key []byte) uint64 {
+var hashAlgorithm = func(key []byte) uint64 {
 	h := xxhash.New64()
 	h.Write(key)
 	return h.Sum64()
 }
 
 // 对键进行哈希求值，并计算下标
-func (m *HashMap) hashIndex(key string,mask int) int {
+func (m *HashMap) hashIndex(key string, mask int) int {
 	// 求哈希
-	hash := xxHash([]byte(key))
+	hash := hashAlgorithm([]byte(key))
 	// 求下标
 	index := hash & uint64(mask)
 	return int(index)
@@ -303,10 +303,387 @@ func (m *HashMap) hashIndex(key string,mask int) int {
 ```go
 // 哈希表添加键值对
 func (m *HashMap) Put(key string, value interface{}) {
-	// 并发安全
+	// 实现并发安全
 	m.lock.Lock()
 	defer m.lock.Unlock()
 
-	// 数组下标
-	index := m.hashIndex(key)
+	// 键值对要放的哈希表数组下标
+	index := m.hashIndex(key, m.capacityMask)
+
+	// 哈希表数组下标的元素
+	element := m.array[index]
+
+	// 元素为空，表示空链表，没有哈希冲突，直接赋值
+	if element == nil {
+		m.array[index] = &keyPairs{
+			key:   key,
+			value: value,
+		}
+	} else {
+		// 链表最后一个键值对
+		var lastPairs *keyPairs
+
+		// 遍历链表查看元素是否存在，存在则替换值，否则找到最后一个键值对
+		for element != nil {
+			// 键值对存在，那么更新值并返回
+			if element.key == key {
+				element.value = value
+				return
+			}
+
+			lastPairs = element
+			element = element.next
+		}
+
+		// 找不到键值对，将新键值对添加到链表尾端
+		lastPairs.next = &keyPairs{
+			key:   key,
+			value: value,
+		}
+	}
+
+	// 新的哈希表数量
+	newLen := m.len + 1
+
+	// 如果超出扩容因子，需要扩容
+	if float64(newLen)/float64(m.capacity) >= expandFactor {
+		// 新建一个原来两倍大小的哈希表
+		newM := new(HashMap)
+		newM.array = make([]*keyPairs, 2*m.capacity, 2*m.capacity)
+		newM.capacity = 2 * m.capacity
+		newM.capacityMask = 2*m.capacity - 1
+
+		// 遍历老的哈希表，将键值对重新哈希到新哈希表
+		for _, pairs := range m.array {
+			for pairs != nil {
+				// 直接递归Put
+				newM.Put(pairs.key, pairs.value)
+				pairs = pairs.next
+			}
+		}
+
+		// 替换老的哈希表
+		m.array = newM.array
+		m.capacity = newM.capacity
+		m.capacityMask = newM.capacityMask
+	}
+
+	m.len = newLen
+}
 ```
+
+首先使用锁实现了并发安全：
+
+```go
+	m.lock.Lock()
+	defer m.lock.Unlock()
+```
+
+接着使用哈希算法计算出数组的下标，并取出该下标的元素：
+
+```go
+	// 键值对要放的哈希表数组下标
+	index := m.hashIndex(key, m.capacityMask)
+
+	// 哈希表数组下标的元素
+	element := m.array[index]
+```
+
+
+如果该元素为空表示链表是空的，不存在哈希冲突，直接将键值对作为链表的第一个元素：
+
+```go
+	// 元素为空，表示空链表，没有哈希冲突，直接赋值
+	if element == nil {
+		m.array[index] = &keyPairs{
+			key:   key,
+			value: value,
+		}
+	} 
+```
+
+否则，则遍历链表，查找键是否存在：
+
+```go
+		// 链表最后一个键值对
+		var lastPairs *keyPairs
+
+		// 遍历链表查看元素是否存在，存在则替换值，否则找到最后一个键值对
+		for element != nil {
+			// 键值对存在，那么更新值并返回
+			if element.key == key {
+				element.value = value
+				return
+			}
+
+			lastPairs = element
+			element = element.next
+		}
+```
+
+当 `element.key == key` ，那么键存在，直接更新值，退出该函数。否则，继续往下遍历。
+
+当跳出 `for element != nil` 时，表示找不到键值对，那么往链表尾部添加该键值对：
+
+```go
+		// 找不到键值对，将新键值对添加到链表尾端
+		lastPairs.next = &keyPairs{
+			key:   key,
+			value: value,
+		}
+```
+
+最后，检查是否需要扩容，如果需要则扩容：
+
+```go	
+     	// 新的哈希表数量
+     	newLen := m.len + 1
+     
+     	// 如果超出扩容因子，需要扩容
+     	if float64(newLen)/float64(m.capacity) >= expandFactor {
+     		// 新建一个原来两倍大小的哈希表
+     		newM := new(HashMap)
+     		newM.array = make([]*keyPairs, 2*m.capacity, 2*m.capacity)
+     		newM.capacity = 2 * m.capacity
+     		newM.capacityMask = 2*m.capacity - 1
+     
+     		// 遍历老的哈希表，将键值对重新哈希到新哈希表
+     		for _, pairs := range m.array {
+     			for pairs != nil {
+     				// 直接递归Put
+     				newM.Put(pairs.key, pairs.value)
+     				pairs = pairs.next
+     			}
+     		}
+     
+     		// 替换老的哈希表
+     		m.array = newM.array
+     		m.capacity = newM.capacity
+     		m.capacityMask = newM.capacityMask
+     	}
+     
+     	m.len = newLen
+```
+
+创建了一个新的两倍大小的哈希表：`newM := new(HashMap)`，然后遍历老哈希表中的键值对，重新 `Put` 进新哈希表。
+
+最后将新哈希表的属性赋予老哈希表。
+
+### 6.3. 获取键值对
+
+```go
+// 哈希表获取键值对
+func (m *HashMap) Get(key string) (value interface{}, ok bool) {
+	// 实现并发安全
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	// 键值对要放的哈希表数组下标
+	index := m.hashIndex(key, m.capacityMask)
+
+	// 哈希表数组下标的元素
+	element := m.array[index]
+
+	// 遍历链表查看元素是否存在，存在则返回
+	for element != nil {
+		if element.key == key {
+			return element.value, true
+		}
+
+		element = element.next
+	}
+
+	return
+}
+```
+
+同样先加锁实现并发安全，然后进行哈希算法计算出数组下标：`index := m.hashIndex(key, m.capacityMask)`，取出元素：`element := m.array[index]`。
+
+对链表进行遍历：
+
+```go
+	// 遍历链表查看元素是否存在，存在则返回
+	for element != nil {
+		if element.key == key {
+			return element.value, true
+		}
+
+		element = element.next
+	}
+```
+
+如果键在哈希表中存在，返回键的值 `element.value` 和 `true`。
+
+### 6.4. 删除键值对
+
+```go
+// 哈希表删除键值对
+func (m *HashMap) Delete(key string) {
+	// 实现并发安全
+	m.lock.Lock()
+	defer m.lock.Unlock()
+
+	// 键值对要放的哈希表数组下标
+	index := m.hashIndex(key, m.capacityMask)
+
+	// 哈希表数组下标的元素
+	element := m.array[index]
+
+	// 空链表，不用删除，直接返回
+	if element == nil {
+		return
+	}
+
+	// 链表的第一个元素就是要删除的元素
+	if element.key == key {
+		// 将第一个元素后面的键值对链上
+		m.array[index] = element.next
+		m.len = m.len - 1
+		return
+	}
+
+	// 下一个键值对
+	nextElement := element.next
+	for nextElement != nil {
+		if nextElement.key == key {
+			// 键值对匹配到，将该键值对从链中去掉
+			element.next = nextElement.next
+			m.len = m.len - 1
+			return
+		}
+
+		element = nextElement
+		nextElement = nextElement.next
+	}
+}
+```
+
+删除键值对，如果键值对存在，那么删除，否则什么都不做。
+
+键值对删除时，哈希表并不会缩容，我们不实现缩容。
+
+同样先加锁实现并发安全，然后进行哈希算法计算出数组下标：`index := m.hashIndex(key, m.capacityMask)`，取出元素：`element := m.array[index]`。
+
+如果元素是空的，表示链表为空，那么直接返回：
+
+```go
+	// 空链表，不用删除，直接返回
+	if element == nil {
+		return
+	}
+```
+
+否则查看链表第一个元素的键是否匹配：`element.key == key`，如果匹配，那么对链表头部进行替换，链表的第二个元素补位成为链表头部：
+
+```go
+	// 链表的第一个元素就是要删除的元素
+	if element.key == key {
+		// 将第一个元素后面的键值对链上
+		m.array[index] = element.next
+		m.len = m.len - 1
+		return
+	}
+```
+
+如果链表的第一个元素不匹配，那么从第二个元素开始遍历链表，找到时将该键值对删除，然后将前后两个键值对连接起来：
+
+```go
+	// 下一个键值对
+	nextElement := element.next
+	for nextElement != nil {
+		if nextElement.key == key {
+			// 键值对匹配到，将该键值对从链中去掉
+			element.next = nextElement.next
+			m.len = m.len - 1
+			return
+		}
+
+		element = nextElement
+		nextElement = nextElement.next
+	}
+```
+
+### 6.4. 遍历打印哈希表
+
+```go
+// 哈希表遍历
+func (m *HashMap) Range() {
+	// 实现并发安全
+	m.lock.Lock()
+	defer m.lock.Unlock()
+	for _, pairs := range m.array {
+		for pairs != nil {
+			fmt.Printf("'%v'='%v',", pairs.key, pairs.value)
+			pairs = pairs.next
+		}
+	}
+
+	fmt.Println()
+}
+```
+
+遍历哈希表比较简单，粗暴的遍历数组，如果数组中的链表不为空，打印链表中的元素。
+
+### 6.4. 示例运行
+
+```go
+func main() {
+	// 新建一个哈希表
+	hashMap := NewHashMap(16)
+
+	// 放35个值
+	for i := 0; i < 35; i++ {
+		hashMap.Put(fmt.Sprintf("%d", i), fmt.Sprintf("v%d", i))
+	}
+	fmt.Println("cap:", hashMap.Capacity(), "len:", hashMap.Len())
+
+	// 打印全部键值对
+	hashMap.Range()
+
+	key := "4"
+	value, ok := hashMap.Get(key)
+	if ok {
+		fmt.Printf("get '%v'='%v'\n", key, value)
+	} else {
+		fmt.Printf("get %v not found\n", key)
+	}
+
+	// 删除键
+	hashMap.Delete(key)
+	fmt.Println("after delete cap:", hashMap.Capacity(), "len:", hashMap.Len())
+	value, ok = hashMap.Get(key)
+	if ok {
+		fmt.Printf("get '%v'='%v'\n", key, value)
+	} else {
+		fmt.Printf("get %v not found\n", key)
+	}
+}
+```
+
+输出：
+
+```
+cap: 128 len: 35
+'20'='v20','16'='v16','4'='v4','32'='v32','2'='v2','28'='v28','24'='v24','10'='v10','9'='v9','15'='v15','12'='v12','29'='v29','3'='v3','19'='v19','30'='v30','27'='v27','14'='v14','13'='v13','22'='v22','7'='v7','11'='v11','23'='v23','1'='v1','31'='v31','18'='v18','17'='v17','8'='v8','26'='v26','25'='v25','0'='v0','5'='v5','34'='v34','21'='v21','6'='v6','33'='v33',
+get '4'='v4'
+after delete cap: 128 len: 34
+get 4 not found
+```
+
+首先 `hashMap := NewHashMap(16)` 新建一个 `16` 容量的哈希表。然后往哈希表填充 `35` 个键值对，遍历打印出来 `hashMap.Range()` 。
+
+可以看到容量从 `16` 一直翻倍到 `128`，而打印出来的键值对是随机的。
+
+获取键值对时：`value, ok := hashMap.Get(key)` 能正常获取到值：`get '4'='v4'`。
+
+删除键值对：`hashMap.Delete(key)` 后，哈希表的容量不变，但元素数量变少：`after delete cap: 128 len: 34`。
+
+尝试再一次获取键 `4`，报错：`get 4 not found`。
+
+## 七. 总结
+
+哈希表查找，是一种用空间换时间的查找算法，时间复杂度能达到：`O(1)`，最坏情况下退化到查找链表：`O(n)`。但均匀性很好的哈希算法以及合适空间大小的数组，在很大概率避免了最坏情况。
+
+哈希表在添加元素时会进行伸缩，会造成较大的性能消耗，所以有时候会用到其他的查找算法：树查找算法。
+
+树查找算法在后面的章节会进行介绍。
