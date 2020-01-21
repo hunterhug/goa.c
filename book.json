@@ -69,7 +69,7 @@
     },
     "tbfed-pagefooter": {
       "copyright": "Copyright © https://github.com/hunterhug",
-      "modify_label": "该文件修订时间：",
+      "modify_label": "该文章更新于：",
       "modify_format": "YYYY-MM-DD HH:mm:ss"
     },
     "simple-page-toc": {
