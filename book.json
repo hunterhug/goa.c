@@ -35,7 +35,7 @@
     "copy-code-button@^0.0.2",
     "donate@^1.0.2",
     "mygitalk@^0.2.6",
-    "xxxxxxx@^1.0.0"
+    "tbfed-pagefooter@^0.0.1"
   ],
   "pluginsConfig": {
     "theme-default": {
@@ -67,22 +67,10 @@
         "linkedin"
       ]
     },
-    "xxxxxxx": {
-      "description": "更新于",
-      "signature": "小青蛙",
-      "wisdom": "学而不思则罔，思而不学则殆。",
-      "format": "yyyy-MM-dd hh:mm:ss",
-      "copyright": "Copyright &#169; hunterhug",
-      "timeColor": "#666",
-      "copyrightColor": "#666",
-      "utcOffset": "8",
-      "isShowQRCode": true,
-      "baseUri": "https://go.lenggirl.com/",
-      "isShowIssues": false,
-      "repo": "hunterhug/goa.c",
-      "issueNum": "8",
-      "token": "",
-      "style": "normal"
+    "tbfed-pagefooter": {
+      "copyright": "Copyright © https://github.com/hunterhug",
+      "modify_label": "该文件修订时间：",
+      "modify_format": "YYYY-MM-DD HH:mm:ss"
     },
     "simple-page-toc": {
       "maxDepth": 3,
