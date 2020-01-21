@@ -27,12 +27,15 @@
     "katex@^1.1.4",
     "splitter@^0.0.8",
     "tbfed-pagefooter@^0.0.1",
-    "-expandable-chapters-small@^0.1.7",
+    "expandable-chapters-small@^0.1.7",
     "sectionx@^3.1.0",
     "local-video@^1.0.1",
     "-versions-select@^0.1.1",
     "-sharing",
-    "sharing-plus@^0.0.2"
+    "sharing-plus@^0.0.2",
+    "copy-code-button@^0.0.2",
+    "donate@^1.0.2",
+    "mygitalk@^0.2.6"
   ],
   "pluginsConfig": {
     "theme-default": {
@@ -51,13 +54,17 @@
     "sharing": {
       "facebook": false,
       "google": false,
-      "linkedin": false,
+      "linkedin": true,
       "qq": true,
-      "twitter": false,
+      "twitter": true,
       "weibo": true,
+      "qzone": true,
       "all": [
         "weibo",
-        "qq"
+        "qq",
+        "qzone",
+        "twitter",
+        "linkedin"
       ]
     },
     "tbfed-pagefooter": {
@@ -77,6 +84,24 @@
     },
     "sectionx": {
       "tag": "b"
+    },
+    "mygitalk": {
+      "clientID": "88bd6a753142024b3e6c",
+      "clientSecret": "edb4b5730d40ce1b578d571d72a8b17585ccbafd",
+      "repo": "hunterhug.github.io.c",
+      "owner": "hunterhug",
+      "admin": [
+        "hunterhug"
+      ],
+      "distractionFreeMode": true
+    },
+    "donate": {
+      "button": "赞助我",
+      "title": "",
+      "alipayText": "支付宝",
+      "wechatText": "微信",
+      "alipay": "/alipay.png",
+      "wechat": "/weixin.png"
     }
   }
 }
