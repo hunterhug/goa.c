@@ -88,11 +88,12 @@
     "mygitalk": {
       "clientID": "Iv1.21ed10f07b560bd4",
       "clientSecret": "65d026da050e7b24a71b7e4084d8eeacb26dc709",
-      "repo": "hunterhug.github.io.c",
+      "repo": "goa.c",
       "owner": "hunterhug",
       "admin": [
         "hunterhug"
       ],
+      "createIssueManually": false,
       "distractionFreeMode": true
     },
     "donate": {
