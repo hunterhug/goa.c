@@ -99,9 +99,9 @@
     "donate": {
       "button": "赞助我",
       "title": "",
-      "alipayText": "支付宝",
+      "alipayText": "微信",
       "wechatText": "微信",
-      "alipay": "/alipay.png",
+      "alipay": "/weixin.png",
       "wechat": "/weixin.png"
     }
   }
