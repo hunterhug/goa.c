@@ -39,7 +39,7 @@
         * [快速排序](algorithm/sort/quick_sort.md)
     * [查找算法](algorithm/search.md)
         * [哈希表：散列查找](algorithm/search/hash_find.md)
-        * [二叉查找树(写作中)](algorithm/search/bs_tree.md)
+        * [二叉查找树](algorithm/search/bs_tree.md)
         * [AVL树和红黑树(写作中)](algorithm/search/avl_rb_tree.md)
         * [B树及B+树(写作中)](algorithm/search/b_tree.md)
     * [图算法(写作中)](algorithm/graph.md)
