@@ -7,3 +7,4 @@
 - [https://en.wikipedia.org/wiki/Heapsort](https://en.wikipedia.org/wiki/Heapsort)
 - [https://brilliant.org/wiki/heap-sort/](https://brilliant.org/wiki/heap-sort/)
 - [http://www.codecodex.com/wiki/Heapsort](http://www.codecodex.com/wiki/Heapsort)
+- [https://zh.wikipedia.org/wiki/AVL%E6%A0%91](https://zh.wikipedia.org/wiki/AVL%E6%A0%91)
