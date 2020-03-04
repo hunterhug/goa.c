@@ -44,10 +44,6 @@ func NewAVLTree() *AVLTree {
 
 其中 `Height` 表示以该节点作为树的根节点，树的高度，方便计算平衡因子。
 
-https://www.cnblogs.com/WindSun/p/11379670.html
-
-https://www.jianshu.com/p/e150dc3ebe21
-
 ### 1.1. AVL树添加元素
 
 添加元素前需要定位到元素的位置，然后查找节点的平衡因子是否在 `[-1，0，1]` 范围内，如果不在，需要进行旋转调整。
