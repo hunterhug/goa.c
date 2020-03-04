@@ -72,3 +72,15 @@ func NewAVLTree() *AVLTree {
 单左旋：
 
 ![](../../picture/left_avl_tree.png)
+
+单右旋：
+
+![](../../picture/right_avl_tree.png)
+
+先左后右旋：
+
+![](../../picture/left_right_avl_tree.png)
+
+先右后左旋：
+
+![](../../picture/right_left_avl_tree.png)
