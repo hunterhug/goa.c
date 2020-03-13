@@ -43,7 +43,10 @@ func NewAVLTree() *AVLTree {
 }
 ```
 
-其中 `Height` 表示以该节点作为树的根节点，树的高度，方便计算平衡因子。更新树高度和计算平衡因子代码如下：
+其中 `Height` 表示以该节点作为树的根节点时该树的高度，方便计算平衡因子。
+
+
+更新树高度，代码如下：
 
 ```go
 // 更新节点的树高度
@@ -63,7 +66,12 @@ func (node *AVLTreeNode) UpdateHeight() {
 	// 高度加上自己那一层
 	node.Height = maxHeight + 1
 }
+```
 
+
+计算平衡因子，代码如下：
+
+```go
 // 计算平衡因子
 func (node *AVLTreeNode) BalanceFactor() int64 {
 	var leftHeight, rightHeight int64 = 0, 0
@@ -100,9 +108,13 @@ func (node *AVLTreeNode) BalanceFactor() int64 {
 
 ![](../../picture/right_avl_tree.png)
 
-因为元素 `2` 导致了元素 `Root=5` 的失衡，需要调整，将 `Pivot=3` 替换元素 `5` 的位置，元素 `5` 成为了 `3` 的有儿子，如上图。
+因为红色元素 `2` 的产生，其最近的父亲节点 `Root` 失衡了，元素 `2` 导致了元素 `Root=5` 的失衡，需要调整。
+
+将 `Pivot=3` 代替元素 `5` 的位置成为新的 `Root`，然后元素 `5` 委屈一下成为 `3` 的右儿子，而 `3` 的右儿子变成了 `5` 的左儿子，如上图。
 
 相应调整后树的高度降低了，该失衡消失。我们可以看到红色元素 `2` 有两个儿子，实际上在添加操作时它是一个新的节点，是没有儿子的，这种有儿子的情况只发生在删除操作。
+
+如果一时难以理解，可以多看几次图好好思考。
 
 代码如下：
 
@@ -300,12 +312,13 @@ func (node *AVLTreeNode) Add(value int64) *AVLTreeNode {
 
 如果在右子树上插上右儿子导致失衡，需要单左旋：`LeftRotation(node)`，如果在右子树上插上左儿子导致失衡，先右后左旋：`RightLeftRotation(node)`。
 
-最后需要更新树根节点的高度，并返回树根：
+最后需要更新树根节点的高度，并返回树根，如果曾经旋转，表示树根变了，需要返回新的树根：
 
 ```go
 	if newTreeNode == nil {
 		// 表示什么旋转都没有，根节点没变，直接刷新树高度
 		node.UpdateHeight()
+		return node
 	} else {
 		// 旋转了，树根节点变了，需要刷新新的树根高度
 		newTreeNode.UpdateHeight()
@@ -313,7 +326,7 @@ func (node *AVLTreeNode) Add(value int64) *AVLTreeNode {
 	}
 ```
 
-如果曾经旋转，表示树根变了，需要返回新的数根。
+
 
 ##  四、AVL树查找元素等操作
 
@@ -413,6 +426,8 @@ func (node *AVLTreeNode) MidOrder() {
 	node.Right.MidOrder()
 }
 ```
+
+查找操作逻辑与通用的二叉查找树一样，并无区别。
 
 ##  五、AVL树删除元素
 
@@ -666,7 +681,11 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 ### 5.3. 删除后，调整树高度
 
-最后更新节点的高度，如果没有旋转过，更新之前的节点树高度，旋转过树根变了，更新新的节点树高度：
+最后更新节点的高度。
+
+如果没有旋转过，更新之前的节点树高度。
+
+如果曾经旋转过，树根变了，更新新的节点树高度。
 
 ```
 	if newNode == nil {
