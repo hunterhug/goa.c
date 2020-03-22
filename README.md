@@ -4,7 +4,11 @@
 
 数据结构和算法在计算机科学里，有非常重要的地位。此系列文章尝试使用 `Golang` 编程语言来实现各种数据结构和算法，并且适当进行算法分析。
 
-联系我可通过邮件： gdccmcm14@live.com 。
+1. 联系邮件：gdccmcm14@live.com
+2. 联系微信/QQ：569929309
+4. Github: [https://github.com/hunterhug](https://github.com/hunterhug)
+5. 知乎：[https://www.zhihu.com/people/chen-xing-xing-57-62-13](https://www.zhihu.com/people/chen-xing-xing-57-62-13)
+6. 掘金：[https://juejin.im/user/5e772c76e51d4526f55f28b7](https://juejin.im/user/5e772c76e51d4526f55f28b7)
 
 ## 目录
 
