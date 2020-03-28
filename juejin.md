@@ -1,8 +1,8 @@
 # 系列文章入口
 
-- [数据结构和算法(Golang实现)(1)简单入门Golang-前言](https://juejin.im/post/5e773007f265da57444ae061)
-- [数据结构和算法(Golang实现)(2)简单入门Golang-包、变量和函数](https://juejin.im/post/5e7732356fb9a07c8a5a3d75)
-- [数据结构和算法(Golang实现)(3)简单入门Golang-流程控制语句](https://juejin.im/post/5e7732655188252c0551fa83)
+- [数据结构和算法(Golang实现)(1)简单入门Golang-前言](https://zhuanlan.zhihu.com/p/119083696)
+- [数据结构和算法(Golang实现)(2)简单入门Golang-包、变量和函数](https://zhuanlan.zhihu.com/p/119084320)
+- [数据结构和算法(Golang实现)(3)简单入门Golang-流程控制语句](https://zhuanlan.zhihu.com/p/119084718)
 - [数据结构和算法(Golang实现)(4)简单入门Golang-结构体和方法](https://juejin.im/post/5e77328df265da575477b63e)
 - [数据结构和算法(Golang实现)(5)简单入门Golang-接口](https://juejin.im/post/5e7732b1f265da5749476b28)
 - [数据结构和算法(Golang实现)(6)简单入门Golang-并发、协程和信道](https://juejin.im/post/5e77333e6fb9a07c8a5a3d77)
@@ -20,3 +20,12 @@
 - [数据结构和算法(Golang实现)(18)排序算法-前言](https://zhuanlan.zhihu.com/p/115283895)
 - [数据结构和算法(Golang实现)(19)排序算法-冒泡排序](https://zhuanlan.zhihu.com/p/115284003)
 - [数据结构和算法(Golang实现)(20)排序算法-选择排序](https://zhuanlan.zhihu.com/p/115284122)
+- [数据结构和算法(Golang实现)(21)排序算法-插入排序](https://zhuanlan.zhihu.com/p/115284227)
+- [数据结构和算法(Golang实现)(22)排序算法-希尔排序](https://zhuanlan.zhihu.com/p/119076943)
+- [数据结构和算法(Golang实现)(23)排序算法-归并排序](https://zhuanlan.zhihu.com/p/119077938)
+- [数据结构和算法(Golang实现)(24)排序算法-优先队列及堆排序](https://zhuanlan.zhihu.com/p/119079006)
+- [数据结构和算法(Golang实现)(25)排序算法-快速排序](https://zhuanlan.zhihu.com/p/119079995)
+- [数据结构和算法(Golang实现)(26)查找算法-哈希表](https://zhuanlan.zhihu.com/p/119079006)
+- [数据结构和算法(Golang实现)(27)查找算法-二叉查找树](https://zhuanlan.zhihu.com/p/119079995)
+
+- [数据结构和算法(Golang实现)(28)查找算法-AVL树](https://zhuanlan.zhihu.com/p/119079995)
