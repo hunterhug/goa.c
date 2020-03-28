@@ -10,7 +10,6 @@
 2. 联系微信/QQ：569929309
 4. Github: [https://github.com/hunterhug](https://github.com/hunterhug)
 5. 知乎：[https://www.zhihu.com/people/chen-xing-xing-57-62-13](https://www.zhihu.com/people/chen-xing-xing-57-62-13)
-6. 掘金：[https://juejin.im/user/5e772c76e51d4526f55f28b7](https://juejin.im/user/5e772c76e51d4526f55f28b7)
 
 系列文章首发于：[https://goa.lenggirl.com](https://goa.lenggirl.com)。
 
