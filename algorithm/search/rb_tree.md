@@ -97,7 +97,6 @@ type LLRBTNode struct {
 	Left        *LLRBTNode // 左子树
 	Right       *LLRBTNode // 右子树
 	Color       bool       // 父亲指向该节点的链接颜色
-	SubTreeSize int64      // 这颗子树的节点数量，包括其本身
 }
 
 // 新建一颗空树
@@ -113,19 +112,11 @@ func IsRed(node *LLRBTNode) bool {
 	return node.Color == RED
 }
 
-// 节点的子树节点数量
-func Size(node *LLRBTNode) int64 {
-	if node == nil {
-		return 0
-	}
-
-	return node.SubTreeSize
-}
 ```
 
 在节点 `LLRBTNode` 中，我们存储的元素字段为 `Value`，由于可能有重复的元素插入，所以多了一个 `Times` 字段，表示该元素出现几次。
 
-当然，红黑树中的红黑颜色使用 `Color` 定义，表示父亲指向该节点的链接颜色。为了方便，我们还构造了两个辅助函数 `IsRed()` 和 `Size()`。
+当然，红黑树中的红黑颜色使用 `Color` 定义，表示父亲指向该节点的链接颜色。为了方便，我们还构造了一个辅助函数 `IsRed()`。
 
 在元素添加和实现的过程中，需要做调整操作，有两种旋转操作，对某节点的右链接进行左旋转，或者左链接进行右旋转。
 
@@ -148,8 +139,6 @@ func RotateLeft(h *LLRBTNode) *LLRBTNode {
 	x.Left = h
 	x.Color = h.Color
 	h.Color = RED
-	x.SubTreeSize = h.SubTreeSize
-	h.SubTreeSize = 1 + Size(h.Left) + Size(h.Right)
 	return x
 }
 ```
@@ -173,8 +162,6 @@ func RotateRight(h *LLRBTNode) *LLRBTNode {
 	x.Right = h
 	x.Color = h.Color
 	h.Color = RED
-	x.SubTreeSize = h.SubTreeSize
-	h.SubTreeSize = 1 + Size(h.Left) + Size(h.Right)
 	return x
 }
 ```
@@ -191,9 +178,9 @@ func ColorChange(h *LLRBTNode) {
 	if h == nil {
 		return
 	}
-	h.Color = RED
-	h.Left.Color = BLACK
-	h.Right.Color = BLACK
+	h.Color = !h.Color
+	h.Left.Color = !h.Left.Color
+	h.Right.Color = !h.Right.Color
 }
 ```
 
@@ -215,6 +202,10 @@ func ColorChange(h *LLRBTNode) {
 
 ![](../../picture/llrb_tree_insert_3node.jpg)
 
+也就是说，在一个已经是红色左链接的节点，插入一个新节点的状态变化如下：
+
+![](../../picture/llrb_tree_red_change.jpg)
+
 根据上述的演示图以及旋转，颜色转换等操作，添加元素的代码为：
 
 ```go
@@ -231,22 +222,20 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 	// 插入的节点为空，将其链接颜色设置为红色，并返回
 	if node == nil {
 		return &LLRBTNode{
-			Value:       value,
-			Color:       RED,
-			SubTreeSize: 1,
+			Value: value,
+			Color: RED,
 		}
 	}
 
 	// 插入的元素重复
 	if value == node.Value {
 		node.Times = node.Times + 1
-		return node
 	} else if value > node.Value {
-		// 插入的元素比节点值大，往左子树插入
-		node.Left = node.Left.Add(value)
-	} else {
-		// 插入的元素比节点值小，往右子树插入
+		// 插入的元素比节点值大，往右子树插入
 		node.Right = node.Right.Add(value)
+	} else {
+		// 插入的元素比节点值小，往左子树插入
+		node.Left = node.Left.Add(value)
 	}
 
 	// 辅助变量
@@ -255,20 +244,18 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 	// 右链接为红色，那么进行左旋，确保树是左倾的
 	if IsRed(nowNode.Right) && !IsRed(nowNode.Left) {
 		nowNode = RotateLeft(nowNode)
+	} else {
+		// 连续两个左链接为红色，那么进行右旋
+		if IsRed(nowNode.Left) && IsRed(nowNode.Left.Left) {
+			nowNode = RotateRight(nowNode)
+		}
+
+		// 旋转后，可能左右链接都为红色，需要变色
+		if IsRed(nowNode.Left) && IsRed(nowNode.Right) {
+			ColorChange(nowNode)
+		}
 	}
 
-	// 连续两个左链接为红色，那么进行右旋
-	if IsRed(nowNode.Left) && IsRed(nowNode.Left.Left) {
-		nowNode = RotateRight(nowNode)
-	}
-
-	// 旋转后，可能左右链接都为红色，需要变色
-	if IsRed(nowNode.Left) && IsRed(nowNode.Right) {
-		ColorChange(nowNode)
-	}
-
-	// 更新子树节点数量，包括自身
-	nowNode.SubTreeSize = Size(nowNode.Left) + Size(nowNode.Right) + 1
 	return nowNode
 }
 ```
@@ -378,7 +365,19 @@ func (node *LLRBTNode) MidOrder() {
 
 查找操作逻辑与通用的二叉查找树一样，并无区别。
 
-### 2.4. 完整程序
+### 2.4. 时间复杂度分析
+
+可参考论文： [Left-leaning Red-Black Trees](https://www.cs.princeton.edu/~rs/talks/LLRB/LLRB.pdf)。
+
+通过随机构造左倾红黑树，经过实验，左倾红黑树的平均树高度为 `2log(n)`，其中 `n` 为树的节点数量，而 `AVL` 树的最坏树高度为 `1.44log(n)`。
+
+由于左倾红黑树是近似平衡的二叉树，没有 `AVL` 树的严格平衡，树的高度会更高一点，因此查找操作效率更低，但时间复杂度只在于常数项的差别，去掉常数项，时间复杂度仍然是 `log(n)`。
+
+我们的代码实现中，左倾红黑树的插入和删除操作，需要逐层判断是否需要旋转，复杂度为 `log(n)`，可能旋转和染色多次（当旋转变色后导致上层存在连续的红左链接），但我们可以继续优化代码，使得在某一层旋转变色后，如果其父层没有连续的左红链接，那么可以直接退出，复杂度变为常数 `c`。
+
+对于 `AVL` 树来说，插入和删除最多旋转两次，但其需要逐层更新树高度，复杂度为 `log(n)`。按照效率来说，左倾红黑树插入和删除效率会稍微好一点。
+
+### 2.5. 完整程序
 
 ```go
 package main
@@ -406,12 +405,11 @@ func NewLLRBTree() *LLRBTree {
 
 // 左倾红黑树节点
 type LLRBTNode struct {
-	Value       int64      // 值
-	Times       int64      // 值出现的次数
-	Left        *LLRBTNode // 左子树
-	Right       *LLRBTNode // 右子树
-	Color       bool       // 父亲指向该节点的链接颜色
-	SubTreeSize int64      // 这颗子树的节点数量，包括其本身
+	Value int64      // 值
+	Times int64      // 值出现的次数
+	Left  *LLRBTNode // 左子树
+	Right *LLRBTNode // 右子树
+	Color bool       // 父亲指向该节点的链接颜色
 }
 
 // 左链接的颜色
@@ -420,15 +418,6 @@ func IsRed(node *LLRBTNode) bool {
 		return false
 	}
 	return node.Color == RED
-}
-
-// 节点的子树节点数量
-func Size(node *LLRBTNode) int64 {
-	if node == nil {
-		return 0
-	}
-
-	return node.SubTreeSize
 }
 
 // 左旋转
@@ -443,8 +432,6 @@ func RotateLeft(h *LLRBTNode) *LLRBTNode {
 	x.Left = h
 	x.Color = h.Color
 	h.Color = RED
-	x.SubTreeSize = h.SubTreeSize
-	h.SubTreeSize = 1 + Size(h.Left) + Size(h.Right)
 	return x
 }
 
@@ -460,8 +447,6 @@ func RotateRight(h *LLRBTNode) *LLRBTNode {
 	x.Right = h
 	x.Color = h.Color
 	h.Color = RED
-	x.SubTreeSize = h.SubTreeSize
-	h.SubTreeSize = 1 + Size(h.Left) + Size(h.Right)
 	return x
 }
 
@@ -470,9 +455,9 @@ func ColorChange(h *LLRBTNode) {
 	if h == nil {
 		return
 	}
-	h.Color = RED
-	h.Left.Color = BLACK
-	h.Right.Color = BLACK
+	h.Color = !h.Color
+	h.Left.Color = !h.Left.Color
+	h.Right.Color = !h.Right.Color
 }
 
 // 左倾红黑树添加元素
@@ -488,9 +473,8 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 	// 插入的节点为空，将其链接颜色设置为红色，并返回
 	if node == nil {
 		return &LLRBTNode{
-			Value:       value,
-			Color:       RED,
-			SubTreeSize: 1,
+			Value: value,
+			Color: RED,
 		}
 	}
 
@@ -511,20 +495,18 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 	// 右链接为红色，那么进行左旋，确保树是左倾的
 	if IsRed(nowNode.Right) && !IsRed(nowNode.Left) {
 		nowNode = RotateLeft(nowNode)
+	} else {
+		// 连续两个左链接为红色，那么进行右旋
+		if IsRed(nowNode.Left) && IsRed(nowNode.Left.Left) {
+			nowNode = RotateRight(nowNode)
+		}
+
+		// 旋转后，可能左右链接都为红色，需要变色
+		if IsRed(nowNode.Left) && IsRed(nowNode.Right) {
+			ColorChange(nowNode)
+		}
 	}
 
-	// 连续两个左链接为红色，那么进行右旋
-	if IsRed(nowNode.Left) && IsRed(nowNode.Left.Left) {
-		nowNode = RotateRight(nowNode)
-	}
-
-	// 旋转后，可能左右链接都为红色，需要变色
-	if IsRed(nowNode.Left) && IsRed(nowNode.Right) {
-		ColorChange(nowNode)
-	}
-
-	// 更新子树节点数量，包括自身
-	nowNode.SubTreeSize = Size(nowNode.Left) + Size(nowNode.Right) + 1
 	return nowNode
 }
 
@@ -623,7 +605,7 @@ func (node *LLRBTNode) MidOrder() {
 
 func main() {
 	tree := NewLLRBTree()
-	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113}
+	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113, 115, 18}
 	for _, v := range values {
 		tree.Add(v)
 	}
@@ -650,13 +632,14 @@ func main() {
 
 	tree.MidOrder()
 }
+
 ```
 
 运行：
 
 ```go
-find min value: &{2 0 <nil> <nil> false 1}
-find max value: &{113 0 0xc00009a1e0 <nil> false 2}
+find min value: &{2 0 <nil> <nil> false}
+find max value: &{115 0 <nil> <nil> false}
 not find it 99!
 find it 9!
 2
@@ -667,12 +650,14 @@ find it 9!
 10
 10
 10
+18
 23
 102
 109
 111
 112
 113
+115
 ```
 
 ## 三、 `2-3-4` 树
@@ -694,5 +679,3 @@ find it 9!
 ### 4.3. 其他操作实现
 
 ### 4.4. 完整程序
-
-## 五、 AVL树和红黑树的比较

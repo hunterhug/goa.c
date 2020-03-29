@@ -23,12 +23,11 @@ func NewLLRBTree() *LLRBTree {
 
 // 左倾红黑树节点
 type LLRBTNode struct {
-	Value       int64      // 值
-	Times       int64      // 值出现的次数
-	Left        *LLRBTNode // 左子树
-	Right       *LLRBTNode // 右子树
-	Color       bool       // 父亲指向该节点的链接颜色
-	SubTreeSize int64      // 这颗子树的节点数量，包括其本身
+	Value int64      // 值
+	Times int64      // 值出现的次数
+	Left  *LLRBTNode // 左子树
+	Right *LLRBTNode // 右子树
+	Color bool       // 父亲指向该节点的链接颜色
 }
 
 // 左链接的颜色
@@ -37,15 +36,6 @@ func IsRed(node *LLRBTNode) bool {
 		return false
 	}
 	return node.Color == RED
-}
-
-// 节点的子树节点数量
-func Size(node *LLRBTNode) int64 {
-	if node == nil {
-		return 0
-	}
-
-	return node.SubTreeSize
 }
 
 // 左旋转
@@ -60,8 +50,6 @@ func RotateLeft(h *LLRBTNode) *LLRBTNode {
 	x.Left = h
 	x.Color = h.Color
 	h.Color = RED
-	x.SubTreeSize = h.SubTreeSize
-	h.SubTreeSize = 1 + Size(h.Left) + Size(h.Right)
 	return x
 }
 
@@ -77,8 +65,6 @@ func RotateRight(h *LLRBTNode) *LLRBTNode {
 	x.Right = h
 	x.Color = h.Color
 	h.Color = RED
-	x.SubTreeSize = h.SubTreeSize
-	h.SubTreeSize = 1 + Size(h.Left) + Size(h.Right)
 	return x
 }
 
@@ -87,9 +73,9 @@ func ColorChange(h *LLRBTNode) {
 	if h == nil {
 		return
 	}
-	h.Color = RED
-	h.Left.Color = BLACK
-	h.Right.Color = BLACK
+	h.Color = !h.Color
+	h.Left.Color = !h.Left.Color
+	h.Right.Color = !h.Right.Color
 }
 
 // 左倾红黑树添加元素
@@ -105,9 +91,8 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 	// 插入的节点为空，将其链接颜色设置为红色，并返回
 	if node == nil {
 		return &LLRBTNode{
-			Value:       value,
-			Color:       RED,
-			SubTreeSize: 1,
+			Value: value,
+			Color: RED,
 		}
 	}
 
@@ -128,20 +113,18 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 	// 右链接为红色，那么进行左旋，确保树是左倾的
 	if IsRed(nowNode.Right) && !IsRed(nowNode.Left) {
 		nowNode = RotateLeft(nowNode)
+	} else {
+		// 连续两个左链接为红色，那么进行右旋
+		if IsRed(nowNode.Left) && IsRed(nowNode.Left.Left) {
+			nowNode = RotateRight(nowNode)
+		}
+
+		// 旋转后，可能左右链接都为红色，需要变色
+		if IsRed(nowNode.Left) && IsRed(nowNode.Right) {
+			ColorChange(nowNode)
+		}
 	}
 
-	// 连续两个左链接为红色，那么进行右旋
-	if IsRed(nowNode.Left) && IsRed(nowNode.Left.Left) {
-		nowNode = RotateRight(nowNode)
-	}
-
-	// 旋转后，可能左右链接都为红色，需要变色
-	if IsRed(nowNode.Left) && IsRed(nowNode.Right) {
-		ColorChange(nowNode)
-	}
-
-	// 更新子树节点数量，包括自身
-	nowNode.SubTreeSize = Size(nowNode.Left) + Size(nowNode.Right) + 1
 	return nowNode
 }
 
@@ -240,7 +223,7 @@ func (node *LLRBTNode) MidOrder() {
 
 func main() {
 	tree := NewLLRBTree()
-	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113}
+	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113, 115, 18}
 	for _, v := range values {
 		tree.Add(v)
 	}
