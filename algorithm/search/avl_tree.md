@@ -350,7 +350,7 @@ func (node *AVLTreeNode) Add(value int64) *AVLTreeNode {
 
 添加元素时先要找到元素插入的位置，找到位置后逐层自底向上更新每个子树的树高度，并根据子树平衡是否被破坏，需要进行旋转操作。
 
-由于树的高最高为 `1.44log(n)`，查找元素插入位置，最坏次数为 `1.44log(n)` 次。逐层更新子树高度并判断平衡是否被破坏，最坏需要 `1.44log(n)` 次，因此可以得知添加元素最坏时间复杂度为：`2.88log(n)`，去掉常数项，时间复杂度为：`log(n)`。
+由于树的高度最高为 `1.44log(n)`，查找元素插入位置，最坏次数为 `1.44log(n)` 次。逐层更新子树高度并判断平衡是否被破坏，最坏需要 `1.44log(n)` 次，因此可以得知添加元素最坏时间复杂度为：`2.88log(n)`，去掉常数项，时间复杂度为：`log(n)`。
 
 关于旋转次数，当插入节点后，某子树不平衡时最多旋转 `2次`，也就是双旋该子树即可恢复平衡，该调整为局部特征，调整完后其父层不再需要旋转。也就是说，插入操作最坏旋转两次即可。
 
@@ -681,9 +681,9 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 			}
 ```
 
-核心在于删除后的旋转调整，从一开始，删除的值不匹配当前节点的值，对该节点的左右子树进行递归删除，递归删除后该节点为根节点的树可能不平衡，我们需要判断后决定要不要旋转这颗树。
+核心在于删除后的旋转调整，如果删除的值不匹配当前节点的值，对当前节点的左右子树进行递归删除，递归删除后该节点为根节点的子树可能不平衡，我们需要判断后决定要不要旋转这颗树。
 
-每次递归都是自底向上，从很小的子树到很大的子树，如果自底向上每棵子树都约束在树的高度差不超过1，那么整棵树自然也符合AVL树的平衡规则。
+每次递归都是自底向上，从很小的子树到很大的子树，如果自底向上每棵子树都进行调整，约束在树的高度差不超过1，那么整棵树自然也符合AVL树的平衡规则。
 
 删除元素后，如果子树失衡，需要进行调整操作，主要有两种：删除后左子树比右子树高，删除后右子树比左子树高。
 
@@ -706,11 +706,40 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 ![](../../picture/right_avl_tree.png)
 
-这幅图一开始可以看到：`黄色点5.BalanceFactor() == 2` 和 `绿色点3.BalanceFactor() == 1`，对应：`node.BalanceFactor() == 2` 和 `node.Left.BalanceFactor() == 1`。所以应该需要右旋：`newNode = RightRotation(node)`
+这幅图可以看到：
+
+1. `黄色点5.BalanceFactor() == 2`，对应：`node.BalanceFactor() == 2`。
+2. `绿色点3.BalanceFactor() == 1`，对应：`node.Left.BalanceFactor() == 1`。
+
+所以应该需要右旋：`newNode = RightRotation(node)`
 
 ![](../../picture/left_right_avl_tree.png)
 
-这幅图一开始可以看到：`黄色点5.BalanceFactor() == 2` 和 `绿色点3.BalanceFactor() == -1`，对应：`node.BalanceFactor() == 2` 和 `node.Left.BalanceFactor() == -1`。所以应该需要先左后右旋：`newNode = LeftRightRotation(node)`
+这幅图可以看到：
+
+1. `黄色点5.BalanceFactor() == 2`，对应：`node.BalanceFactor() == 2`
+2. `绿色点3.BalanceFactor() == -1`，对应：`node.Left.BalanceFactor() == -1`。
+
+所以应该需要先左后右旋：`newNode = LeftRightRotation(node)`
+
+还有一种特殊情况，和上面的都不一样，如图：
+
+![](../../picture/avl_tree_sp1.jpg)
+
+我们如果删除节点 `22` 或节点 `23`，这个时候根节点 `20` 失衡了。
+
+1. 根节点 `20` 的左子树比右子树高了 `2` 层，对应：`node.BalanceFactor() == 2`。
+2. 左子树节点 `13` 并没有失衡，对应：`node.BalanceFactor() == 0`。
+
+这个时候，无论使用右旋，还是先左旋后右旋都可以使树恢复平衡，我们的 `else` 判断条件使用了先左旋后右旋。
+
+如果是先左旋后右旋，那么旋转后恢复平衡，如图对根结点进行旋转：
+
+![](../../picture/avl_tree_sp2.jpg)
+
+如果使用右旋也可以，如图对根结点进行旋转：
+
+![](../../picture/avl_tree_sp3.jpg)
 
 ### 5.2. 删除后，右子树比左子树高
 
@@ -731,19 +760,27 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 ![](../../picture/left_avl_tree.png)
 
-这幅图一开始可以看到：`绿色点3.BalanceFactor() == -2` 和 `黄色点5.BalanceFactor() == -1`，对应：`node.BalanceFactor() == -2` 和 `node.Left.BalanceFactor() == -1`。所以应该需要左旋：`newNode = LeftRotation(node)`
+这幅图可以看到：
+
+1. `绿色点3.BalanceFactor() == -2`，对应：`node.BalanceFactor() == -2`。
+2. `黄色点5.BalanceFactor() == -1`，对应：`node.Left.BalanceFactor() == -1`。
+
+所以应该需要左旋：`newNode = LeftRotation(node)`
 
 ![](../../picture/right_left_avl_tree.png)
 
-这幅图一开始可以看到：`绿色点3.BalanceFactor() == -2` 和 `黄色点5.BalanceFactor() == 1`，对应：`node.BalanceFactor() == -2` 和 `node.Left.BalanceFactor() == 1`。所以应该需要先右后左旋：`newNode = RightLeftRotation(node)`
+这幅图可以看到：
+
+1. `绿色点3.BalanceFactor() == -2`，对应：`node.BalanceFactor() == -2`。
+2. `黄色点5.BalanceFactor() == 1`，对应：`node.Left.BalanceFactor() == 1`。
+
+所以应该需要先右后左旋：`newNode = RightLeftRotation(node)`
+
+当然，还有另外一种特殊情况，与 `5.1` 章节类似，使用左旋还是先右旋后左旋都可以，在这里就不阐述了。
 
 ### 5.3. 删除后，调整树高度
 
-进行调整操作后，需要更新该树的高度。
-
-如果没有旋转过，更新之前的节点树高度。
-
-如果曾经旋转过，树根变了，更新新的节点树高度。
+进行调整操作后，需要更新该子树的高度。如果没有旋转过，更新之前节点的树高度。如果曾经旋转过，树根变了，更新新的树根节点高度。
 
 ```
 	if newNode == nil {
@@ -757,9 +794,21 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 ### 5.4. 时间复杂度分析
 
-删除操作是先找到删除的节点，然后将该节点与一个叶子节点交换，接着删除叶子节点，最后对叶子节点的父层逐层向上调整。
+删除操作是先找到删除的节点，然后将该节点与一个叶子节点交换，接着删除叶子节点，最后对叶子节点的父层逐层向上旋转调整。
 
-删除操作类似于插入操作，只不过先将删除内部节点变成删除叶子节点，然后我们可以认为是添加新元素而导致了不平衡，参考添加元素类似的向上调整操作。因此，时间复杂度和添加操作一样。
+删除操作的时间复杂度和添加操作一样。区别在于，添加操作最多旋转两次就可以达到树的平衡，而删除操作可能会旋转超过两次。如图：
+
+![](../../picture/avl_tree_delete1.jpg)
+
+删除节点 `24`，导致节点 `26` 的子树不平衡了，这时需要对该子树进行旋转，旋转后如图：
+
+![](../../picture/avl_tree_delete2.jpg)
+
+可以发现这时树仍然不平衡，这时是节点 `22` 的子树不平衡，需要继续旋转，旋转后如图：
+
+![](../../picture/avl_tree_delete3.jpg)
+
+对于删除操作，旋转可以一直旋转到根节点，比插入旋转最多旋转两次的次数更多。
 
 ##  六、AVL树完整代码
 
