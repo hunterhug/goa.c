@@ -203,7 +203,7 @@ func RightLeftRotation(node *AVLTreeNode) *AVLTreeNode {
 }
 ```
 
-### 3.5.具体实现
+### 3.5. 具体实现
 
 四种旋转代码实现后，我们开始进行添加元素操作：
 
