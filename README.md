@@ -48,7 +48,7 @@
         * [哈希表：散列查找](algorithm/search/hash_find.md)
         * [二叉查找树](algorithm/search/bs_tree.md)
         * [AVL树](algorithm/search/avl_tree.md)
-        * [2-3树和左倾红黑树(写作中)](algorithm/search/llrb_tree.md)
+        * [2-3树和左倾红黑树](algorithm/search/llrb_tree.md)
         * [2-3-4树和普通红黑树(写作中)](algorithm/search/rb_tree.md)
         * [B树及B+树(写作中)](algorithm/search/b_tree.md)
     * [图算法(写作中)](algorithm/graph.md)
