@@ -60,17 +60,52 @@
 
 `2-3` 树的特征注定它是一颗非常完美平衡的三叉树，其所有子树也都是完美平衡，所以 `2-3` 树的某节点的儿子，要么都是空儿子，要么都不是空儿子。比如 `2-3` 树的某个节点 `A` 有两个儿子 `B` 和 `C`，儿子 `B` 和 `C` 要么都没有孩子，要么孩子都是满的，不然 `2-3` 树所有叶子节点到根节点的长度一致这个特征就被破坏了。
 
-基于上面的现实，我们来分析删除的不同情况。
+基于上面的现实，我们来分析删除的不同情况，删除中间节点和叶子节点。
 
-1. 情况1：删除的是非叶子节点，该节点一定是有两颗子树的，可以用左子树的最大节点，也就是左子树一直往右边找，或者右子树的最小节点，也就是右子树一直往左边找，来替换被删除的非叶子节点，回到情况2。
-2. 情况2：删除的是叶子节点，这时如果叶子节点是3节点，那么直接变为2节点即可，不影响平衡。但是，如果叶子节点是2节点，那么删除后，其父节点将会缺失一个儿子，破坏了满孩子的 `2-3` 树特征。
+情况1：删除中间节点
 
-针对情况2，删除一个2节点的叶子节点，会导致父节点缺失一个儿子，我们需要进行一些调整，可以先将该节点变成3节点，然后直接删除即可。
+删除的是非叶子节点，该节点一定是有两颗或者三颗子树的，那么从子树中找到其最小后继节点，该节点是叶子节点，用该节点替换被删除的非叶子节点，然后再删除这个叶子节点，进入情况2。
+
+如何找到最小后继节点，当有两颗子树时，那么从右子树一直往左下方找，如果有三颗子树，被删除节点在左边，那么从中子树一直往左下方找，否则从右子树一直往左下方找。
+
+情况2：删除叶子节点
+
+删除的是叶子节点，这时如果叶子节点是3节点，那么直接变为2节点即可，不影响平衡。但是，如果叶子节点是2节点，那么删除后，其父节点将会缺失一个儿子，破坏了满孩子的 `2-3` 树特征，需要进行调整后才能删除。
+
+针对情况2，删除一个2节点的叶子节点，会导致父节点缺失一个儿子，我们可以进行调整变换后，主要有两种调整：
+
+1. 重新分布：尝试从兄弟节点那里借值，然后重新调整节点。
+2. 合并：如果兄弟借不到值，合并节点再向上递归处理。
 
 看图说话：
 
+![](../../picture/2-3_tree_delete1.jpg)
 
+如果被删除的叶子节点有兄弟是3节点，那么从兄弟那里借一个值填补被删除的叶子节点，然后兄弟和父亲重新分布调整位置。下面是重新分布的具体例子：
 
+![](../../picture/2-3_tree_delete2.jpg)
+
+可以看到，删除 `100`，从兄弟那里借来一个值 `80`，然后重新调整父亲，兄弟们的位置。
+
+如果兄弟们都是2节点呢，那么就合并节点：将父亲和兄弟节点合并，如果父亲是2节点，那么父亲就留空了，否则父亲就从3节点变成2节点，下面是合并的两个具体例子：
+
+![](../../picture/2-3_tree_delete3.jpg)
+
+可以看到，删除 `80`，而兄弟节点 `60` 和父亲节点 `90` 都是个2节点，所以父亲下来和兄弟合并，然后父亲变为空节点。
+
+![](../../picture/2-3_tree_delete6.jpg)
+
+可以看到，删除 `70`，而兄弟节点都为2节点，父亲节点为3节点，那么父亲下来和其中一个兄弟合并，然后父亲从3节点变为2节点。
+
+但是，如果合并后，父亲节点变空了，也就是说有中间节点留空要怎么办，那么可以继续递归处理，如图：
+
+![](../../picture/2-3_tree_delete4.jpg)
+
+中间节点是空的，那么可以继续从兄弟那里借节点或者和父亲合并，直到根节点，如果到达了根节点呢，如图：
+
+![](../../picture/2-3_tree_delete5.jpg)
+
+递归到了根节点后，如果存在空的根节点，我们可以直接把该空节点删除即可，这时树的高度减少一层。
 
 `2-3` 树的实现将会放在 `B树` 章节，我们将会实现其二叉树形式的左倾红黑树结构。
 
@@ -208,7 +243,7 @@ func ColorChange(h *LLRBTNode) {
 
 每次添加元素节点时，都将该节点 `Color` 字段，也就是父亲指向它的链接设置为 `RED` 红色。
 
-接着判断其父亲是否有两个红链接，或者有右红色链接，进行颜色变换或旋转操作。
+接着判断其父亲是否有两个红链接（如连续的两个左红链接或者左右红色链接），或者有右红色链接，进行颜色变换或旋转操作。
 
 主要有以下这几种情况。
 
@@ -260,6 +295,7 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 	nowNode := node
 
 	// 右链接为红色，那么进行左旋，确保树是左倾的
+	// 这里做完操作后就可以结束了，因为插入操作，新插入的右红链接左旋后，nowNode节点不会出现连续两个红左链接，因为它只有一个左红链接
 	if IsRed(nowNode.Right) && !IsRed(nowNode.Left) {
 		nowNode = RotateLeft(nowNode)
 	} else {
@@ -300,11 +336,288 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 
 ### 2.5. 删除元素实现
 
-删除操作就复杂得多了。
+删除操作就复杂得多了。对照一下 `2-3` 树。
 
-待完成。
+1. 情况1：如果删除的是非叶子节点，找到其最小后驱节点，也就是在其右子树中一直向左找，找到的该叶子节点替换被删除的节点，然后删除该叶子节点，变成情况2。
+2. 情况2：如果删除的是叶子节点，如果它是红节点，也就是父亲指向它的链接为红色，那么直接删除即可。否则，我们需要进行调整，使它变为红节点，再删除。
+
+在这里，为了使得删除叶子节点时可以直接删除，叶子节点必须变为红节点。（在 `2-3` 树中，也就是2节点要变成3节点，我们知道要不和父亲合并再递归向上，要不向兄弟借值然后重新分布）
+
+我们创造两种操作，对左子树进行红色左移，对右子树进行红色右移。
+
+我们介绍红色左移的步骤：
+
+当被删除的节点在左子树 `b` 中，这时子树 `b` 根节点是红节点，其儿子节点都为黑色节点，且两个儿子都是2节点，都没有左红孩子，直接变色即可（相当于 `2-3` 树：把父亲的一个值拉下来合并），如图：
+
+![](../../picture/llrb_tree_delete1.jpg)
+
+如果右儿子是3节点，有左红孩子，那么需要先变色后，对兄弟节点右旋，再对父亲节点左旋，最后变色（相当于 `2-3` 树：向3节点兄弟借值，然后重新分布），如图：
+
+![](../../picture/llrb_tree_delete2.jpg)
+
+红色左移可以总结为下图（被删除的节点在左子树，且左子树树根为红节点）：
+
+![](../../picture/llrb_tree_delete3.jpg)
+
+代码如下：
+
+```go
+// 红色左移
+// 节点 h 是红节点，其左儿子和左儿子的左儿子都为黑节点，左移后使得其左儿子或左儿子的左儿子有一个是红色节点
+func MoveRedLeft(h *LLRBTNode) *LLRBTNode {
+	// 应该确保 isRed(h) && !isRed(h.left) && !isRed(h.left.left)
+	ColorChange(h)
+
+	// 右儿子有左红链接
+	if IsRed(h.Right.Left) {
+		// 对右儿子右旋
+		h.Right = RotateRight(h.Right)
+		// 再左旋
+		h = RotateLeft(h)
+		ColorChange(h)
+	}
+
+	return h
+}
+```
+
+为什么要红色左移，是要保证调整后，子树根节点 `h` 的左儿子或左儿子的左儿子有一个是红色节点，这样可以继续递归下去，递归的结局就是被删除的叶子节点变成一个红色节点，然后就可以直接删除了。
+
+红色右移的步骤类似，如图（被删除的节点在右子树，且右子树树根为红节点）：
+
+![](../../picture/llbr_tree_delete4.jpg)
+
+代码如下：
+
+```go
+// 红色右移
+// 节点 h 是红节点，其右儿子和右儿子的左儿子都为黑节点，右移后使得其右儿子或右儿子的右儿子有一个是红色节点
+func MoveRedRight(h *LLRBTNode) *LLRBTNode {
+	// 应该确保 isRed(h) && !isRed(h.right) && !isRed(h.right.left);
+	ColorChange(h)
+
+	// 左儿子有左红链接
+	if IsRed(h.Left.Left) {
+		// 右旋
+		h = RotateRight(h)
+		// 变色
+		ColorChange(h)
+	}
+
+	return h
+}
+```
+
+为什么要红色右移，同样是为了保证树根节点 `h` 的右儿子或右儿子的右儿子有一个是红色节点，可以继续递归下去。
+
+介绍完两种操作后，我们要明确一下到底是如何删除元素的，左倾红黑树删除元素代码如下：
+
+```go
+// 左倾红黑树删除元素
+func (tree *LLRBTree) Delete(value int64) {
+	// 当找不到值时直接返回
+	if tree.Find(value) == nil {
+		return
+	}
+
+	if !IsRed(tree.Root.Left) && !IsRed(tree.Root.Right) {
+		// 左右子树都是黑节点，那么先将根节点变为红节点，方便后面的红色左移或右移
+		tree.Root.Color = RED
+	}
+
+	tree.Root = tree.Root.Delete(value)
+
+	// 最后，如果根节点非空，永远都要为黑节点，赋值黑色
+	if tree.Root != nil {
+		tree.Root.Color = BLACK
+	}
+}
+```
+
+首先 `tree.Find(value)` 找到可以删除的值时才能进行删除。
+
+当根节点的左右子树都为黑节点时，那么先将根节点变为红节点，方便后面的红色左移或右移。
+
+删除完节点：`tree.Root = tree.Root.Delete(value)` 后，需要将根节点染回黑色。
+
+核心的从子树中删除元素代码如下：
+
+```go
+// 对该节点所在的子树删除元素
+func (node *LLRBTNode) Delete(value int64) *LLRBTNode {
+	// 辅助变量
+	nowNode := node
+	// 删除的元素比子树根节点小，需要从左子树删除
+	if value < nowNode.Value {
+		// 因为从左子树删除，所以要判断是否需要红色左移
+		if !IsRed(nowNode.Left) && !IsRed(nowNode.Left.Left) {
+			// 左儿子和左儿子的左儿子都不是红色节点，那么没法递归下去，先红色左移
+			nowNode = MoveRedLeft(nowNode)
+		}
+
+		// 现在可以从左子树中删除了
+		nowNode.Left = nowNode.Left.Delete(value)
+	} else {
+		// 删除的元素等于或大于树根节点
+
+		// 左节点为红色，那么需要右旋，方便后面可以红色右移
+		if IsRed(nowNode.Left) {
+			nowNode = RotateRight(nowNode)
+		}
+
+		// 值相等，且没有右孩子节点，那么该节点一定是要被删除的叶子节点，直接删除
+		// 为什么呢，反证，它没有右儿子，但有左儿子，因为左倾红黑树的特征，那么左儿子一定是红色，但是前面的语句已经把红色左儿子右旋到右边，不应该出现右儿子为空。
+		if value == nowNode.Value && nowNode.Right == nil {
+			return nil
+		}
+
+		// 因为从右子树删除，所以要判断是否需要红色右移
+		if !IsRed(nowNode.Right) && !IsRed(nowNode.Right.Left) {
+			// 右儿子和右儿子的左儿子都不是红色节点，那么没法递归下去，先红色右移
+			nowNode = MoveRedRight(nowNode)
+		}
+
+		// 删除的节点找到了，它是中间节点，需要用最小后驱节点来替换它，然后删除最小后驱节点
+		if value == nowNode.Value {
+			minNode := nowNode.Right.FindMinValue()
+			nowNode.Value = minNode.Value
+			nowNode.Times = minNode.Times
+
+			// 删除其最小后驱节点
+			nowNode.Right = nowNode.Right.DeleteMin()
+		} else {
+			// 删除的元素比子树根节点大，需要从右子树删除
+			nowNode.Right = nowNode.Right.Delete(value)
+		}
+	}
+
+	// 最后，删除叶子节点后，需要恢复左倾红黑树特征
+	return nowNode.FixUp()
+}
+```
+
+这段核心代码十分复杂，会用到红色左移和右移，当删除的元素小于根节点时，我们明白要在左子树中删除，如：
+
+```go
+	// 删除的元素比子树根节点小，需要从左子树删除
+	if value < nowNode.Value {
+		// 因为从左子树删除，所以要判断是否需要红色左移
+		if !IsRed(nowNode.Left) && !IsRed(nowNode.Left.Left) {
+			// 左儿子和左儿子的左儿子都不是红色节点，那么没法递归下去，先红色左移
+			nowNode = MoveRedLeft(nowNode)
+		}
+
+		// 现在可以从左子树中删除了
+		nowNode.Left = nowNode.Left.Delete(value)
+	} 
+```
+
+递归删除左子树前：`nowNode.Left = nowNode.Left.Delete(value)`，要确保其左儿子或左儿子的左儿子是红色节点，才能够继续左子树递归下去，所以使用了 `!IsRed(nowNode.Left) && !IsRed(nowNode.Left.Left)` 来判断。
+
+如果删除的值不小于根节点，那么进入以下逻辑（可仔细阅读注释）：
+
+```go
+		// 删除的元素等于或大于树根节点
+
+		// 左节点为红色，那么需要右旋，方便后面可以红色右移
+		if IsRed(nowNode.Left) {
+			nowNode = RotateRight(nowNode)
+		}
+
+		// 值相等，且没有右孩子节点，那么该节点一定是要被删除的叶子节点，直接删除
+		// 为什么呢，反证，它没有右儿子，但有左儿子，因为左倾红黑树的特征，那么左儿子一定是红色，但是前面的语句已经把红色左儿子右旋到右边，不应该出现右儿子为空。
+		if value == nowNode.Value && nowNode.Right == nil {
+			return nil
+		}
+
+		// 因为从右子树删除，所以要判断是否需要红色右移
+		if !IsRed(nowNode.Right) && !IsRed(nowNode.Right.Left) {
+			// 右儿子和右儿子的左儿子都不是红色节点，那么没法递归下去，先红色右移
+			nowNode = MoveRedRight(nowNode)
+		}
+
+		// 删除的节点找到了，它是中间节点，需要用最小后驱节点来替换它，然后删除最小后驱节点
+		if value == nowNode.Value {
+			minNode := nowNode.Right.FindMinValue()
+			nowNode.Value = minNode.Value
+			nowNode.Times = minNode.Times
+
+			// 删除其最小后驱节点
+			nowNode.Right = nowNode.Right.DeleteMin()
+		} else {
+			// 删除的元素比子树根节点大，需要从右子树删除
+			nowNode.Right = nowNode.Right.Delete(value)
+		}
+```
+
+
+首先，需要先判断该节点的左子树根节点是否为红色节点 `IsRed(nowNode.Left)`，如果是的话需要右旋：`nowNode = RotateRight(nowNode)`，将红节点右旋是为了后面可以递归进入右子树。
+
+然后，判断删除的值是否等于当前根节点的值，且其没有右节点：`value == nowNode.Value && nowNode.Right == nil`，如果是，那么该节点就是要被删除的叶子节点，直接删除即可。
+
+接着，判断是否需要红色右移：`!IsRed(nowNode.Right) && !IsRed(nowNode.Right.Left)`，如果该节点右儿子和右儿子的左儿子都不是红色节点，那么没法递归进入右子树，需要红色右移，必须确保其右子树或右子树的左儿子有一个是红色节点。
+
+再接着，需要判断是否找到了要删除的节点：`value == nowNode.Value`，找到时表示要删除的节点处于内部节点，需要用最小后驱节点来替换它，然后删除最小后驱节点。
+
+找到最小后驱节点：`minNode := nowNode.Right.FindMinValue()` 后，替换最小后驱节点，然后删除最小后驱节点：`nowNode.Right = nowNode.Right.DeleteMin()`，删除最小节点代码如下：
+
+```go
+// 对该节点所在的子树删除最小元素
+func (node *LLRBTNode) DeleteMin() *LLRBTNode {
+	// 辅助变量
+	nowNode := node
+
+	// 没有左子树，那么删除它自己
+	if nowNode.Left == nil {
+		return nil
+	}
+
+	// 判断是否需要红色左移，因为最小元素在左子树中
+	if !IsRed(nowNode.Left) && !IsRed(nowNode.Left.Left) {
+		nowNode = MoveRedLeft(nowNode)
+	}
+
+	// 递归从左子树删除
+	nowNode.Left = nowNode.Left.DeleteMin()
+
+	// 修复左倾红黑树特征
+	return nowNode.FixUp()
+}
+```
+
+因为最小节点在最左的叶子节点，所以只需要适当的红色左移，然后一直左子树递归即可。递归完后需要修复左倾红黑树特征 `nowNode.FixUp()`，代码如下：
+
+```go
+// 修复左倾红黑树特征
+func (node *LLRBTNode) FixUp() *LLRBTNode {
+	// 辅助变量
+	nowNode := node
+
+	// 红链接在右边，左旋恢复，让红链接只出现在左边
+	if IsRed(nowNode.Right) {
+		nowNode = RotateLeft(nowNode)
+	}
+
+	// 连续两个左链接为红色，那么进行右旋
+	if IsRed(nowNode.Left) && IsRed(nowNode.Left.Left) {
+		nowNode = RotateRight(nowNode)
+	}
+
+	// 旋转后，可能左右链接都为红色，需要变色
+	if IsRed(nowNode.Left) && IsRed(nowNode.Right) {
+		ColorChange(nowNode)
+	}
+
+	return nowNode
+}
+```
+
+
+完整代码见最下面。
 
 ### 2.6. 删除元素算法分析
+
+删除元素需要自顶向下的递归，可能不断地红色左移和右移，也就是有很多的选择，当删除叶子节点后，还需要逐层恢复左倾红黑树的特征。时间复杂度仍然是和树高有关：`log(n)`。
 
 ### 2.7. 查找元素等实现
 
@@ -480,7 +793,42 @@ func RotateRight(h *LLRBTNode) *LLRBTNode {
 	return x
 }
 
-// 颜色转换
+// 红色左移
+// 节点 h 是红节点，其左儿子和左儿子的左儿子都为黑节点，左移后使得其左儿子或左儿子的左儿子有一个是红色节点
+func MoveRedLeft(h *LLRBTNode) *LLRBTNode {
+	// 应该确保 isRed(h) && !isRed(h.left) && !isRed(h.left.left)
+	ColorChange(h)
+
+	// 右儿子有左红链接
+	if IsRed(h.Right.Left) {
+		// 对右儿子右旋
+		h.Right = RotateRight(h.Right)
+		// 再左旋
+		h = RotateLeft(h)
+		ColorChange(h)
+	}
+
+	return h
+}
+
+// 红色右移
+// 节点 h 是红节点，其右儿子和右儿子的左儿子都为黑节点，右移后使得其右儿子或右儿子的右儿子有一个是红色节点
+func MoveRedRight(h *LLRBTNode) *LLRBTNode {
+	// 应该确保 isRed(h) && !isRed(h.right) && !isRed(h.right.left);
+	ColorChange(h)
+
+	// 左儿子有左红链接
+	if IsRed(h.Left.Left) {
+		// 右旋
+		h = RotateRight(h)
+		// 变色
+		ColorChange(h)
+	}
+
+	return h
+}
+
+// 颜色变换
 func ColorChange(h *LLRBTNode) {
 	if h == nil {
 		return
@@ -523,6 +871,7 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 	nowNode := node
 
 	// 右链接为红色，那么进行左旋，确保树是左倾的
+	// 这里做完操作后就可以结束了，因为插入操作，新插入的右红链接左旋后，nowNode节点不会出现连续两个红左链接，因为它只有一个左红链接
 	if IsRed(nowNode.Right) && !IsRed(nowNode.Left) {
 		nowNode = RotateLeft(nowNode)
 	} else {
@@ -582,11 +931,6 @@ func (node *LLRBTNode) FindMaxValue() *LLRBTNode {
 
 // 查找指定节点
 func (tree *LLRBTree) Find(value int64) *LLRBTNode {
-	if tree.Root == nil {
-		// 如果是空树，返回空
-		return nil
-	}
-
 	return tree.Root.Find(value)
 }
 
@@ -633,6 +977,122 @@ func (node *LLRBTNode) MidOrder() {
 	node.Right.MidOrder()
 }
 
+// 修复左倾红黑树特征
+func (node *LLRBTNode) FixUp() *LLRBTNode {
+	// 辅助变量
+	nowNode := node
+
+	// 红链接在右边，左旋恢复，让红链接只出现在左边
+	if IsRed(nowNode.Right) {
+		nowNode = RotateLeft(nowNode)
+	}
+
+	// 连续两个左链接为红色，那么进行右旋
+	if IsRed(nowNode.Left) && IsRed(nowNode.Left.Left) {
+		nowNode = RotateRight(nowNode)
+	}
+
+	// 旋转后，可能左右链接都为红色，需要变色
+	if IsRed(nowNode.Left) && IsRed(nowNode.Right) {
+		ColorChange(nowNode)
+	}
+
+	return nowNode
+}
+
+// 对该节点所在的子树删除最小元素
+func (node *LLRBTNode) DeleteMin() *LLRBTNode {
+	// 辅助变量
+	nowNode := node
+
+	// 没有左子树，那么删除它自己
+	if nowNode.Left == nil {
+		return nil
+	}
+
+	// 判断是否需要红色左移，因为最小元素在左子树中
+	if !IsRed(nowNode.Left) && !IsRed(nowNode.Left.Left) {
+		nowNode = MoveRedLeft(nowNode)
+	}
+
+	// 递归从左子树删除
+	nowNode.Left = nowNode.Left.DeleteMin()
+
+	// 修复左倾红黑树特征
+	return nowNode.FixUp()
+}
+
+// 左倾红黑树删除元素
+func (tree *LLRBTree) Delete(value int64) {
+	// 当找不到值时直接返回
+	if tree.Find(value) == nil {
+		return
+	}
+
+	if !IsRed(tree.Root.Left) && !IsRed(tree.Root.Right) {
+		// 左右子树都是黑节点，那么先将根节点变为红节点，方便后面的红色左移或右移
+		tree.Root.Color = RED
+	}
+
+	tree.Root = tree.Root.Delete(value)
+
+	// 最后，如果根节点非空，永远都要为黑节点，赋值黑色
+	if tree.Root != nil {
+		tree.Root.Color = BLACK
+	}
+}
+
+// 对该节点所在的子树删除元素
+func (node *LLRBTNode) Delete(value int64) *LLRBTNode {
+	// 辅助变量
+	nowNode := node
+	// 删除的元素比子树根节点小，需要从左子树删除
+	if value < nowNode.Value {
+		// 因为从左子树删除，所以要判断是否需要红色左移
+		if !IsRed(nowNode.Left) && !IsRed(nowNode.Left.Left) {
+			// 左儿子和左儿子的左儿子都不是红色节点，那么没法递归下去，先红色左移
+			nowNode = MoveRedLeft(nowNode)
+		}
+
+		// 现在可以从左子树中删除了
+		nowNode.Left = nowNode.Left.Delete(value)
+	} else {
+		// 删除的元素等于或大于树根节点
+
+		// 左节点为红色，那么需要右旋，方便后面可以红色右移
+		if IsRed(nowNode.Left) {
+			nowNode = RotateRight(nowNode)
+		}
+
+		// 值相等，且没有右孩子节点，那么该节点一定是要被删除的叶子节点，直接删除
+		// 为什么呢，反证，它没有右儿子，但有左儿子，因为左倾红黑树的特征，那么左儿子一定是红色，但是前面的语句已经把红色左儿子右旋到右边，不应该出现右儿子为空。
+		if value == nowNode.Value && nowNode.Right == nil {
+			return nil
+		}
+
+		// 因为从右子树删除，所以要判断是否需要红色右移
+		if !IsRed(nowNode.Right) && !IsRed(nowNode.Right.Left) {
+			// 右儿子和右儿子的左儿子都不是红色节点，那么没法递归下去，先红色右移
+			nowNode = MoveRedRight(nowNode)
+		}
+
+		// 删除的节点找到了，它是中间节点，需要用最小后驱节点来替换它，然后删除最小后驱节点
+		if value == nowNode.Value {
+			minNode := nowNode.Right.FindMinValue()
+			nowNode.Value = minNode.Value
+			nowNode.Times = minNode.Times
+
+			// 删除其最小后驱节点
+			nowNode.Right = nowNode.Right.DeleteMin()
+		} else {
+			// 删除的元素比子树根节点大，需要从右子树删除
+			nowNode.Right = nowNode.Right.Delete(value)
+		}
+	}
+
+	// 最后，删除叶子节点后，需要恢复左倾红黑树特征
+	return nowNode.FixUp()
+}
 func main() {
 	tree := NewLLRBTree()
 	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113, 115, 18}
@@ -661,8 +1121,17 @@ func main() {
 	}
 
 	tree.MidOrder()
-}
 
+	tree.Delete(9)
+
+	// 查找存在的9
+	node = tree.Find(9)
+	if node != nil {
+		fmt.Println("find it 9!")
+	} else {
+		fmt.Println("not find it 9!")
+	}
+}
 ```
 
 运行：
@@ -688,4 +1157,5 @@ find it 9!
 112
 113
 115
+not find it 9!
 ```

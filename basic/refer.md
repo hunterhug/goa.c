@@ -11,3 +11,5 @@
 - [2-3树与2-3-4树：https://blog.csdn.net/qq_25940921/article/details/82183601](https://blog.csdn.net/qq_25940921/article/details/82183601)
 - [什么是2-3树：https://zhuanlan.zhihu.com/p/92394224](https://zhuanlan.zhihu.com/p/92394224)
 - [2-3树与红黑树：https://riteme.site/blog/2016-3-12/2-3-tree-and-red-black-tree.html](https://riteme.site/blog/2016-3-12/2-3-tree-and-red-black-tree.html)
+- [2-3TreePPT:https://www.cs.drexel.edu/~amd435/courses/cs260/lectures/L-6_2-3_Trees.pdf](https://www.cs.drexel.edu/~amd435/courses/cs260/lectures/L-6_2-3_Trees.pdf)
+- [左倾红黑树代码实现：https://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html](https://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html)
