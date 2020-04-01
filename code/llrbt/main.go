@@ -254,7 +254,7 @@ func (node *LLRBTNode) MidOrder() {
 
 // 修复左倾红黑树特征
 func (node *LLRBTNode) FixUp() *LLRBTNode {
-	// 辅助变量
+	// 辅助变量hunterhugxx-6833066
 	nowNode := node
 
 	// 红链接在右边，左旋恢复，让红链接只出现在左边
