@@ -1,5 +1,9 @@
 # 系列文章入口
 
+我是陈星星，看星星，不如看星星，一个写了快五年 `Golang` 的后端开发工程师。
+
+欢迎阅读我亲自写的 **数据结构和算法(Golang实现)**
+
 - [数据结构和算法(Golang实现)(1)简单入门Golang-前言](https://zhuanlan.zhihu.com/p/119083696)
 - [数据结构和算法(Golang实现)(2)简单入门Golang-包、变量和函数](https://zhuanlan.zhihu.com/p/119084320)
 - [数据结构和算法(Golang实现)(3)简单入门Golang-流程控制语句](https://zhuanlan.zhihu.com/p/119084718)
@@ -26,7 +30,7 @@
 - [数据结构和算法(Golang实现)(23)排序算法-归并排序](https://zhuanlan.zhihu.com/p/119077938)
 - [数据结构和算法(Golang实现)(24)排序算法-优先队列及堆排序](https://zhuanlan.zhihu.com/p/119079006)
 - [数据结构和算法(Golang实现)(25)排序算法-快速排序](https://zhuanlan.zhihu.com/p/119079995)
-- [数据结构和算法(Golang实现)(26)查找算法-哈希表](https://zhuanlan.zhihu.com/p/119079006)
-- [数据结构和算法(Golang实现)(27)查找算法-二叉查找树](https://zhuanlan.zhihu.com/p/119079995)
+- [数据结构和算法(Golang实现)(26)查找算法-哈希表](https://zhuanlan.zhihu.com/p/119081950)
+- [数据结构和算法(Golang实现)(27)查找算法-二叉查找树](https://zhuanlan.zhihu.com/p/119082601)
 - [数据结构和算法(Golang实现)(28)查找算法-AVL树](https://zhuanlan.zhihu.com/p/120352875)
 - [数据结构和算法(Golang实现)(29)查找算法-2-3树和左倾红黑树](https://zhuanlan.zhihu.com/p/124127284)
