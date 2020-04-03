@@ -29,3 +29,4 @@
 - [数据结构和算法(Golang实现)(26)查找算法-哈希表](https://zhuanlan.zhihu.com/p/119079006)
 - [数据结构和算法(Golang实现)(27)查找算法-二叉查找树](https://zhuanlan.zhihu.com/p/119079995)
 - [数据结构和算法(Golang实现)(28)查找算法-AVL树](https://zhuanlan.zhihu.com/p/120352875)
+- [数据结构和算法(Golang实现)(28)查找算法-2-3树和左倾红黑树](https://zhuanlan.zhihu.com/p/120352875)
