@@ -2,7 +2,274 @@
 
 ## 一、举个例子
 
-因为例子篇幅过大，请下翻到章节最后：完整程序。切记，你一定要先看这一章，然后再继续往下看。
+现在我们来建立一个完整的程序 `main.go`：
+
+```go
+// Golang程序入口的包名必须为 main
+package main // import "golang"
+
+// 导入其他地方的包，包通过 go mod 机制寻找
+import (
+	"fmt"
+	"golang/diy"
+)
+
+// init函数在main函数之前执行
+func init() {
+	// 声明并初始化三个值
+	var i, j, k = 1, 2, 3
+	// 使用格式化包打印
+	fmt.Println("init hello world")
+	fmt.Println(i, j, k)
+}
+
+// 函数，两个数相加
+func sum(a, b int64) int64 {
+	return a + b
+}
+
+// 程序入口必须为 main 函数
+func main() {
+	// 未使用的变量，不允许声明
+	//cannot := 6
+
+	fmt.Println("hello world")
+
+	// 定义基本数据类型
+	p := true                             // bool
+	a := 3                                // int
+	b := 6.0                              // float64
+	c := "hi"                             // string
+	d := [3]string{"1", "2", "3"}         // array，基本不用到
+	e := []int64{1, 2, 3}                 // slice
+	f := map[string]int64{"a": 3, "b": 4} // map
+	fmt.Printf("type:%T:%v\n", p, p)
+	fmt.Printf("type:%T:%v\n", a, a)
+	fmt.Printf("type:%T:%v\n", b, b)
+	fmt.Printf("type:%T:%v\n", c, c)
+	fmt.Printf("type:%T:%v\n", d, d)
+	fmt.Printf("type:%T:%v\n", e, e)
+	fmt.Printf("type:%T:%v\n", f, f)
+
+	// 切片放值
+	e[0] = 9
+	// 切片增加值
+	e = append(e, 3)
+
+	// 增加map键值
+	f["f"] = 5
+
+	// 查找map键值
+	v, ok := f["f"]
+	fmt.Println(v, ok)
+	v, ok = f["ff"]
+	fmt.Println(v, ok)
+
+	// 判断语句
+	if a > 0 {
+		fmt.Println("a>0")
+	} else {
+		fmt.Println("a<=0")
+	}
+
+	// 死循环语句
+	a = 0
+	for {
+		if a >= 10 {
+			fmt.Println("out")
+			// 退出循环
+			break
+		}
+
+		a = a + 1
+		if a > 5 {
+			continue
+		} else {
+			fmt.Println(a)
+		}
+
+
+	}
+
+	// 循环语句
+	for i := 9; i <= 10; i++ {
+		fmt.Printf("i=%d\n", i)
+	}
+
+	// 循环切片
+	for k, v := range e {
+		fmt.Println(k, v)
+	}
+
+	// 循环map
+	for k, v := range f {
+		fmt.Println(k, v)
+	}
+
+	// 定义 int64 变量
+	var h, i int64 = 4, 6
+
+	// 使用函数
+	sum := sum(h, i)
+	fmt.Printf("sum(h+i),h=%v,i=%v,%v\n", h, i, sum)
+
+	// 新建结构体，值
+	g := diy.Diy{
+		A: 2,
+		//b: 4.0, // 小写成员不能导出
+	}
+
+	// 打印类型，值
+	fmt.Printf("type:%T:%v\n", g, g)
+
+	// 小写方法不能导出
+	//g.set(1,1)
+	g.Set(1, 1)
+	fmt.Printf("type:%T:%v\n", g, g) // 结构体值变化
+
+	g.Set2(3, 3)
+	fmt.Printf("type:%T:%v\n", g, g) // 结构体值未变化
+
+	// 新建结构体，引用
+	k := &diy.Diy{
+		A: 2,
+	}
+	fmt.Printf("type:%T:%v\n", k, k)
+	k.Set(1, 1)
+	fmt.Printf("type:%T:%v\n", k, k) // 结构体值变化
+	k.Set2(3, 3)
+	fmt.Printf("type:%T:%v\n", k, k) // 结构体值未变化
+
+	// 新建结构体，引用
+	m := new(diy.Diy)
+	m.A = 2
+	fmt.Printf("type:%T:%v\n", m, m)
+
+	s := make([]int64, 5)
+	s1 := make([]int64, 0, 5)
+	m1 := make(map[string]int64, 5)
+	m2 := make(map[string]int64)
+	fmt.Printf("%#v,cap:%#v,len:%#v\n", s, cap(s), len(s))
+	fmt.Printf("%#v,cap:%#v,len:%#v\n", s1, cap(s1), len(s1))
+	fmt.Printf("%#v,len:%#v\n", m1, len(m1))
+	fmt.Printf("%#v,len:%#v\n", m2, len(m2))
+
+	var ll []int64
+	fmt.Printf("%#v\n", ll)
+	ll = append(ll, 1)
+	fmt.Printf("%#v\n", ll)
+	ll = append(ll, 2, 3, 4, 5, 6)
+	fmt.Printf("%#v\n", ll)
+	ll = append(ll, []int64{7, 8, 9}...)
+	fmt.Printf("%#v\n", ll)
+
+	fmt.Println(ll[0:2])
+	fmt.Println(ll[:2])
+	fmt.Println(ll[0:])
+	fmt.Println(ll[:])
+}
+```
+
+在相同目录下新建 `diy` 文件夹，文件下新建一个 `diy.go` 文件（名字任取）：
+
+```go
+// 包名
+package diy
+
+// 结构体
+type Diy struct {
+	A int64   // 大写导出成员
+	b float64 // 小写不可以导出
+}
+
+// 引用结构体的方法，引用传递，会改变原有结构体的值
+func (diy *Diy) Set(a int64, b float64) {
+	diy.A = a
+	diy.b = b
+	return
+}
+
+// 值结构体的方法，值传递，不会改变原有结构体的值
+func (diy Diy) Set2(a int64, b float64) {
+	diy.A = a
+	diy.b = b
+	return
+}
+
+// 小写方法，不能导出
+func (diy Diy) set(a int64, b float64) {
+	diy.A = a
+	diy.b = b
+	return
+}
+
+// 小写函数，不能导出，只能在同一包下使用
+func sum(a, b int64) int64 {
+	return a + b
+}
+```
+
+进入文件所在目录，打开命令行终端，执行：
+
+```
+go mod init
+go run main.go
+```
+
+会显示一些打印结果：
+
+```
+init hello world
+1 2 3
+hello world
+type:bool:true
+type:int:3
+type:float64:6
+type:string:hi
+type:[3]string:[1 2 3]
+type:[]int64:[1 2 3]
+type:map[string]int64:map[a:3 b:4]
+5 true
+0 false
+a>0
+1
+2
+3
+4
+5
+out
+i=9
+i=10
+0 9
+1 2
+2 3
+3 3
+a 3
+b 4
+f 5
+sum(h+i),h=4,i=6,10
+type:diy.Diy:{2 0}
+type:diy.Diy:{1 1}
+type:diy.Diy:{1 1}
+type:*diy.Diy:&{2 0}
+type:*diy.Diy:&{1 1}
+type:*diy.Diy:&{1 1}
+type:*diy.Diy:&{2 0}
+[]int64{0, 0, 0, 0, 0},cap:5,len:5
+[]int64{},cap:5,len:0
+map[string]int64{},len:0
+map[string]int64{},len:0
+[]int64(nil)
+[]int64{1}
+[]int64{1, 2, 3, 4, 5, 6}
+[]int64{1, 2, 3, 4, 5, 6, 7, 8, 9}
+[1 2]
+[1 2]
+[1 2 3 4 5 6 7 8 9]
+[1 2 3 4 5 6 7 8 9]
+```
+
+我们看到 `Golang` 语言只有小括号和大括号，不需要使用逗号来分隔代码，只有一种循环 `for`。
 
 接下来我们会分析这个例子。
 
@@ -411,273 +678,4 @@ func A(num int) int {
 
 `input` 是匿名函数的输入参数，匿名函数返回的值会赋予 `output`。
 
-## 完整程序
 
-现在我们来建立一个完整的程序 `main.go`：
-
-```go
-// Golang程序入口的包名必须为 main
-package main // import "golang"
-
-// 导入其他地方的包，包通过 go mod 机制寻找
-import (
-	"fmt"
-	"golang/diy"
-)
-
-// init函数在main函数之前执行
-func init() {
-	// 声明并初始化三个值
-	var i, j, k = 1, 2, 3
-	// 使用格式化包打印
-	fmt.Println("init hello world")
-	fmt.Println(i, j, k)
-}
-
-// 函数，两个数相加
-func sum(a, b int64) int64 {
-	return a + b
-}
-
-// 程序入口必须为 main 函数
-func main() {
-	// 未使用的变量，不允许声明
-	//cannot := 6
-
-	fmt.Println("hello world")
-
-	// 定义基本数据类型
-	p := true                             // bool
-	a := 3                                // int
-	b := 6.0                              // float64
-	c := "hi"                             // string
-	d := [3]string{"1", "2", "3"}         // array，基本不用到
-	e := []int64{1, 2, 3}                 // slice
-	f := map[string]int64{"a": 3, "b": 4} // map
-	fmt.Printf("type:%T:%v\n", p, p)
-	fmt.Printf("type:%T:%v\n", a, a)
-	fmt.Printf("type:%T:%v\n", b, b)
-	fmt.Printf("type:%T:%v\n", c, c)
-	fmt.Printf("type:%T:%v\n", d, d)
-	fmt.Printf("type:%T:%v\n", e, e)
-	fmt.Printf("type:%T:%v\n", f, f)
-
-	// 切片放值
-	e[0] = 9
-	// 切片增加值
-	e = append(e, 3)
-
-	// 增加map键值
-	f["f"] = 5
-
-	// 查找map键值
-	v, ok := f["f"]
-	fmt.Println(v, ok)
-	v, ok = f["ff"]
-	fmt.Println(v, ok)
-
-	// 判断语句
-	if a > 0 {
-		fmt.Println("a>0")
-	} else {
-		fmt.Println("a<=0")
-	}
-
-	// 死循环语句
-	a = 0
-	for {
-		if a >= 10 {
-			fmt.Println("out")
-			// 退出循环
-			break
-		}
-
-		a = a + 1
-		if a > 5 {
-			continue
-		} else {
-			fmt.Println(a)
-		}
-
-
-	}
-
-	// 循环语句
-	for i := 9; i <= 10; i++ {
-		fmt.Printf("i=%d\n", i)
-	}
-
-	// 循环切片
-	for k, v := range e {
-		fmt.Println(k, v)
-	}
-
-	// 循环map
-	for k, v := range f {
-		fmt.Println(k, v)
-	}
-
-	// 定义 int64 变量
-	var h, i int64 = 4, 6
-
-	// 使用函数
-	sum := sum(h, i)
-	fmt.Printf("sum(h+i),h=%v,i=%v,%v\n", h, i, sum)
-
-	// 新建结构体，值
-	g := diy.Diy{
-		A: 2,
-		//b: 4.0, // 小写成员不能导出
-	}
-
-	// 打印类型，值
-	fmt.Printf("type:%T:%v\n", g, g)
-
-	// 小写方法不能导出
-	//g.set(1,1)
-	g.Set(1, 1)
-	fmt.Printf("type:%T:%v\n", g, g) // 结构体值变化
-
-	g.Set2(3, 3)
-	fmt.Printf("type:%T:%v\n", g, g) // 结构体值未变化
-
-	// 新建结构体，引用
-	k := &diy.Diy{
-		A: 2,
-	}
-	fmt.Printf("type:%T:%v\n", k, k)
-	k.Set(1, 1)
-	fmt.Printf("type:%T:%v\n", k, k) // 结构体值变化
-	k.Set2(3, 3)
-	fmt.Printf("type:%T:%v\n", k, k) // 结构体值未变化
-
-	// 新建结构体，引用
-	m := new(diy.Diy)
-	m.A = 2
-	fmt.Printf("type:%T:%v\n", m, m)
-
-	s := make([]int64, 5)
-	s1 := make([]int64, 0, 5)
-	m1 := make(map[string]int64, 5)
-	m2 := make(map[string]int64)
-	fmt.Printf("%#v,cap:%#v,len:%#v\n", s, cap(s), len(s))
-	fmt.Printf("%#v,cap:%#v,len:%#v\n", s1, cap(s1), len(s1))
-	fmt.Printf("%#v,len:%#v\n", m1, len(m1))
-	fmt.Printf("%#v,len:%#v\n", m2, len(m2))
-
-	var ll []int64
-	fmt.Printf("%#v\n", ll)
-	ll = append(ll, 1)
-	fmt.Printf("%#v\n", ll)
-	ll = append(ll, 2, 3, 4, 5, 6)
-	fmt.Printf("%#v\n", ll)
-	ll = append(ll, []int64{7, 8, 9}...)
-	fmt.Printf("%#v\n", ll)
-
-	fmt.Println(ll[0:2])
-	fmt.Println(ll[:2])
-	fmt.Println(ll[0:])
-	fmt.Println(ll[:])
-}
-```
-
-在相同目录下新建 `diy` 文件夹，文件下新建一个 `diy.go` 文件（名字任取）：
-
-```go
-// 包名
-package diy
-
-// 结构体
-type Diy struct {
-	A int64   // 大写导出成员
-	b float64 // 小写不可以导出
-}
-
-// 引用结构体的方法，引用传递，会改变原有结构体的值
-func (diy *Diy) Set(a int64, b float64) {
-	diy.A = a
-	diy.b = b
-	return
-}
-
-// 值结构体的方法，值传递，不会改变原有结构体的值
-func (diy Diy) Set2(a int64, b float64) {
-	diy.A = a
-	diy.b = b
-	return
-}
-
-// 小写方法，不能导出
-func (diy Diy) set(a int64, b float64) {
-	diy.A = a
-	diy.b = b
-	return
-}
-
-// 小写函数，不能导出，只能在同一包下使用
-func sum(a, b int64) int64 {
-	return a + b
-}
-```
-
-进入文件所在目录，打开命令行终端，执行：
-
-```
-go mod init
-go run main.go
-```
-
-会显示一些打印结果：
-
-```
-init hello world
-1 2 3
-hello world
-type:bool:true
-type:int:3
-type:float64:6
-type:string:hi
-type:[3]string:[1 2 3]
-type:[]int64:[1 2 3]
-type:map[string]int64:map[a:3 b:4]
-5 true
-0 false
-a>0
-1
-2
-3
-4
-5
-out
-i=9
-i=10
-0 9
-1 2
-2 3
-3 3
-a 3
-b 4
-f 5
-sum(h+i),h=4,i=6,10
-type:diy.Diy:{2 0}
-type:diy.Diy:{1 1}
-type:diy.Diy:{1 1}
-type:*diy.Diy:&{2 0}
-type:*diy.Diy:&{1 1}
-type:*diy.Diy:&{1 1}
-type:*diy.Diy:&{2 0}
-[]int64{0, 0, 0, 0, 0},cap:5,len:5
-[]int64{},cap:5,len:0
-map[string]int64{},len:0
-map[string]int64{},len:0
-[]int64(nil)
-[]int64{1}
-[]int64{1, 2, 3, 4, 5, 6}
-[]int64{1, 2, 3, 4, 5, 6, 7, 8, 9}
-[1 2]
-[1 2]
-[1 2 3 4 5 6 7 8 9]
-[1 2 3 4 5 6 7 8 9]
-```
-
-我们看到 `Golang` 语言只有小括号和大括号，不需要使用逗号来分隔代码，只有一种循环 `for`。
