@@ -32,7 +32,7 @@ func (node *AVLTreeNode) UpdateHeight() {
 	if node.Right != nil {
 		rightHeight = node.Right.Height
 	}
-	// 哪个子树高算哪颗的
+	// 哪个子树高算哪棵的
 	maxHeight := leftHeight
 	if rightHeight > maxHeight {
 		maxHeight = rightHeight
@@ -257,7 +257,7 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 			return nil // 直接返回nil，表示直接该值删除
 		}
 
-		// 该节点有两颗子树，选择更高的哪个来替换
+		// 该节点有两棵子树，选择更高的哪个来替换
 		// 第二种情况，删除的节点下有两个子树，选择高度更高的子树下的节点来替换被删除的节点，如果左子树更高，选择左子树中最大的节点，也就是左子树最右边的叶子节点，如果右子树更高，选择右子树中最小的节点，也就是右子树最左边的叶子节点。最后，删除这个叶子节点。
 		if node.Left != nil && node.Right != nil {
 			// 左子树更高，拿左子树中最大值的节点替换

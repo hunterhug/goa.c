@@ -24,7 +24,7 @@ func NewBinarySearchTree() *BinarySearchTree {
 
 // 添加元素
 func (tree *BinarySearchTree) Add(value int64) {
-	// 如果没有树根，证明是颗空树，添加树根后返回
+	// 如果没有树根，证明是棵空树，添加树根后返回
 	if tree.Root == nil {
 		tree.Root = &BinarySearchTreeNode{Value: value}
 		return

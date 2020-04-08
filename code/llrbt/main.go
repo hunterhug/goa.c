@@ -16,7 +16,7 @@ type LLRBTree struct {
 	Root *LLRBTNode // 树根节点
 }
 
-// 新建一颗空树
+// 新建一棵空树
 func NewLLRBTree() *LLRBTree {
 	return &LLRBTree{}
 }

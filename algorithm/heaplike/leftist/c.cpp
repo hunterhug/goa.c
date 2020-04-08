@@ -107,7 +107,7 @@ private:
         right = temp;  
     }  
   
-    //合并两颗左偏树（返回合并之后左偏树的根结点）  
+    //合并两棵左偏树（返回合并之后左偏树的根结点）
     static Node<Type>*& Merge(Node<Type>*& t1, Node<Type>*& t2)  
     {  
   
@@ -233,7 +233,7 @@ int main()
     tree.Insert(7);  
     tree.Insert(6);  
     tree.Insert(0);  
-    cout<< "第一颗左偏树：" << endl;  
+    cout<< "第一棵左偏树：" << endl;
     tree.Print();  
   
     tree.DeleteRoot();  
@@ -249,9 +249,9 @@ int main()
     tr.Insert(5.5);  
     tr.Insert(6.6);  
   
-    cout<<"第二颗左偏树:"<<endl;  
+    cout<<"第二棵左偏树:"<<endl;
     tr.Print();  
-    cout <<"第二颗左偏树的根节点："<<tr.Root() << endl;  
+    cout <<"第二棵左偏树的根节点："<<tr.Root() << endl;
   
     tree.Merge(tr);  
     cout <<"合并后的左偏树为：" << endl;  
@@ -273,7 +273,7 @@ int main()
     tree2.Insert(7);  
     tree2.Insert(6);  
     tree2.Insert(0);  
-    cout<< "第一颗左偏树：" << endl;  
+    cout<< "第一棵左偏树：" << endl;
     tree2.Print();  
   
     tree2.DeleteRoot();  
@@ -289,9 +289,9 @@ int main()
     tr2.Insert(5.5);  
     tr2.Insert(6.6);  
   
-    cout<<"第二颗左偏树:"<<endl;  
+    cout<<"第二棵左偏树:"<<endl;
     tr2.Print();  
-    cout <<"第二颗左偏树的根节点："<<tr2.Root() << endl;  
+    cout <<"第二棵左偏树的根节点："<<tr2.Root() << endl;
   
     tree2.Merge(tr2);  
     cout <<"合并后的左偏树为：" << endl;  

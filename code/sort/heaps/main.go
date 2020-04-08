@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// 一个最大堆，一颗完全二叉树
+// 一个最大堆，一棵完全二叉树
 // 最大堆要求节点元素都不小于其左右孩子
 type Heap struct {
 	// 堆的大小
