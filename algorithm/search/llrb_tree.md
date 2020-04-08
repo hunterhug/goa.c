@@ -155,7 +155,7 @@ func NewLLRBTree() *LLRBTree {
 	return &LLRBTree{}
 }
 
-// 左链接的颜色
+// 节点的颜色
 func IsRed(node *LLRBTNode) bool {
 	if node == nil {
 		return false
@@ -771,7 +771,7 @@ type LLRBTNode struct {
 	Color bool       // 父亲指向该节点的链接颜色
 }
 
-// 左链接的颜色
+// 节点的颜色
 func IsRed(node *LLRBTNode) bool {
 	if node == nil {
 		return false

@@ -2,8 +2,8 @@ package main
 
 import "fmt"
 
-// 左倾红黑树实现
-// Left-leaning red-black tree
+// 普通红黑树实现
+// red-black tree
 
 // 定义颜色
 const (
@@ -11,27 +11,27 @@ const (
 	BLACK = false
 )
 
-// 左倾红黑树
-type LLRBTree struct {
-	Root *LLRBTNode // 树根节点
+// 普通红黑树
+type RBTree struct {
+	Root *RBTNode // 树根节点
 }
 
 // 新建一棵空树
-func NewLLRBTree() *LLRBTree {
-	return &LLRBTree{}
+func NewRBTree() *RBTree {
+	return &RBTree{}
 }
 
-// 左倾红黑树节点
-type LLRBTNode struct {
-	Value int64      // 值
-	Times int64      // 值出现的次数
-	Left  *LLRBTNode // 左子树
-	Right *LLRBTNode // 右子树
-	Color bool       // 父亲指向该节点的链接颜色
+// 普通红黑树节点
+type RBTNode struct {
+	Value int64    // 值
+	Times int64    // 值出现的次数
+	Left  *RBTNode // 左子树
+	Right *RBTNode // 右子树
+	Color bool     // 父亲指向该节点的链接颜色
 }
 
 // 节点的颜色
-func IsRed(node *LLRBTNode) bool {
+func IsRed(node *RBTNode) bool {
 	if node == nil {
 		return false
 	}
@@ -39,7 +39,7 @@ func IsRed(node *LLRBTNode) bool {
 }
 
 // 左旋转
-func RotateLeft(h *LLRBTNode) *LLRBTNode {
+func RotateLeft(h *RBTNode) *RBTNode {
 	if h == nil {
 		return nil
 	}
@@ -54,7 +54,7 @@ func RotateLeft(h *LLRBTNode) *LLRBTNode {
 }
 
 // 右旋转
-func RotateRight(h *LLRBTNode) *LLRBTNode {
+func RotateRight(h *RBTNode) *RBTNode {
 	if h == nil {
 		return nil
 	}
@@ -70,7 +70,7 @@ func RotateRight(h *LLRBTNode) *LLRBTNode {
 
 // 红色左移
 // 节点 h 是红节点，其左儿子和左儿子的左儿子都为黑节点，左移后使得其左儿子或左儿子的左儿子有一个是红色节点
-func MoveRedLeft(h *LLRBTNode) *LLRBTNode {
+func MoveRedLeft(h *RBTNode) *RBTNode {
 	// 应该确保 isRed(h) && !isRed(h.left) && !isRed(h.left.left)
 	ColorChange(h)
 
@@ -88,7 +88,7 @@ func MoveRedLeft(h *LLRBTNode) *LLRBTNode {
 
 // 红色右移
 // 节点 h 是红节点，其右儿子和右儿子的左儿子都为黑节点，右移后使得其右儿子或右儿子的右儿子有一个是红色节点
-func MoveRedRight(h *LLRBTNode) *LLRBTNode {
+func MoveRedRight(h *RBTNode) *RBTNode {
 	// 应该确保 isRed(h) && !isRed(h.right) && !isRed(h.right.left);
 	ColorChange(h)
 
@@ -104,7 +104,7 @@ func MoveRedRight(h *LLRBTNode) *LLRBTNode {
 }
 
 // 颜色变换
-func ColorChange(h *LLRBTNode) {
+func ColorChange(h *RBTNode) {
 	if h == nil {
 		return
 	}
@@ -113,8 +113,8 @@ func ColorChange(h *LLRBTNode) {
 	h.Right.Color = !h.Right.Color
 }
 
-// 左倾红黑树添加元素
-func (tree *LLRBTree) Add(value int64) {
+// 普通红黑树添加元素
+func (tree *RBTree) Add(value int64) {
 	// 跟节点开始添加元素，因为可能调整，所以需要将返回的节点赋值回根节点
 	tree.Root = tree.Root.Add(value)
 	// 根节点的链接永远都是黑色的
@@ -122,10 +122,10 @@ func (tree *LLRBTree) Add(value int64) {
 }
 
 // 往节点添加元素
-func (node *LLRBTNode) Add(value int64) *LLRBTNode {
+func (node *RBTNode) Add(value int64) *RBTNode {
 	// 插入的节点为空，将其链接颜色设置为红色，并返回
 	if node == nil {
-		return &LLRBTNode{
+		return &RBTNode{
 			Value: value,
 			Color: RED,
 		}
@@ -165,7 +165,7 @@ func (node *LLRBTNode) Add(value int64) *LLRBTNode {
 }
 
 // 找出最小值的节点
-func (tree *LLRBTree) FindMinValue() *LLRBTNode {
+func (tree *RBTree) FindMinValue() *RBTNode {
 	if tree.Root == nil {
 		// 如果是空树，返回空
 		return nil
@@ -174,7 +174,7 @@ func (tree *LLRBTree) FindMinValue() *LLRBTNode {
 	return tree.Root.FindMinValue()
 }
 
-func (node *LLRBTNode) FindMinValue() *LLRBTNode {
+func (node *RBTNode) FindMinValue() *RBTNode {
 	// 左子树为空，表面已经是最左的节点了，该值就是最小值
 	if node.Left == nil {
 		return node
@@ -185,7 +185,7 @@ func (node *LLRBTNode) FindMinValue() *LLRBTNode {
 }
 
 // 找出最大值的节点
-func (tree *LLRBTree) FindMaxValue() *LLRBTNode {
+func (tree *RBTree) FindMaxValue() *RBTNode {
 	if tree.Root == nil {
 		// 如果是空树，返回空
 		return nil
@@ -194,7 +194,7 @@ func (tree *LLRBTree) FindMaxValue() *LLRBTNode {
 	return tree.Root.FindMaxValue()
 }
 
-func (node *LLRBTNode) FindMaxValue() *LLRBTNode {
+func (node *RBTNode) FindMaxValue() *RBTNode {
 	// 右子树为空，表面已经是最右的节点了，该值就是最大值
 	if node.Right == nil {
 		return node
@@ -205,11 +205,11 @@ func (node *LLRBTNode) FindMaxValue() *LLRBTNode {
 }
 
 // 查找指定节点
-func (tree *LLRBTree) Find(value int64) *LLRBTNode {
+func (tree *RBTree) Find(value int64) *RBTNode {
 	return tree.Root.Find(value)
 }
 
-func (node *LLRBTNode) Find(value int64) *LLRBTNode {
+func (node *RBTNode) Find(value int64) *RBTNode {
 	if value == node.Value {
 		// 如果该节点刚刚等于该值，那么返回该节点
 		return node
@@ -231,11 +231,11 @@ func (node *LLRBTNode) Find(value int64) *LLRBTNode {
 }
 
 // 中序遍历
-func (tree *LLRBTree) MidOrder() {
+func (tree *RBTree) MidOrder() {
 	tree.Root.MidOrder()
 }
 
-func (node *LLRBTNode) MidOrder() {
+func (node *RBTNode) MidOrder() {
 	if node == nil {
 		return
 	}
@@ -252,8 +252,8 @@ func (node *LLRBTNode) MidOrder() {
 	node.Right.MidOrder()
 }
 
-// 修复左倾红黑树特征
-func (node *LLRBTNode) FixUp() *LLRBTNode {
+// 修复普通红黑树特征
+func (node *RBTNode) FixUp() *RBTNode {
 	// 辅助变量hunterhugxx-6833066
 	nowNode := node
 
@@ -276,7 +276,7 @@ func (node *LLRBTNode) FixUp() *LLRBTNode {
 }
 
 // 对该节点所在的子树删除最小元素
-func (node *LLRBTNode) DeleteMin() *LLRBTNode {
+func (node *RBTNode) DeleteMin() *RBTNode {
 	// 辅助变量
 	nowNode := node
 
@@ -293,12 +293,12 @@ func (node *LLRBTNode) DeleteMin() *LLRBTNode {
 	// 递归从左子树删除
 	nowNode.Left = nowNode.Left.DeleteMin()
 
-	// 修复左倾红黑树特征
+	// 修复普通红黑树特征
 	return nowNode.FixUp()
 }
 
-// 左倾红黑树删除元素
-func (tree *LLRBTree) Delete(value int64) {
+// 普通红黑树删除元素
+func (tree *RBTree) Delete(value int64) {
 	// 当找不到值时直接返回
 	if tree.Find(value) == nil {
 		return
@@ -318,7 +318,7 @@ func (tree *LLRBTree) Delete(value int64) {
 }
 
 // 对该节点所在的子树删除元素
-func (node *LLRBTNode) Delete(value int64) *LLRBTNode {
+func (node *RBTNode) Delete(value int64) *RBTNode {
 	// 辅助变量
 	nowNode := node
 	// 删除的元素比子树根节点小，需要从左子树删除
@@ -340,7 +340,7 @@ func (node *LLRBTNode) Delete(value int64) *LLRBTNode {
 		}
 
 		// 值相等，且没有右孩子节点，那么该节点一定是要被删除的叶子节点，直接删除
-		// 为什么呢，反证，它没有右儿子，但有左儿子，因为左倾红黑树的特征，那么左儿子一定是红色，但是前面的语句已经把红色左儿子右旋到右边，不应该出现右儿子为空。
+		// 为什么呢，反证，它没有右儿子，但有左儿子，因为普通红黑树的特征，那么左儿子一定是红色，但是前面的语句已经把红色左儿子右旋到右边，不应该出现右儿子为空。
 		if value == nowNode.Value && nowNode.Right == nil {
 			return nil
 		}
@@ -365,12 +365,12 @@ func (node *LLRBTNode) Delete(value int64) *LLRBTNode {
 		}
 	}
 
-	// 最后，删除叶子节点后，需要恢复左倾红黑树特征
+	// 最后，删除叶子节点后，需要恢复普通红黑树特征
 	return nowNode.FixUp()
 }
 
 func main() {
-	tree := NewLLRBTree()
+	tree := NewRBTree()
 	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113, 115, 18}
 	for _, v := range values {
 		tree.Add(v)

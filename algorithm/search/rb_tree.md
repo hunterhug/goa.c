@@ -116,7 +116,115 @@
 
 区别：`2-3` 树与左倾红黑树则是一一对应，而 `2-3-4` 树可以对应多棵普通红黑树，是因为它允许了红链接右倾。
 
+### 2.2. 节点旋转和颜色转换
+
+首先，我们要定义树的结构 `RBTree` ，以及表示普通红黑树的节点 `RBTNode`：
+
+```go
+// 定义颜色
+const (
+	RED   = true
+	BLACK = false
+)
+
+// 普通红黑树
+type RBTree struct {
+	Root *RBTNode // 树根节点
+}
+
+// 新建一棵空树
+func NewRBTree() *RBTree {
+	return &RBTree{}
+}
+
+// 普通红黑树节点
+type RBTNode struct {
+	Value int64    // 值
+	Times int64    // 值出现的次数
+	Left  *RBTNode // 左子树
+	Right *RBTNode // 右子树
+	Color bool     // 父亲指向该节点的链接颜色
+}
+
+// 节点的颜色
+func IsRed(node *RBTNode) bool {
+	if node == nil {
+		return false
+	}
+	return node.Color == RED
+}
+```
+
+在节点 `RBTNode` 中，我们存储的元素字段为 `Value`，由于可能有重复的元素插入，所以多了一个 `Times` 字段，表示该元素出现几次。
+
+当然，红黑树中的红黑颜色使用 `Color` 定义，表示父亲指向该节点的链接颜色。为了方便，我们还构造了一个辅助函数 `IsRed()`。
+
+在元素添加和实现的过程中，需要做调整操作，有两种旋转操作，对某节点的右链接进行左旋转，或者左链接进行右旋转。
+
+如图是对节点 `h` 的右链接进行左旋转：
+
+![](../../picture/llrb_tree_left_rotate.jpg)
+
+代码实现如下：
+
+```go
+// 左旋转
+func RotateLeft(h *LLRBTNode) *LLRBTNode {
+	if h == nil {
+		return nil
+	}
+
+	// 看图理解
+	x := h.Right
+	h.Right = x.Left
+	x.Left = h
+	x.Color = h.Color
+	h.Color = RED
+	return x
+}
+```
+
+如图是对节点 `h` 的左链接进行右旋转：
+
+![](../../picture/llrb_tree_right_rotate.jpg)
+
+代码实现如下：
+
+```go
+// 右旋转
+func RotateRight(h *LLRBTNode) *LLRBTNode {
+	if h == nil {
+		return nil
+	}
+
+	// 看图理解
+	x := h.Left
+	h.Left = x.Right
+	x.Right = h
+	x.Color = h.Color
+	h.Color = RED
+	return x
+}
+```
+
+旋转作为局部调整，并不影响全局。
+
 ### 2.3. 添加元素实现
+
+每次添加元素节点时，都将该节点 `Color` 字段，也就是父亲指向它的链接设置为 `RED` 红色。
+
+接着判断其父亲是否有连续两个红左链接，也就是有连续两个红节点，必须进行旋转操作。
+
+主要有以下这几种情况。
+
+插入元素到2节点，直接让节点变为3节点，如图：
+
+![](../../picture/br_tree_insert_2node.jpg)
+
+与左倾红黑树的区别是，不再需要左旋，允许右链接是红色。
+
+
+
 
 ### 2.4. 添加元素算法分析
 
