@@ -163,11 +163,58 @@ func IsRed(node *RBTNode) bool {
 
 ![](../../picture/br_tree_rotate_left.jpg)
 
+代码如下：
+
+```go
+// 左旋转
+func RotateLeft(h *RBTNode) *RBTNode {
+	if h == nil {
+		return nil
+	}
+
+	// 看图理解
+	x := h.Right
+	h.Right = x.Left
+	x.Left = h
+	return x
+}
+```
+
 或者左链接进行右旋转，如图：
 
 ![](../../picture/br_tree_rotate_right.jpg)
 
+代码如下：
+
+```go
+// 右旋转
+func RotateRight(h *RBTNode) *RBTNode {
+	if h == nil {
+		return nil
+	}
+
+	// 看图理解
+	x := h.Left
+	h.Left = x.Right
+	x.Right = h
+	return x
+}
+```
+
 旋转作为局部调整，并不影响全局。
+
+旋转后可能需要对某些节点进行变色处理：
+
+```go
+// 设置节点颜色
+func SetColor(node *RBTNode, color bool) {
+	if node != nil {
+		node.Color = color
+	}
+}
+```
+
+可以继续查看下面的内容。
 
 ### 2.3. 添加元素实现
 

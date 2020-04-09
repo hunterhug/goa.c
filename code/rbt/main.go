@@ -38,6 +38,13 @@ func IsRed(node *RBTNode) bool {
 	return node.Color == RED
 }
 
+// 设置节点颜色
+func SetColor(node *RBTNode, color bool) {
+	if node != nil {
+		node.Color = color
+	}
+}
+
 // 左旋转
 func RotateLeft(h *RBTNode) *RBTNode {
 	if h == nil {
@@ -48,8 +55,6 @@ func RotateLeft(h *RBTNode) *RBTNode {
 	x := h.Right
 	h.Right = x.Left
 	x.Left = h
-	x.Color = h.Color
-	h.Color = RED
 	return x
 }
 
@@ -63,8 +68,6 @@ func RotateRight(h *RBTNode) *RBTNode {
 	x := h.Left
 	h.Left = x.Right
 	x.Right = h
-	x.Color = h.Color
-	h.Color = RED
 	return x
 }
 
