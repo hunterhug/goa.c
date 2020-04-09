@@ -15,3 +15,4 @@
 - [左倾红黑树代码实现：https://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html](https://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html)
 - [通过2-3-4树理解红黑树：https://www.cnblogs.com/zhenbianshu/p/8185345.htm](https://www.cnblogs.com/zhenbianshu/p/8185345.htm)
 - [维基百科，2–3–4 tree：https://en.wikipedia.org/wiki/2%E2%80%933%E2%80%934_tree](https://en.wikipedia.org/wiki/2%E2%80%933%E2%80%934_tree)
+- [30张图带你彻底理解红黑树：https://www.jianshu.com/p/e136ec79235c](https://www.jianshu.com/p/e136ec79235c)
