@@ -145,19 +145,11 @@ type RBTNode struct {
 	Right *RBTNode // 右子树
 	Color bool     // 父亲指向该节点的链接颜色
 }
-
-// 节点的颜色
-func IsRed(node *RBTNode) bool {
-	if node == nil {
-		return false
-	}
-	return node.Color == RED
-}
 ```
 
 在节点 `RBTNode` 中，我们存储的元素字段为 `Value`，由于可能有重复的元素插入，所以多了一个 `Times` 字段，表示该元素出现几次。
 
-当然，红黑树中的红黑颜色使用 `Color` 定义，表示父亲指向该节点的链接颜色。为了方便，我们还构造了一个辅助函数 `IsRed()`。
+当然，红黑树中的红黑颜色使用 `Color` 定义，表示父亲指向该节点的链接颜色。
 
 在元素添加和实现的过程中，需要做调整操作，有两种旋转操作，对某节点的右链接进行左旋转，如图：
 
@@ -241,6 +233,8 @@ func SetColor(node *RBTNode, color bool) {
 代码实现如下：
 
 ```go
+
+jj
 ```
 
 ### 2.4. 添加元素算法分析
@@ -264,7 +258,7 @@ func SetColor(node *RBTNode, color bool) {
 
 ![](../../picture/br_tree_delete_1.jpg)
 
-图例中`21`，`22`相当于向兄弟借值，而`1`和`24`相当于向父亲的一个值合并后调整。
+图例中 `21`， `22` 相当于向兄弟借值，而 `1` 和 `24` 相当于向父亲的一个值合并后调整。
 
 我们仔细分析一下：
 
@@ -297,6 +291,7 @@ func SetColor(node *RBTNode, color bool) {
 代码实现如下：
 
 ```go
+jjj
 ```
 
 ### 2.6. 删除元素算法分析
