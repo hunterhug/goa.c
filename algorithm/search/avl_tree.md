@@ -810,7 +810,7 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 删除操作的时间复杂度和添加操作一样。区别在于，添加操作最多旋转两次就可以达到树的平衡，而删除操作可能会旋转超过两次。
 
-如图是一课比较糟糕的 AVL 树：
+如图是一棵比较糟糕的 AVL 树：
 
 ![](../../picture/avl_tree_delete_worst.jpg)
 
