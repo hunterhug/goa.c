@@ -140,11 +140,11 @@ func (s *Set) Add(item int) {
 	s.Lock()
 	defer s.Unlock()
 	s.m[item] = struct{}{} // 实际往字典添加这个键
-	s.len = s.len + 1      // 集合大小增加
+	s.len = len(s.m)       // 重新计算元素数量
 }
 ```
 
-首先，加并发锁，实现线程安全，然后往结构体 `s *Set` 里面的内置 `map` 添加该元素：`item`，元素作为字典的键，会自动去重。同时，集合大小加1。
+首先，加并发锁，实现线程安全，然后往结构体 `s *Set` 里面的内置 `map` 添加该元素：`item`，元素作为字典的键，会自动去重。同时，集合大小重新生成。
 
 时间复杂度等于字典设置键值对的复杂度，哈希不冲突的时间复杂度为：`O(1)`，否则为 `O(n)`，可看哈希表实现一章。
 
@@ -157,11 +157,12 @@ func (s *Set) Remove(item int) {
 	s.Unlock()
 
 	// 集合没元素直接返回
-	if s.len == 0{
+	if s.len == 0 {
 		return
 	}
+
 	delete(s.m, item) // 实际从字典删除这个键
-	s.len = s.len - 1 // 集合大小减少
+	s.len = len(s.m)  // 重新计算元素数量
 }
 ```
 
@@ -269,15 +270,21 @@ func (s *Set) Add(item int) {
 	s.Lock()
 	defer s.Unlock()
 	s.m[item] = struct{}{} // 实际往字典添加这个键
-	s.len = s.len + 1      // 集合大小增加
+	s.len = len(s.m)       // 重新计算元素数量
 }
 
 // 移除一个元素
 func (s *Set) Remove(item int) {
 	s.Lock()
 	s.Unlock()
+
+	// 集合没元素直接返回
+	if s.len == 0 {
+		return
+	}
+
 	delete(s.m, item) // 实际从字典删除这个键
-	s.len = s.len - 1 // 集合大小减少
+	s.len = len(s.m)  // 重新计算元素数量
 }
 
 // 查看是否存在元素
@@ -320,7 +327,20 @@ func (s *Set) List() []int {
 	return list
 }
 
+// 为什么使用空结构体
+func other() {
+	a := struct{}{}
+	b := struct{}{}
+	if a == b {
+		fmt.Printf("right:%p\n", &a)
+	}
+
+	fmt.Println(unsafe.Sizeof(a))
+}
+
 func main() {
+	//other()
+
 	// 初始化一个容量为5的不可重复集合
 	s := NewSet(5)
 

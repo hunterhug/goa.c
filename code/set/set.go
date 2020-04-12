@@ -26,7 +26,7 @@ func (s *Set) Add(item int) {
 	s.Lock()
 	defer s.Unlock()
 	s.m[item] = struct{}{} // 实际往字典添加这个键
-	s.len = s.len + 1      // 集合大小增加
+	s.len = len(s.m)       // 重新计算元素数量
 }
 
 // 移除一个元素
@@ -35,11 +35,12 @@ func (s *Set) Remove(item int) {
 	s.Unlock()
 
 	// 集合没元素直接返回
-	if s.len == 0{
+	if s.len == 0 {
 		return
 	}
+
 	delete(s.m, item) // 实际从字典删除这个键
-	s.len = s.len - 1 // 集合大小减少
+	s.len = len(s.m)  // 重新计算元素数量
 }
 
 // 查看是否存在元素
