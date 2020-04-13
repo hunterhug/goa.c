@@ -738,7 +738,7 @@ func (node *LLRBTNode) MidOrder() {
 
 查找操作逻辑与通用的二叉查找树一样，并无区别。
 
-### 2.7. 验证是否是一棵左倾红黑树
+### 2.8. 验证是否是一棵左倾红黑树
 
 如何确保我们的代码实现的就是一棵左倾红黑树呢，可以进行验证：
 
@@ -870,7 +870,7 @@ func (node *LLRBTNode) IsBalanced(blackNum int) bool {
 
 运行请看完整代码。
 
-### 2.8. 完整程序
+### 2.9. 完整程序
 
 ```go
 package main
