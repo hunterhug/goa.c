@@ -59,6 +59,10 @@ func NewAVLTree() *AVLTree {
 ```go
 // 更新节点的树高度
 func (node *AVLTreeNode) UpdateHeight() {
+	if node == nil {
+		return
+	}
+
 	var leftHeight, rightHeight int64 = 0, 0
 	if node.Left != nil {
 		leftHeight = node.Left.Height
@@ -511,16 +515,6 @@ func (node *AVLTreeNode) MidOrder() {
 实现代码如下：
 
 ```go
-// 删除指定的元素
-func (tree *AVLTree) Delete(value int64) {
-	if tree.Root == nil {
-		// 如果是空树，直接返回
-		return
-	}
-
-	tree.Root = tree.Root.Delete(value)
-}
-
 func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 	if node == nil {
 		// 如果是空树，直接返回
@@ -529,9 +523,13 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 	if value < node.Value {
 		// 从左子树开始删除
 		node.Left = node.Left.Delete(value)
+		// 删除后要更新该子树高度
+		node.Left.UpdateHeight()
 	} else if value > node.Value {
 		// 从右子树开始删除
 		node.Right = node.Right.Delete(value)
+		// 删除后要更新该子树高度
+		node.Right.UpdateHeight()
 	} else {
 		// 找到该值对应的节点
 		// 该节点没有左右子树
@@ -556,6 +554,8 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 				// 把最大的节点删掉
 				node.Left = node.Left.Delete(maxNode.Value)
+				// 删除后要更新该子树高度
+				node.Left.UpdateHeight()
 			} else {
 				// 右子树更高，拿右子树中最小值的节点替换
 				minNode := node.Right
@@ -569,6 +569,8 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 				// 把最小的节点删掉
 				node.Right = node.Right.Delete(minNode.Value)
+				// 删除后要更新该子树高度
+				node.Right.UpdateHeight()
 			}
 		} else {
 			// 只有左子树或只有右子树
@@ -587,7 +589,7 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 				node.Right = nil
 			}
 		}
-		
+
 		// 找到值后，进行替换删除后，直接返回该节点
 		return node
 	}
@@ -656,6 +658,8 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 				// 把最大的节点删掉
 				node.Left = node.Left.Delete(maxNode.Value)
+				// 删除后要更新该子树高度
+				node.Left.UpdateHeight()
 			} else {
 				// 右子树更高，拿右子树中最小值的节点替换
 				minNode := node.Right
@@ -669,6 +673,8 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 				// 把最小的节点删掉
 				node.Right = node.Right.Delete(minNode.Value)
+				// 删除后要更新该子树高度
+				node.Right.UpdateHeight()
 			}
 		}
 ```
@@ -816,7 +822,124 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 删除节点1，旋转可以一直旋转到根节点，比插入旋转最多旋转两次的次数更多。
 
-##  六、AVL树完整代码
+## 六、验证是否是一棵AVL树
+
+如何确保我们的代码实现的就是一棵 AVL 树呢，可以进行验证：
+
+```go
+// 验证是不是棵AVL树
+func (tree *AVLTree) IsAVLTree() bool {
+	if tree == nil || tree.Root == nil {
+		return true
+	}
+
+	// 判断节点是否符合 AVL 树的定义
+	if tree.Root.IsRight() {
+		return true
+	}
+
+	return false
+}
+
+// 判断节点是否符合 AVL 树的定义
+func (node *AVLTreeNode) IsRight() bool {
+	if node == nil {
+		return true
+	}
+
+	// 左右子树都为空，那么是叶子节点
+	if node.Left == nil && node.Right == nil {
+		// 叶子节点高度应该为1
+		if node.Height == 1 {
+			return true
+		} else {
+			fmt.Println("leaf node height is ", node.Height)
+			return false
+		}
+	} else if node.Left != nil && node.Right != nil {
+		// 左右子树都是满的
+		// 左儿子必须比父亲小，右儿子必须比父亲大
+		if node.Left.Value < node.Value && node.Right.Value > node.Value {
+		} else {
+			// 不符合 AVL 树定义
+			fmt.Printf("father is %v lchild is %v, rchild is %v\n", node.Value, node.Left.Value, node.Right.Value)
+			return false
+		}
+
+		bal := node.Left.Height - node.Right.Height
+		if bal < 0 {
+			bal = -bal
+		}
+
+		// 子树高度差不能大于1
+		if bal > 1 {
+			fmt.Println("sub tree height bal is ", bal)
+			return false
+		}
+
+		// 如果左子树比右子树高，那么父亲的高度等于左子树+1
+		if node.Left.Height > node.Right.Height {
+			if node.Height == node.Left.Height+1 {
+			} else {
+				fmt.Printf("%#v height:%v,left sub tree height: %v,right sub tree height:%v\n", node, node.Height, node.Left.Height, node.Right.Height)
+				return false
+			}
+		} else {
+			// 如果右子树比左子树高，那么父亲的高度等于右子树+1
+			if node.Height == node.Right.Height+1 {
+			} else {
+				fmt.Printf("%#v height:%v,left sub tree height: %v,right sub tree height:%v\n", node, node.Height, node.Left.Height, node.Right.Height)
+				return false
+			}
+		}
+
+		// 递归判断子树
+		if !node.Left.IsRight() {
+			return false
+		}
+
+		// 递归判断子树
+		if !node.Right.IsRight() {
+			return false
+		}
+
+	} else {
+		// 只存在一棵子树
+		if node.Right != nil {
+			// 子树高度只能是1
+			if node.Right.Height == 1 && node.Right.Left == nil && node.Right.Right == nil {
+				if node.Right.Value > node.Value {
+					// 右节点必须比父亲大
+				} else {
+					fmt.Printf("%v,(%#v,%#v) child", node.Value, node.Right, node.Left)
+					return false
+				}
+			} else {
+				fmt.Printf("%v,(%#v,%#v) child", node.Value, node.Right, node.Left)
+				return false
+			}
+		} else {
+			if node.Left.Height == 1 && node.Left.Left == nil && node.Left.Right == nil {
+				if node.Left.Value < node.Value {
+					// 左节点必须比父亲小
+				} else {
+					fmt.Printf("%v,(%#v,%#v) child", node.Value, node.Right, node.Left)
+					return false
+				}
+			} else {
+				fmt.Printf("%v,(%#v,%#v) child", node.Value, node.Right, node.Left)
+				return false
+			}
+		}
+	}
+
+	return true
+}
+```
+
+运行请看完整代码。
+
+## 七、AVL树完整代码
 
 ```go
 package main
@@ -846,6 +969,10 @@ func NewAVLTree() *AVLTree {
 
 // 更新节点的树高度
 func (node *AVLTreeNode) UpdateHeight() {
+	if node == nil {
+		return
+	}
+
 	var leftHeight, rightHeight int64 = 0, 0
 	if node.Left != nil {
 		leftHeight = node.Left.Height
@@ -1067,9 +1194,13 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 	if value < node.Value {
 		// 从左子树开始删除
 		node.Left = node.Left.Delete(value)
+		// 删除后要更新该子树高度
+		node.Left.UpdateHeight()
 	} else if value > node.Value {
 		// 从右子树开始删除
 		node.Right = node.Right.Delete(value)
+		// 删除后要更新该子树高度
+		node.Right.UpdateHeight()
 	} else {
 		// 找到该值对应的节点
 		// 该节点没有左右子树
@@ -1094,6 +1225,8 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 				// 把最大的节点删掉
 				node.Left = node.Left.Delete(maxNode.Value)
+				// 删除后要更新该子树高度
+				node.Left.UpdateHeight()
 			} else {
 				// 右子树更高，拿右子树中最小值的节点替换
 				minNode := node.Right
@@ -1107,6 +1240,8 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 
 				// 把最小的节点删掉
 				node.Right = node.Right.Delete(minNode.Value)
+				// 删除后要更新该子树高度
+				node.Right.UpdateHeight()
 			}
 		} else {
 			// 只有左子树或只有右子树
@@ -1179,6 +1314,115 @@ func (node *AVLTreeNode) MidOrder() {
 	node.Right.MidOrder()
 }
 
+// 验证是不是棵AVL树
+func (tree *AVLTree) IsAVLTree() bool {
+	if tree == nil || tree.Root == nil {
+		return true
+	}
+
+	// 判断节点是否符合 AVL 树的定义
+	if tree.Root.IsRight() {
+		return true
+	}
+
+	return false
+}
+
+// 判断节点是否符合 AVL 树的定义
+func (node *AVLTreeNode) IsRight() bool {
+	if node == nil {
+		return true
+	}
+
+	// 左右子树都为空，那么是叶子节点
+	if node.Left == nil && node.Right == nil {
+		// 叶子节点高度应该为1
+		if node.Height == 1 {
+			return true
+		} else {
+			fmt.Println("leaf node height is ", node.Height)
+			return false
+		}
+	} else if node.Left != nil && node.Right != nil {
+		// 左右子树都是满的
+		// 左儿子必须比父亲小，右儿子必须比父亲大
+		if node.Left.Value < node.Value && node.Right.Value > node.Value {
+		} else {
+			// 不符合 AVL 树定义
+			fmt.Printf("father is %v lchild is %v, rchild is %v\n", node.Value, node.Left.Value, node.Right.Value)
+			return false
+		}
+
+		bal := node.Left.Height - node.Right.Height
+		if bal < 0 {
+			bal = -bal
+		}
+
+		// 子树高度差不能大于1
+		if bal > 1 {
+			fmt.Println("sub tree height bal is ", bal)
+			return false
+		}
+
+		// 如果左子树比右子树高，那么父亲的高度等于左子树+1
+		if node.Left.Height > node.Right.Height {
+			if node.Height == node.Left.Height+1 {
+			} else {
+				fmt.Printf("%#v height:%v,left sub tree height: %v,right sub tree height:%v\n", node, node.Height, node.Left.Height, node.Right.Height)
+				return false
+			}
+		} else {
+			// 如果右子树比左子树高，那么父亲的高度等于右子树+1
+			if node.Height == node.Right.Height+1 {
+			} else {
+				fmt.Printf("%#v height:%v,left sub tree height: %v,right sub tree height:%v\n", node, node.Height, node.Left.Height, node.Right.Height)
+				return false
+			}
+		}
+
+		// 递归判断子树
+		if !node.Left.IsRight() {
+			return false
+		}
+
+		// 递归判断子树
+		if !node.Right.IsRight() {
+			return false
+		}
+
+	} else {
+		// 只存在一棵子树
+		if node.Right != nil {
+			// 子树高度只能是1
+			if node.Right.Height == 1 && node.Right.Left == nil && node.Right.Right == nil {
+				if node.Right.Value > node.Value {
+					// 右节点必须比父亲大
+				} else {
+					fmt.Printf("%v,(%#v,%#v) child", node.Value, node.Right, node.Left)
+					return false
+				}
+			} else {
+				fmt.Printf("%v,(%#v,%#v) child", node.Value, node.Right, node.Left)
+				return false
+			}
+		} else {
+			if node.Left.Height == 1 && node.Left.Left == nil && node.Left.Right == nil {
+				if node.Left.Value < node.Value {
+					// 左节点必须比父亲小
+				} else {
+					fmt.Printf("%v,(%#v,%#v) child", node.Value, node.Right, node.Left)
+					return false
+				}
+			} else {
+				fmt.Printf("%v,(%#v,%#v) child", node.Value, node.Right, node.Left)
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
 func main() {
 	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113}
 
@@ -1213,6 +1457,10 @@ func main() {
 	tree.Delete(10)
 	tree.Delete(2)
 	tree.Delete(3)
+	tree.Add(4)
+	tree.Add(3)
+	tree.Add(10)
+	tree.Delete(111)
 	node = tree.Find(9)
 	if node != nil {
 		fmt.Println("find it 9!")
@@ -1222,6 +1470,12 @@ func main() {
 
 	// 中序遍历，实现排序
 	tree.MidOrder()
+
+	if tree.IsAVLTree() {
+		fmt.Println("is a avl tree")
+	} else {
+		fmt.Println("is not avl tree")
+	}
 }
 
 ```
@@ -1234,17 +1488,22 @@ find max value: &{113 0 1 <nil> <nil>}
 not find it 99!
 find it 9!
 not find it 9!
-value: 7  tree height: -1
-value: 23  tree height: 0
-value: 102  tree height: -1
+value: 3  tree height: 0
+value: 4  tree height: 1
+value: 7  tree height: 0
+value: 10  tree height: 0
+value: 23  tree height: 1
+value: 102  tree height: 1
 value: 109  tree height: 0
-value: 111  tree height: -1
-value: 112  tree height: -1
+value: 112  tree height: 0
 value: 113  tree height: 0
+is a avl tree
 ```
+
+可以看到，它确实是一棵 AVL 树。
 
 PS：我们的程序是递归程序，如果改写为非递归形式，效率和性能会更好，在此就不实现了，理解AVL树添加和删除的总体思路即可。
 
-## 七、应用场景
+## 八、应用场景
 
 AVL 树作为严格平衡的二叉查找树，在 `windows` 对进程地址空间的管理被使用到。
