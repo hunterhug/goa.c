@@ -139,17 +139,60 @@ func NewRBTree() *RBTree {
 
 // 普通红黑树节点
 type RBTNode struct {
-	Value int64    // 值
-	Times int64    // 值出现的次数
-	Left  *RBTNode // 左子树
-	Right *RBTNode // 右子树
-	Color bool     // 父亲指向该节点的链接颜色
+	Value  int64    // 值
+	Times  int64    // 值出现的次数
+	Left   *RBTNode // 左子树
+	Right  *RBTNode // 右子树
+	Parent *RBTNode // 父节点
+	Color  bool     // 父亲指向该节点的链接颜色
+}
+
+// 节点的颜色
+func IsRed(node *RBTNode) bool {
+	if node == nil {
+		return false
+	}
+	return node.Color == RED
+}
+
+// 返回节点的父亲节点
+func ParentOf(node *RBTNode) *RBTNode {
+	if node == nil {
+		return nil
+	}
+
+	return node.Parent
+}
+
+// 返回节点的左子节点
+func LeftOf(node *RBTNode) *RBTNode {
+	if node == nil {
+		return nil
+	}
+
+	return node.Left
+}
+
+// 返回节点的右子节点
+func RightOf(node *RBTNode) *RBTNode {
+	if node == nil {
+		return nil
+	}
+
+	return node.Right
+}
+
+// 设置节点颜色
+func SetColor(node *RBTNode, color bool) {
+	if node != nil {
+		node.Color = color
+	}
 }
 ```
 
 在节点 `RBTNode` 中，我们存储的元素字段为 `Value`，由于可能有重复的元素插入，所以多了一个 `Times` 字段，表示该元素出现几次。
 
-当然，红黑树中的红黑颜色使用 `Color` 定义，表示父亲指向该节点的链接颜色。
+当然，红黑树中的红黑颜色使用 `Color` 定义，表示父亲指向该节点的链接颜色。我们还多创建了几个辅助函数。
 
 在元素添加和实现的过程中，需要做调整操作，有两种旋转操作，对某节点的右链接进行左旋转，如图：
 
@@ -158,17 +201,29 @@ type RBTNode struct {
 代码如下：
 
 ```go
-// 左旋转
-func RotateLeft(h *RBTNode) *RBTNode {
-	if h == nil {
-		return nil
-	}
+// 对某节点左旋转
+func (tree *RBTree) RotateLeft(h *RBTNode) {
+	if h != nil {
 
-	// 看图理解
-	x := h.Right
-	h.Right = x.Left
-	x.Left = h
-	return x
+		// 看图理解
+		x := h.Right
+		h.Right = x.Left
+
+		if x.Left != nil {
+			x.Left.Parent = h
+		}
+
+		x.Parent = h.Parent
+		if h.Parent == nil {
+			tree.Root = x
+		} else if h.Parent.Left == h {
+			h.Parent.Left = x
+		} else {
+			h.Parent.Right = x
+		}
+		x.Left = h
+		h.Parent = x
+	}
 }
 ```
 
@@ -179,32 +234,33 @@ func RotateLeft(h *RBTNode) *RBTNode {
 代码如下：
 
 ```go
-// 右旋转
-func RotateRight(h *RBTNode) *RBTNode {
-	if h == nil {
-		return nil
-	}
+// 对某节点右旋转
+func (tree *RBTree) RotateRight(h *RBTNode) {
+	if h != nil {
 
-	// 看图理解
-	x := h.Left
-	h.Left = x.Right
-	x.Right = h
-	return x
+		// 看图理解
+		x := h.Left
+		h.Left = x.Right
+
+		if x.Right != nil {
+			x.Right.Parent = h
+		}
+
+		x.Parent = h.Parent
+		if h.Parent == nil {
+			tree.Root = x
+		} else if h.Parent.Right == h {
+			h.Parent.Right = x
+		} else {
+			h.Parent.Left = x
+		}
+		x.Right = h
+		h.Parent = x
+	}
 }
 ```
 
 旋转作为局部调整，并不影响全局。
-
-旋转后可能需要对某些节点进行变色处理：
-
-```go
-// 设置节点颜色
-func SetColor(node *RBTNode, color bool) {
-	if node != nil {
-		node.Color = color
-	}
-}
-```
 
 可以继续查看下面的内容。
 
@@ -233,8 +289,260 @@ func SetColor(node *RBTNode, color bool) {
 这次我们使用非递归的形式，效率会更高（可及时跳出循环），代码实现如下：
 
 ```go
+// 普通红黑树添加元素
+func (tree *RBTree) Add(value int64) {
+	// 根节点为空
+	if tree.Root == nil {
+		// 根节点都是黑色
+		tree.Root = &RBTNode{
+			Value: value,
+			Color: BLACK,
+		}
+		return
+	}
 
-jj
+	// 辅助变量 t，表示新元素要插入到该子树，t是该子树的根节点
+	t := tree.Root
+
+	// 插入元素后，插入元素的父亲节点
+	var parent *RBTNode
+
+	// 辅助变量，为了知道元素最后要插到左边还是右边
+	var cmp int64 = 0
+
+	for {
+		parent = t
+
+		cmp = value - t.Value
+		if cmp < 0 {
+			// 比当前节点小，往左子树插入
+			t = t.Left
+		} else if cmp > 0 {
+			// 比当前节点节点大，往右子树插入
+			t = t.Right
+		} else {
+			// 已经存在值了，更新出现的次数
+			t.Times = t.Times + 1
+			return
+		}
+
+		// 终于找到要插入的位置了
+		if t == nil {
+			break // 这时叶子节点是 parent，要插入到 parent 的下面，跳到外层去
+		}
+	}
+
+	// 新节点，它要插入到 parent下面
+	newNode := &RBTNode{
+		Value:  value,
+		Parent: parent,
+	}
+	if cmp < 0 {
+		// 知道要从左边插进去
+		parent.Left = newNode
+	} else {
+		// 知道要从右边插进去
+		parent.Right = newNode
+	}
+
+	// 插入新节点后，可能破坏了红黑树特征，需要修复，核心函数
+	tree.fixAfterInsertion(newNode)
+}
+
+// 调整新插入的节点，自底而上
+// 可以看图理解
+func (tree *RBTree) fixAfterInsertion(node *RBTNode) {
+	// 插入的新节点一定要是红色
+	node.Color = RED
+
+	// 节点不能是空，不能是根节点，父亲的颜色必须为红色（如果是黑色，那么直接插入不破坏平衡，不需要调整了）
+	for node != nil && node != tree.Root && node.Parent.Color == RED {
+		// 父亲在祖父的左边
+		if ParentOf(node) == LeftOf(ParentOf(ParentOf(node))) {
+			// 叔叔节点
+			uncle := RightOf(ParentOf(ParentOf(node)))
+
+			// 图例3左边部分，叔叔是红节点，祖父变色，也就是父亲和叔叔变黑，祖父变红
+			if IsRed(uncle) {
+				SetColor(ParentOf(node), BLACK)
+				SetColor(uncle, BLACK)
+				SetColor(ParentOf(ParentOf(node)), RED)
+				// 还要向上递归
+				node = ParentOf(ParentOf(node))
+			} else {
+				// 图例4左边部分，叔叔是黑节点，并且插入的节点在父亲的右边，需要对父亲左旋
+				if node == RightOf(ParentOf(node)) {
+					node = ParentOf(node)
+					tree.RotateLeft(node)
+				}
+
+				// 变色，并对祖父进行右旋
+				SetColor(ParentOf(node), BLACK)
+				SetColor(ParentOf(ParentOf(node)), RED)
+				tree.RotateRight(ParentOf(ParentOf(node)))
+			}
+		} else {
+			// 父亲在祖父的右边，与父亲在祖父的左边相似
+			// 叔叔节点
+			uncle := LeftOf(ParentOf(ParentOf(node)))
+
+			// 图例3右边部分，叔叔是红节点，祖父变色，也就是父亲和叔叔变黑，祖父变红
+			if IsRed(uncle) {
+				SetColor(ParentOf(node), BLACK)
+				SetColor(uncle, BLACK)
+				SetColor(ParentOf(ParentOf(node)), RED)
+				// 还要向上递归
+				node = ParentOf(ParentOf(node))
+			} else {
+				// 图例4右边部分，叔叔是黑节点，并且插入的节点在父亲的左边，需要对父亲右旋
+				if node == LeftOf(ParentOf(node)) {
+					node = ParentOf(node)
+					tree.RotateLeft(node)
+				}
+
+				// 变色，并对祖父进行左旋
+				SetColor(ParentOf(node), BLACK)
+				SetColor(ParentOf(ParentOf(node)), RED)
+				tree.RotateLeft(ParentOf(ParentOf(node)))
+			}
+		}
+	}
+
+	// 根节点永远为黑
+	tree.Root.Color = BLACK
+}
+```
+
+
+首先，如果是空树，那么新建根节点：
+
+```go
+	// 根节点为空
+	if tree.Root == nil {
+		// 根节点都是黑色
+		tree.Root = &RBTNode{
+			Value: value,
+			Color: BLACK,
+		}
+		return
+	}
+```
+
+否则，需要找到叶子节点，方便新节点插进去：
+
+```
+	// 辅助变量 t，表示新元素要插入到该子树，t是该子树的根节点
+	t := tree.Root
+
+	// 插入元素后，插入元素的父亲节点
+	var parent *RBTNode
+
+	// 辅助变量，为了知道元素最后要插到左边还是右边
+	var cmp int64 = 0
+
+	for {
+		parent = t
+
+		cmp = value - t.Value
+		if cmp < 0 {
+			// 比当前节点小，往左子树插入
+			t = t.Left
+		} else if cmp > 0 {
+			// 比当前节点节点大，往右子树插入
+			t = t.Right
+		} else {
+			// 已经存在值了，更新出现的次数
+			t.Times = t.Times + 1
+			return
+		}
+
+		// 终于找到要插入的位置了
+		if t == nil {
+			break // 这时叶子节点是 parent，要插入到 parent 的下面，跳到外层去
+		}
+	}
+
+	// 新节点，它要插入到 parent下面
+	newNode := &RBTNode{
+		Value:  value,
+		Parent: parent,
+	}
+	if cmp < 0 {
+		// 知道要从左边插进去
+		parent.Left = newNode
+	} else {
+		// 知道要从右边插进去
+		parent.Right = newNode
+	}
+```
+
+插入节点后，就需要进行调整操作了，这是核心：`tree.fixAfterInsertion(newNode)`。
+
+参照图例对比一下，就可以理解调整操作的逻辑了：
+
+```go
+// 调整新插入的节点，自底而上
+// 可以看图理解
+func (tree *RBTree) fixAfterInsertion(node *RBTNode) {
+	// 插入的新节点一定要是红色
+	node.Color = RED
+
+	// 节点不能是空，不能是根节点，父亲的颜色必须为红色（如果是黑色，那么直接插入不破坏平衡，不需要调整了）
+	for node != nil && node != tree.Root && node.Parent.Color == RED {
+		// 父亲在祖父的左边
+		if ParentOf(node) == LeftOf(ParentOf(ParentOf(node))) {
+			// 叔叔节点
+			uncle := RightOf(ParentOf(ParentOf(node)))
+
+			// 图例3左边部分，叔叔是红节点，祖父变色，也就是父亲和叔叔变黑，祖父变红
+			if IsRed(uncle) {
+				SetColor(ParentOf(node), BLACK)
+				SetColor(uncle, BLACK)
+				SetColor(ParentOf(ParentOf(node)), RED)
+				// 还要向上递归
+				node = ParentOf(ParentOf(node))
+			} else {
+				// 图例4左边部分，叔叔是黑节点，并且插入的节点在父亲的右边，需要对父亲左旋
+				if node == RightOf(ParentOf(node)) {
+					node = ParentOf(node)
+					tree.RotateLeft(node)
+				}
+
+				// 变色，并对祖父进行右旋
+				SetColor(ParentOf(node), BLACK)
+				SetColor(ParentOf(ParentOf(node)), RED)
+				tree.RotateRight(ParentOf(ParentOf(node)))
+			}
+		} else {
+			// 父亲在祖父的右边，与父亲在祖父的左边相似
+			// 叔叔节点
+			uncle := LeftOf(ParentOf(ParentOf(node)))
+
+			// 图例3右边部分，叔叔是红节点，祖父变色，也就是父亲和叔叔变黑，祖父变红
+			if IsRed(uncle) {
+				SetColor(ParentOf(node), BLACK)
+				SetColor(uncle, BLACK)
+				SetColor(ParentOf(ParentOf(node)), RED)
+				// 还要向上递归
+				node = ParentOf(ParentOf(node))
+			} else {
+				// 图例4右边部分，叔叔是黑节点，并且插入的节点在父亲的左边，需要对父亲右旋
+				if node == LeftOf(ParentOf(node)) {
+					node = ParentOf(node)
+					tree.RotateLeft(node)
+				}
+
+				// 变色，并对祖父进行左旋
+				SetColor(ParentOf(node), BLACK)
+				SetColor(ParentOf(ParentOf(node)), RED)
+				tree.RotateLeft(ParentOf(ParentOf(node)))
+			}
+		}
+	}
+
+	// 根节点永远为黑
+	tree.Root.Color = BLACK
+}
 ```
 
 ### 2.4. 添加元素算法分析
