@@ -480,7 +480,7 @@ func (node *AVLTreeNode) IsRight() bool {
 }
 
 func main() {
-	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113}
+	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113, 6, 8, 1, 4, 333, 45, 24, 67, 26}
 
 	// 初始化二叉查找树并添加元素
 	tree := NewAVLTree()
@@ -517,6 +517,7 @@ func main() {
 	tree.Add(3)
 	tree.Add(10)
 	tree.Delete(111)
+	tree.Delete(67)
 	node = tree.Find(9)
 	if node != nil {
 		fmt.Println("find it 9!")

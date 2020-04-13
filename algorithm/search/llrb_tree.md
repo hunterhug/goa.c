@@ -118,7 +118,7 @@
 1. 根节点的链接是黑色的。
 2. 红链接均为左链接。
 3. 没有任何一个结点同时和两条红链接相连
-4. 任意节点到根节点的路径上的黑链接数量相同。也就是该树是完美黑色平衡的。
+4. 任意一个节点到达叶子节点的所有路径，经过的黑链接数量相同，也就是该树是完美黑色平衡的。比如，某一个节点，它可以到达5个叶子节点，那么这5条路径上的黑链接数量一样。
 
 由于红链接都在左边，所以这种红黑树又称左倾红黑树。左倾红黑树与 `2-3` 树一一对应，只要将左链接画平，如图：
 
@@ -629,7 +629,7 @@ func (node *LLRBTNode) FixUp() *LLRBTNode {
 
 删除操作很难理解，可以多多思考，红色左移和右移不断地递归都是为了确保删除叶子节点时，其是一个3节点。
 
-如果不理解自顶向下的红色左移和右移递归思路，可以尝试以更根源的 `2-3树` 删除元素操作步骤来实现，这时从叶子节点开始删除，自底向上的向兄弟借值或与父亲合并，这是更容易理解的，在此我们就不实现了，可以参考普通红黑树章节的删除实现（它使用了自底向上的调整）。
+PS：如果不理解自顶向下的红色左移和右移递归思路，可以更换另外一种方法，使用原先 `2-3树` 删除元素操作步骤来实现，一开始从叶子节点删除，然后自底向上的向兄弟借值或与父亲合并，这是更容易理解的，我们不在这里进行展示了，可以借鉴普通红黑树章节的删除实现（它使用了自底向上的调整）。
 
 完整代码见最下面。
 
@@ -738,7 +738,137 @@ func (node *LLRBTNode) MidOrder() {
 
 查找操作逻辑与通用的二叉查找树一样，并无区别。
 
-### 2.7、验证是否是一棵左倾红黑树
+### 2.7. 验证是否是一棵左倾红黑树
+
+如何确保我们的代码实现的就是一棵左倾红黑树呢，可以进行验证：
+
+```go
+// 验证是不是棵左倾红黑树
+func (tree *LLRBTree) IsLLRBTree() bool {
+	if tree == nil || tree.Root == nil {
+		return true
+	}
+
+	// 判断树是否是一棵二分查找树
+	if !tree.Root.IsBST() {
+		return false
+	}
+
+	// 判断树是否遵循2-3树，也就是红链接只能在左边，不能连续有两个红链接
+	if !tree.Root.Is23() {
+		return false
+	}
+
+	// 判断树是否平衡，也就是任意一个节点到叶子节点，经过的黑色链接数量相同
+	// 先计算根节点到最左边叶子节点的黑链接数量
+	blackNum := 0
+	x := tree.Root
+	for x != nil {
+		if !IsRed(x) { // 是黑色链接
+			blackNum = blackNum + 1
+		}
+		x = x.Left
+	}
+
+	if !tree.Root.IsBalanced(blackNum) {
+		return false
+	}
+	return true
+}
+
+// 节点所在的子树是否是一棵二分查找树
+func (node *LLRBTNode) IsBST() bool {
+	if node == nil {
+		return true
+	}
+
+	// 左子树非空，那么根节点必须大于左儿子节点
+	if node.Left != nil {
+		if node.Value > node.Left.Value {
+		} else {
+			fmt.Printf("father:%#v,lchild:%#v,rchild:%#v\n", node, node.Left, node.Right)
+			return false
+		}
+	}
+
+	// 右子树非空，那么根节点必须小于右儿子节点
+	if node.Right != nil {
+		if node.Value < node.Right.Value {
+		} else {
+			fmt.Printf("father:%#v,lchild:%#v,rchild:%#v\n", node, node.Left, node.Right)
+			return false
+		}
+	}
+
+	// 左子树也要判断是否是平衡查找树
+	if !node.Left.IsBST() {
+		return false
+	}
+
+	// 右子树也要判断是否是平衡查找树
+	if !node.Right.IsBST() {
+		return false
+	}
+
+	return true
+}
+
+// 节点所在的子树是否遵循2-3树
+func (node *LLRBTNode) Is23() bool {
+	if node == nil {
+		return true
+	}
+
+	// 不允许右倾红链接
+	if IsRed(node.Right) {
+		fmt.Printf("father:%#v,rchild:%#v\n", node, node.Right)
+		return false
+	}
+
+	// 不允许连续两个左红链接
+	if IsRed(node) && IsRed(node.Left) {
+		fmt.Printf("father:%#v,lchild:%#v\n", node, node.Left)
+		return false
+	}
+
+	// 左子树也要判断是否遵循2-3树
+	if !node.Left.Is23() {
+		return false
+	}
+
+	// 右子树也要判断是否是遵循2-3树
+	if !node.Right.Is23() {
+		return false
+	}
+
+	return true
+}
+
+// 节点所在的子树是否平衡，是否有 blackNum 个黑链接
+func (node *LLRBTNode) IsBalanced(blackNum int) bool {
+	if node == nil {
+		return blackNum == 0
+	}
+
+	if !IsRed(node) {
+		blackNum = blackNum - 1
+	}
+
+	if !node.Left.IsBalanced(blackNum) {
+		fmt.Println("node.Left to leaf black link is not ", blackNum)
+		return false
+	}
+
+	if !node.Right.IsBalanced(blackNum) {
+		fmt.Println("node.Right to leaf black link is not ", blackNum)
+		return false
+	}
+
+	return true
+}
+```
+
+运行请看完整代码。
 
 ### 2.8. 完整程序
 
@@ -1113,9 +1243,134 @@ func (node *LLRBTNode) Delete(value int64) *LLRBTNode {
 	// 最后，删除叶子节点后，需要恢复左倾红黑树特征
 	return nowNode.FixUp()
 }
+
+// 验证是不是棵左倾红黑树
+func (tree *LLRBTree) IsLLRBTree() bool {
+	if tree == nil || tree.Root == nil {
+		return true
+	}
+
+	// 判断树是否是一棵二分查找树
+	if !tree.Root.IsBST() {
+		return false
+	}
+
+	// 判断树是否遵循2-3树，也就是红链接只能在左边，不能连续有两个红链接
+	if !tree.Root.Is23() {
+		return false
+	}
+
+	// 判断树是否平衡，也就是任意一个节点到叶子节点，经过的黑色链接数量相同
+	// 先计算根节点到最左边叶子节点的黑链接数量
+	blackNum := 0
+	x := tree.Root
+	for x != nil {
+		if !IsRed(x) { // 是黑色链接
+			blackNum = blackNum + 1
+		}
+		x = x.Left
+	}
+
+	if !tree.Root.IsBalanced(blackNum) {
+		return false
+	}
+	return true
+}
+
+// 节点所在的子树是否是一棵二分查找树
+func (node *LLRBTNode) IsBST() bool {
+	if node == nil {
+		return true
+	}
+
+	// 左子树非空，那么根节点必须大于左儿子节点
+	if node.Left != nil {
+		if node.Value > node.Left.Value {
+		} else {
+			fmt.Printf("father:%#v,lchild:%#v,rchild:%#v\n", node, node.Left, node.Right)
+			return false
+		}
+	}
+
+	// 右子树非空，那么根节点必须小于右儿子节点
+	if node.Right != nil {
+		if node.Value < node.Right.Value {
+		} else {
+			fmt.Printf("father:%#v,lchild:%#v,rchild:%#v\n", node, node.Left, node.Right)
+			return false
+		}
+	}
+
+	// 左子树也要判断是否是平衡查找树
+	if !node.Left.IsBST() {
+		return false
+	}
+
+	// 右子树也要判断是否是平衡查找树
+	if !node.Right.IsBST() {
+		return false
+	}
+
+	return true
+}
+
+// 节点所在的子树是否遵循2-3树
+func (node *LLRBTNode) Is23() bool {
+	if node == nil {
+		return true
+	}
+
+	// 不允许右倾红链接
+	if IsRed(node.Right) {
+		fmt.Printf("father:%#v,rchild:%#v\n", node, node.Right)
+		return false
+	}
+
+	// 不允许连续两个左红链接
+	if IsRed(node) && IsRed(node.Left) {
+		fmt.Printf("father:%#v,lchild:%#v\n", node, node.Left)
+		return false
+	}
+
+	// 左子树也要判断是否遵循2-3树
+	if !node.Left.Is23() {
+		return false
+	}
+
+	// 右子树也要判断是否是遵循2-3树
+	if !node.Right.Is23() {
+		return false
+	}
+
+	return true
+}
+
+// 节点所在的子树是否平衡，是否有 blackNum 个黑链接
+func (node *LLRBTNode) IsBalanced(blackNum int) bool {
+	if node == nil {
+		return blackNum == 0
+	}
+
+	if !IsRed(node) {
+		blackNum = blackNum - 1
+	}
+
+	if !node.Left.IsBalanced(blackNum) {
+		fmt.Println("node.Left to leaf black link is not ", blackNum)
+		return false
+	}
+
+	if !node.Right.IsBalanced(blackNum) {
+		fmt.Println("node.Right to leaf black link is not ", blackNum)
+		return false
+	}
+
+	return true
+}
+
 func main() {
 	tree := NewLLRBTree()
-	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113, 115, 18}
+	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113}
 	for _, v := range values {
 		tree.Add(v)
 	}
@@ -1142,14 +1397,26 @@ func main() {
 
 	tree.MidOrder()
 
+	// 删除存在的9后，再查找9
 	tree.Delete(9)
-
-	// 查找存在的9
+	tree.Delete(10)
+	tree.Delete(2)
+	tree.Delete(3)
+	tree.Add(4)
+	tree.Add(3)
+	tree.Add(10)
+	tree.Delete(111)
 	node = tree.Find(9)
 	if node != nil {
 		fmt.Println("find it 9!")
 	} else {
 		fmt.Println("not find it 9!")
+	}
+
+	if tree.IsLLRBTree() {
+		fmt.Println("is a llrb tree")
+	} else {
+		fmt.Println("is not llrb tree")
 	}
 }
 ```
@@ -1158,7 +1425,7 @@ func main() {
 
 ```go
 find min value: &{2 0 <nil> <nil> false}
-find max value: &{115 0 <nil> <nil> false}
+find max value: &{113 0 0xc0000941e0 <nil> false}
 not find it 99!
 find it 9!
 2
@@ -1169,15 +1436,14 @@ find it 9!
 10
 10
 10
-18
 23
 102
 109
 111
 112
 113
-115
 not find it 9!
+is a llrb tree
 ```
 
 PS：我们的程序是递归程序，如果改写为非递归形式，效率和性能会更好，在此就不实现了，理解左倾红黑树添加和删除的总体思路即可。
