@@ -259,9 +259,8 @@ func (tree *RBTree) Delete(value int64) {
 }
 
 // 删除节点核心函数
+// 找最小后驱节点来补位，删除内部节点转为删除叶子节点
 func (tree *RBTree) delete(node *RBTNode) {
-	// 找最小后驱节点来补位，删除内部节点转为删除叶子节点
-
 	// 如果左右子树都存在，那么从右子树的左边一直找一直找，就找能到最小后驱节点
 	if node.Left != nil && node.Right != nil {
 		s := node.Right
@@ -315,17 +314,96 @@ func (tree *RBTree) delete(node *RBTNode) {
 	}
 
 	// 现在可以删除叶子节点了
-	if node.Parent != nil {
-		if node == node.Parent.Left {
-			node.Parent.Left = nil
-		} else if node == node.Parent.Right {
-			node.Parent.Right = nil
-		}
+	if node == node.Parent.Left {
+		node.Parent.Left = nil
+	} else if node == node.Parent.Right {
+		node.Parent.Right = nil
 	}
+
 }
 
+// 调整删除的叶子节点，自底向上
+// 可以看图理解
 func (tree *RBTree) fixAfterDeletion(node *RBTNode) {
+	// 如果不是递归到根节点，且节点是黑节点，那么继续递归
+	for tree.Root != node && !IsRed(node) {
+		// 要删除的节点在父亲左边，对应图例1，2
+		if node == LeftOf(ParentOf(node)) {
+			// 找出兄弟
+			brother := RightOf(ParentOf(node))
 
+			// 兄弟是红色的，对应图例1，那么兄弟变黑，父亲变红，然后对父亲左旋，进入图例23
+			if IsRed(brother) {
+				SetColor(brother, BLACK)
+				SetColor(ParentOf(node), RED)
+				tree.RotateLeft(ParentOf(node))
+				brother = RightOf(ParentOf(node)) // 图例1调整后进入图例23，兄弟此时变了
+			}
+
+			// 兄弟是黑色的，对应图例21，22，23
+			// 兄弟的左右儿子都是黑色，进入图例23，将兄弟设为红色，父亲所在的子树作为整体，当作删除的节点，继续向上递归
+			if !IsRed(LeftOf(brother)) && !IsRed(RightOf(brother)) {
+				SetColor(brother, RED)
+				node = ParentOf(node)
+			} else {
+				// 兄弟的右儿子是黑色，进入图例22，将兄弟设为红色，兄弟的左儿子设为黑色，对兄弟右旋，进入图例21
+				if !IsRed(RightOf(brother)) {
+					SetColor(LeftOf(brother), BLACK)
+					SetColor(brother, RED)
+					tree.RotateRight(brother)
+					brother = RightOf(ParentOf(node)) // 图例22调整后进入图例21，兄弟此时变了
+				}
+
+				// 兄弟的右儿子是红色，进入图例21，将兄弟设置为父亲的颜色，兄弟的右儿子以及父亲变黑，对父亲左旋
+				SetColor(brother, IsRed(ParentOf(node)))
+				SetColor(ParentOf(node), BLACK)
+				SetColor(RightOf(brother), BLACK)
+				tree.RotateLeft(ParentOf(node))
+
+				// 可以返回删除叶子节点了
+				return
+			}
+		} else {
+			// 要删除的节点在父亲右边，对应图例3，4
+			// 找出兄弟
+			brother := RightOf(ParentOf(node))
+
+			// 兄弟是红色的，对应图例3，那么兄弟变黑，父亲变红，然后对父亲右旋，进入图例43
+			if IsRed(brother) {
+				SetColor(brother, BLACK)
+				SetColor(ParentOf(node), RED)
+				tree.RotateRight(ParentOf(node))
+				brother = LeftOf(ParentOf(node)) // 图例3调整后进入图例43，兄弟此时变了
+			}
+
+			// 兄弟是黑色的，对应图例41，42，43
+			// 兄弟的左右儿子都是黑色，进入图例43，将兄弟设为红色，父亲所在的子树作为整体，当作删除的节点，继续向上递归
+			if !IsRed(LeftOf(brother)) && !IsRed(RightOf(brother)) {
+				SetColor(brother, RED)
+				node = ParentOf(node)
+			} else {
+				// 兄弟的左儿子是黑色，进入图例42，将兄弟设为红色，兄弟的右儿子设为黑色，对兄弟左旋，进入图例41
+				if !IsRed(LeftOf(brother)) {
+					SetColor(RightOf(brother), BLACK)
+					SetColor(brother, RED)
+					tree.RotateLeft(brother)
+					brother = LeftOf(ParentOf(node)) // 图例42调整后进入图例41，兄弟此时变了
+				}
+
+				// 兄弟的左儿子是红色，进入图例41，将兄弟设置为父亲的颜色，兄弟的左儿子以及父亲变黑，对父亲右旋
+				SetColor(brother, IsRed(ParentOf(node)))
+				SetColor(ParentOf(node), BLACK)
+				SetColor(LeftOf(brother), BLACK)
+				tree.RotateRight(ParentOf(node))
+
+				// 可以返回删除叶子节点了
+				return
+			}
+		}
+	}
+
+	// 树根节点永远为黑
+	tree.Root.Color = BLACK
 }
 
 // 找出最小值的节点
@@ -370,6 +448,11 @@ func (node *RBTNode) FindMaxValue() *RBTNode {
 
 // 查找指定节点
 func (tree *RBTree) Find(value int64) *RBTNode {
+	if tree.Root == nil {
+		// 如果是空树，返回空
+		return nil
+	}
+
 	return tree.Root.Find(value)
 }
 
@@ -416,9 +499,132 @@ func (node *RBTNode) MidOrder() {
 	node.Right.MidOrder()
 }
 
+// 验证是不是棵红黑树
+func (tree *RBTree) IsRBTree() bool {
+	if tree == nil || tree.Root == nil {
+		return true
+	}
+
+	// 判断树是否是一棵二分查找树
+	if !tree.Root.IsBST() {
+		return false
+	}
+
+	// 判断树是否遵循2-3-4树，也就是不能有连续的两个红链接
+	if !tree.Root.Is234() {
+		return false
+	}
+
+	// 判断树是否平衡，也就是任意一个节点到叶子节点，经过的黑色链接数量相同
+	// 先计算根节点到最左边叶子节点的黑链接数量
+	blackNum := 0
+	x := tree.Root
+	for x != nil {
+		if !IsRed(x) { // 是黑色链接
+			blackNum = blackNum + 1
+		}
+		x = x.Left
+	}
+
+	if !tree.Root.IsBalanced(blackNum) {
+		return false
+	}
+	return true
+}
+
+// 节点所在的子树是否是一棵二分查找树
+func (node *RBTNode) IsBST() bool {
+	if node == nil {
+		return true
+	}
+
+	// 左子树非空，那么根节点必须大于左儿子节点
+	if node.Left != nil {
+		if node.Value > node.Left.Value {
+		} else {
+			fmt.Printf("father:%#v,lchild:%#v,rchild:%#v\n", node, node.Left, node.Right)
+			return false
+		}
+	}
+
+	// 右子树非空，那么根节点必须小于右儿子节点
+	if node.Right != nil {
+		if node.Value < node.Right.Value {
+		} else {
+			fmt.Printf("father:%#v,lchild:%#v,rchild:%#v\n", node, node.Left, node.Right)
+			return false
+		}
+	}
+
+	// 左子树也要判断是否是平衡查找树
+	if !node.Left.IsBST() {
+		return false
+	}
+
+	// 右子树也要判断是否是平衡查找树
+	if !node.Right.IsBST() {
+		return false
+	}
+
+	return true
+}
+
+// 节点所在的子树是否遵循2-3-4树
+func (node *RBTNode) Is234() bool {
+	if node == nil {
+		return true
+	}
+
+	// 不允许连续两个左红链接
+	if IsRed(node) && IsRed(node.Left) {
+		fmt.Printf("father:%#v,lchild:%#v\n", node, node.Left)
+		return false
+	}
+
+	if IsRed(node) && IsRed(node.Right) {
+		fmt.Printf("father:%#v,rchild:%#v\n", node, node.Right)
+		return false
+	}
+
+	// 左子树也要判断是否遵循2-3-4树
+	if !node.Left.Is234() {
+		return false
+	}
+
+	// 右子树也要判断是否是遵循2-3-4树
+	if !node.Right.Is234() {
+		return false
+	}
+
+	return true
+}
+
+// 节点所在的子树是否平衡，是否有 blackNum 个黑链接
+func (node *RBTNode) IsBalanced(blackNum int) bool {
+	if node == nil {
+		return blackNum == 0
+	}
+
+	if !IsRed(node) {
+		blackNum = blackNum - 1
+	}
+
+	if !node.Left.IsBalanced(blackNum) {
+		fmt.Println("node.Left to leaf black link is not ", blackNum)
+		return false
+	}
+
+	if !node.Right.IsBalanced(blackNum) {
+		fmt.Println("node.Right to leaf black link is not ", blackNum)
+		return false
+	}
+
+	return true
+}
+
 func main() {
 	tree := NewRBTree()
-	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113, 115, 18}
+	values := []int64{2, 3, 7, 10, 10, 10, 10, 23, 9, 102, 109, 111, 112, 113}
 	for _, v := range values {
 		tree.Add(v)
 	}
@@ -445,13 +651,36 @@ func main() {
 
 	tree.MidOrder()
 
+	// 删除存在的9后，再查找9
 	tree.Delete(9)
-
-	// 查找存在的9
+	tree.Delete(10)
+	tree.Delete(2)
+	tree.Delete(3)
+	tree.Add(4)
+	tree.Add(3)
+	tree.Add(10)
+	tree.Delete(111)
 	node = tree.Find(9)
 	if node != nil {
 		fmt.Println("find it 9!")
 	} else {
 		fmt.Println("not find it 9!")
 	}
+
+	if tree.IsRBTree() {
+		fmt.Println("is a rb tree")
+	} else {
+		fmt.Println("is not rb tree")
+	}
+
+	tree.Delete(3)
+	tree.Delete(4)
+	tree.Delete(7)
+	tree.Delete(10)
+	tree.Delete(23)
+	tree.Delete(102)
+	tree.Delete(109)
+	tree.Delete(112)
+	tree.Delete(112)
+	tree.MidOrder()
 }

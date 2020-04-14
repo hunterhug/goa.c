@@ -1081,6 +1081,11 @@ func (node *LLRBTNode) FindMaxValue() *LLRBTNode {
 
 // 查找指定节点
 func (tree *LLRBTree) Find(value int64) *LLRBTNode {
+	if tree.Root == nil {
+		// 如果是空树，返回空
+		return nil
+	}
+
 	return tree.Root.Find(value)
 }
 
