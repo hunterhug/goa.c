@@ -1098,7 +1098,7 @@ func (tree *RBTree) fixAfterDeletion(node *RBTNode) {
 
 ![](../../picture/br_tree_delete_1.jpg)
 
-否则对应图例2，3：
+否则对应图例3，4：
 
 ![](../../picture/br_tree_delete_2.jpg)
 
@@ -1959,6 +1959,8 @@ find it 9!
 not find it 9!
 is a rb tree
 ```
+
+红黑树，无论是左偏还是普通的红黑树，理解都可以直接理解2-3或2-3-4树，添加操作比较简单，删除则是向兄弟借值或和父亲合并，然后如果父亲空了，把父亲的子树当成删除的一个整体，继续递归向上，至于二叉化的调整实现，则是将3或4节点画成红链接，可以多画下图就理解了。
 
 ## 三、应用场景
 
