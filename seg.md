@@ -1,10 +1,6 @@
-https://segmentfault.com/u/chen_xingxing/articles?type=delayed
-
 # 系列文章入口
 
-我是陈星星，看星星，不如看星星，一个写了快五年 `Golang` 的后端开发工程师。
-
-欢迎阅读我亲自写的 **数据结构和算法(Golang实现)**
+我是陈星星，欢迎阅读我亲自写的 **数据结构和算法(Golang实现)**，文章首发于 [阅读更友好的GitBook](https://goa.lenggirl.com)。
 
 - [数据结构和算法(Golang实现)(1)简单入门Golang-前言](https://segmentfault.com/a/1190000022287653)
 - [数据结构和算法(Golang实现)(2)简单入门Golang-包、变量和函数](https://segmentfault.com/a/1190000022288169)
@@ -36,3 +32,4 @@ https://segmentfault.com/u/chen_xingxing/articles?type=delayed
 - [数据结构和算法(Golang实现)(27)查找算法-二叉查找树](https://segmentfault.com/a/1190000022288966)
 - [数据结构和算法(Golang实现)(28)查找算法-AVL树](https://segmentfault.com/a/1190000022288980)
 - [数据结构和算法(Golang实现)(29)查找算法-2-3树和左倾红黑树](https://segmentfault.com/a/1190000022289012)
+- [数据结构和算法(Golang实现)(30)查找算法-2-3-4树和普通红黑树](https://segmentfault.com/a/1190000022367093)
