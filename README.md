@@ -6,10 +6,8 @@
 
 联系作者：
 
-1. 联系邮件：gdccmcm14@live.com
-2. 联系微信/QQ：569929309
-4. Github: [https://github.com/hunterhug](https://github.com/hunterhug)
-5. 知乎：[https://www.zhihu.com/people/chen-xing-xing-57-62-13](https://www.zhihu.com/people/chen-xing-xing-57-62-13)
+1. Github: [https://github.com/hunterhug](https://github.com/hunterhug)
+2. 知乎：[https://www.zhihu.com/people/chen-xing-xing-57-62-13](https://www.zhihu.com/people/chen-xing-xing-57-62-13)
 
 系列文章首发于：[https://goa.lenggirl.com](https://goa.lenggirl.com)。
 
