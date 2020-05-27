@@ -231,7 +231,7 @@ func (tree *RBTree) fixAfterInsertion(node *RBTNode) {
 				// 图例4右边部分，叔叔是黑节点，并且插入的节点在父亲的左边，需要对父亲右旋
 				if node == LeftOf(ParentOf(node)) {
 					node = ParentOf(node)
-					tree.RotateLeft(node)
+					tree.RotateRight(node)
 				}
 
 				// 变色，并对祖父进行左旋
@@ -271,8 +271,10 @@ func (tree *RBTree) delete(node *RBTNode) {
 		// 删除的叶子节点找到了，删除内部节点转为删除叶子节点
 		node.Value = s.Value
 		node.Times = s.Times
-		node = s
-	} else if node.Left == nil && node.Right == nil {
+		node = s // 可能存在右儿子
+	}
+
+	if node.Left == nil && node.Right == nil {
 		// 没有子树，要删除的节点就是叶子节点。
 	} else {
 		// 只有一棵子树，因为红黑树的特征，该子树就只有一个节点
@@ -287,8 +289,6 @@ func (tree *RBTree) delete(node *RBTNode) {
 		if node.Parent == nil {
 			// 要删除的节点的父亲为空，表示要删除的节点为根节点，唯一子节点成为树根
 			tree.Root = replacement
-			// 根节点永远都是黑色
-			tree.Root.Color = BLACK
 		} else if node == node.Parent.Left {
 			// 子树的唯一节点替代被删除的内部节点
 			node.Parent.Left = replacement
@@ -297,7 +297,16 @@ func (tree *RBTree) delete(node *RBTNode) {
 			node.Parent.Right = replacement
 		}
 
-		// 子树的该唯一节点一定是一个红节点，不然破坏红黑树特征，所以替换后可以直接返回
+		// delete this node
+		node.Parent = nil
+		node.Right = nil
+		node.Left = nil
+
+		// 单子树时删除的节点绝对是黑色的，而其唯一子节点必然是红色的
+		// 现在唯一子节点替换了被删除节点，该节点要变为黑色
+		// node's color must be black, and it's son must be red
+		// now son replace it's father, just change color to black
+		replacement.Color = BLACK
 		return
 	}
 
@@ -319,6 +328,8 @@ func (tree *RBTree) delete(node *RBTNode) {
 	} else if node == node.Parent.Right {
 		node.Parent.Right = nil
 	}
+
+	node.Parent = nil
 
 }
 
@@ -355,13 +366,12 @@ func (tree *RBTree) fixAfterDeletion(node *RBTNode) {
 				}
 
 				// 兄弟的右儿子是红色，进入图例21，将兄弟设置为父亲的颜色，兄弟的右儿子以及父亲变黑，对父亲左旋
-				SetColor(brother, IsRed(ParentOf(node)))
+				SetColor(brother, ParentOf(node).Color)
 				SetColor(ParentOf(node), BLACK)
 				SetColor(RightOf(brother), BLACK)
 				tree.RotateLeft(ParentOf(node))
 
-				// 可以返回删除叶子节点了
-				return
+				node = tree.Root
 			}
 		} else {
 			// 要删除的节点在父亲右边，对应图例3，4
@@ -391,19 +401,18 @@ func (tree *RBTree) fixAfterDeletion(node *RBTNode) {
 				}
 
 				// 兄弟的左儿子是红色，进入图例41，将兄弟设置为父亲的颜色，兄弟的左儿子以及父亲变黑，对父亲右旋
-				SetColor(brother, IsRed(ParentOf(node)))
+				SetColor(brother, ParentOf(node).Color)
 				SetColor(ParentOf(node), BLACK)
 				SetColor(LeftOf(brother), BLACK)
 				tree.RotateRight(ParentOf(node))
 
-				// 可以返回删除叶子节点了
-				return
+				node = tree.Root
 			}
 		}
 	}
 
-	// 树根节点永远为黑
-	tree.Root.Color = BLACK
+	// this node always black
+	SetColor(node, BLACK)
 }
 
 // 找出最小值的节点
