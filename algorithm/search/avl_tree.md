@@ -598,14 +598,14 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 	var newNode *AVLTreeNode
 	// 相当删除了右子树的节点，左边比右边高了，不平衡
 	if node.BalanceFactor() == 2 {
-		if node.Left.BalanceFactor() == 1 {
+		if node.Left.BalanceFactor() >= 0 {
 			newNode = RightRotation(node)
 		} else {
 			newNode = LeftRightRotation(node)
 		}
 		//  相当删除了左子树的节点，右边比左边高了，不平衡
 	} else if node.BalanceFactor() == -2 {
-		if node.Right.BalanceFactor() == -1 {
+		if node.Right.BalanceFactor() <= 0 {
 			newNode = LeftRotation(node)
 		} else {
 			newNode = RightLeftRotation(node)
@@ -712,7 +712,7 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 ```
 	// 相当删除了右子树的节点，左边比右边高了，不平衡
 	if node.BalanceFactor() == 2 {
-		if node.Left.BalanceFactor() == 1 {
+		if node.Left.BalanceFactor() >= 0 {
 			newNode = RightRotation(node)
 		} else {
 			newNode = LeftRightRotation(node)
@@ -749,7 +749,7 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 1. 根节点 `20` 的左子树比右子树高了 `2` 层，对应：`node.BalanceFactor() == 2`。
 2. 左子树节点 `13` 并没有失衡，对应：`node.BalanceFactor() == 0`。
 
-这个时候，无论使用右旋，还是先左旋后右旋都可以使树恢复平衡，我们的 `else` 判断条件使用了先左旋后右旋。
+这个时候，无论使用右旋，还是先左旋后右旋都可以使树恢复平衡，我们的 `if` 判断条件使用了右旋。
 
 如果是先左旋后右旋，那么旋转后恢复平衡，如图对根结点进行旋转：
 
@@ -766,7 +766,7 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 ```
         //  相当删除了左子树的节点，右边比左边高了，不平衡
         if node.BalanceFactor() == -2 {
-		    if node.Right.BalanceFactor() == -1 {
+		    if node.Right.BalanceFactor() <= 0 {
 			newNode = LeftRotation(node)
 		    } else {
 			newNode = RightLeftRotation(node)
@@ -1269,14 +1269,14 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 	var newNode *AVLTreeNode
 	// 相当删除了右子树的节点，左边比右边高了，不平衡
 	if node.BalanceFactor() == 2 {
-		if node.Left.BalanceFactor() == 1 {
+		if node.Left.BalanceFactor() >= 0 {
 			newNode = RightRotation(node)
 		} else {
 			newNode = LeftRightRotation(node)
 		}
 		//  相当删除了左子树的节点，右边比左边高了，不平衡
 	} else if node.BalanceFactor() == -2 {
-		if node.Right.BalanceFactor() == -1 {
+		if node.Right.BalanceFactor() <= 0 {
 			newNode = LeftRotation(node)
 		} else {
 			newNode = RightLeftRotation(node)

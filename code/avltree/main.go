@@ -325,14 +325,14 @@ func (node *AVLTreeNode) Delete(value int64) *AVLTreeNode {
 	var newNode *AVLTreeNode
 	// 相当删除了右子树的节点，左边比右边高了，不平衡
 	if node.BalanceFactor() == 2 {
-		if node.Left.BalanceFactor() == 1 {
+		if node.Left.BalanceFactor() >= 0 {
 			newNode = RightRotation(node)
 		} else {
 			newNode = LeftRightRotation(node)
 		}
 		//  相当删除了左子树的节点，右边比左边高了，不平衡
 	} else if node.BalanceFactor() == -2 {
-		if node.Right.BalanceFactor() == -1 {
+		if node.Right.BalanceFactor() <= 0 {
 			newNode = LeftRotation(node)
 		} else {
 			newNode = RightLeftRotation(node)
