@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t algorithm:latest .
+docker build -t hunterhug/algorithm:latest .
