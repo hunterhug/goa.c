@@ -52,10 +52,11 @@
 * [书籍推荐](doc/book.md)
 * [参考](basic/refer.md)
 
-希望在本地阅读，请安装 `Docker` 后执行:
+希望在本地阅读，请安装 `Docker` 后，克隆仓库到本地执行：
 
 ```
-docker run --name algorithm -d -p 12346:80 hunterhug/algorithm:latest
+./docker_build.sh
+./docker_run.sh
 ```
 
 打开 [http://127.0.0.1:12346](http://127.0.0.1:12346)
