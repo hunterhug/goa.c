@@ -63,7 +63,7 @@ func Fprintln(w io.Writer, a ...interface{}) (n int, err error) {
 2
 cat
 "cat",33
-cat,2,3,map[int]string{1:"s"}
+cat,2,3,map[1:s],map[int]string{1:"s"}
 ```
 
 函数 `Printf` 使用到了另外一个函数 `Fprintf`，而函数 `Fprintf` 内部又调用了其他的结构体方法。
@@ -93,6 +93,6 @@ docker pull hunterhug/gotourzh
 docker run -d -p 9999:9999 hunterhug/gotourzh
 ```
 
-打开浏览器输入：[127.0.0.1:9999](http://127.0.0.1:9999) 更全面地学习。
+打开浏览器输入：[(http://127.0.0.1:9999](http://127.0.0.1:9999) 更全面地学习。
 
 后面的算法分析和实现，会使用 `Golang` 来举例。
