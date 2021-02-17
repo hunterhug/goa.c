@@ -109,9 +109,9 @@ func PostOrder(tree *TreeNode) {
 	}
 
 	// 先打印左子树
-	MidOrder(tree.Left)
+	PostOrder(tree.Left)
 	// 再打印右字树
-	MidOrder(tree.Right)
+	PostOrder(tree.Right)
 	// 再打印根节点
 	fmt.Print(tree.Data, " ")
 }
@@ -145,7 +145,7 @@ A B D E C F
 中序排序：
 D B E A F C 
 后序排序
-D B E F C A 
+D E B F C A 
 ```
 
 层次遍历较复杂，用到一种名叫广度遍历的方法，需要使用辅助的先进先出的队列。
