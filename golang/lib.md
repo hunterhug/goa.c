@@ -93,6 +93,6 @@ docker pull hunterhug/gotourzh
 docker run -d -p 9999:9999 hunterhug/gotourzh
 ```
 
-打开浏览器输入：[(http://127.0.0.1:9999](http://127.0.0.1:9999) 更全面地学习。
+打开浏览器输入：[http://127.0.0.1:9999](http://127.0.0.1:9999) 更全面地学习。
 
 后面的算法分析和实现，会使用 `Golang` 来举例。
