@@ -186,7 +186,7 @@ func BinarySearch(array []int, target int, l, r int) int {
 		return mid // 找到了
 	} else if middleNum > target {
 		// 中间的数比目标还大，从左边找
-		return BinarySearch(array, target, 1, mid-1)
+		return BinarySearch(array, target, 0, mid-1)
 	} else {
 		// 中间的数比目标还小，从右边找
 		return BinarySearch(array, target, mid+1, r)
