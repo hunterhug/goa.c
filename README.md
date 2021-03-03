@@ -4,12 +4,19 @@
 
 数据结构和算法在计算机科学里，有非常重要的地位。此系列文章尝试使用 `Golang` 编程语言来实现各种数据结构和算法，并且适当进行算法分析。
 
+系列文章首发于：
+
+[https://goa.lenggirl.com](https://goa.lenggirl.com) 。
+
+文章备份地址：
+
+[http://106.13.141.110:12346](http://106.13.141.110:12346) 。
+
+
 联系作者：
 
 1. Github: [https://github.com/hunterhug](https://github.com/hunterhug)
 2. 知乎：[https://www.zhihu.com/people/chen-xing-xing-57-62-13](https://www.zhihu.com/people/chen-xing-xing-57-62-13)
-
-系列文章首发于：[https://goa.lenggirl.com](https://goa.lenggirl.com)。
 
 ## 目录
 
