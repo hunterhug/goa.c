@@ -6,7 +6,7 @@
 
 系列文章首发于：
 
-[https://goa.lenggirl.com](https://goa.lenggirl.com) 。
+[https://hunterhug.github.io](https://hunterhug.github.io) 。
 
 文章备份地址：
 
