@@ -6,7 +6,7 @@
 
 系列文章首发于：
 
-[https://hunterhug.github.io](https://hunterhug.github.io) 。
+[https://goalgorithm.github.io](https://goalgorithm.github.io) 。
 
 文章备份地址：
 
