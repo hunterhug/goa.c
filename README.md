@@ -8,7 +8,7 @@
 
 （🤔一直保持最新）Docsify风格的 [https://hunterhug.github.io/goa.c](https://hunterhug.github.io/goa.c) 。
 
-（可能🍒过时）Gitbook风格的 [https://goalgorithm.github.io](https://goalgorithm.github.io) 。
+ <del>（可能🍒过时）Gitbook风格的 [https://goalgorithm.github.io](https://goalgorithm.github.io) 。 </del>
 
 
 联系作者：
