@@ -36,5 +36,6 @@
         * [2-3树和左倾红黑树](algorithm/search/llrb_tree.md)
         * [2-3-4树和普通红黑树](algorithm/search/rb_tree.md)
 * [文档部署](doc/install.md)
+* [书籍推荐](doc/book.md)
 * [参考](basic/refer.md)
 

@@ -1,6 +1,6 @@
 # 文档部署
 
-参考以下步骤可以部署该文档。
+我们使用定制化的 Gitbook 部署，参考以下步骤可以部署该文档。
 
 `Linux/Mac` 安装 `docker` 后，请按以下部署文档：
 
@@ -13,7 +13,7 @@
 
 打开 [http://127.0.0.1:12346](http://127.0.0.1:12346)
 
-# 其他部署方法（建议不用）
+## Gitbook裸机部署（建议不用）
 
 如果不想使用 `docker`，可以：
 
@@ -28,3 +28,12 @@ gitbook serve
 ```
 
 提示没有权限，请加上 `sudo`。
+
+## Docsify部署
+
+支持使用 [Docsify](https://docsify.js.org/#/zh-cn/quickstart) 部署：
+
+```
+./docker_build_docsify.sh
+./docker_run_docsify.sh
+```

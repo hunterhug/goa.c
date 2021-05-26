@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>数据结构和算法（Golang实现）</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="./picture/static/docsify-4.12.1/lib/themes/vue.css">
+
+</head>
+<body>
+  <div id="app">正在火速加载中</div>
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('sw.js')
+    }
+  </script>
+  <script>
+    window.$docsify = {
+      name: '数据结构和算法',
+      repo: 'https://github.com/hunterhug/goa.c',
+      loadSidebar: true,
+      loadNavbar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      count:{
+        countable:true,
+        fontsize:'0.9em',
+        color:'rgb(90,90,90)',
+        language:'chinese'
+      }
+    }
+  </script>
+  <!-- Docsify v4 -->
+  <script src="./picture/static/docsify-4.12.1/lib/plugins/zoom-image.min.js"></script>
+  <script src="./picture/static/docsify-4.12.1/lib/plugins/emoji.min.js"></script>
+  <script src="./picture/static/docsify-copy-code-2.1.1/dist/docsify-copy-code.min.js"></script>
+  <script src="./picture/static/docsify-4.12.1/lib/docsify.min.js"></script>
+
+  <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css"> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script> -->
+  <link rel="stylesheet" href="./picture/static/gitalk/dist/gitalk.css">
+  <script src="./picture/static/gitalk/plugins.gitalk.min.js"></script>
+  <script src="./picture/static/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      clientID: "88bd6a753142024b3e6c",
+      clientSecret: "edb4b5730d40ce1b578d571d72a8b17585ccbafd",
+      repo: "goa.c",
+      owner: "hunterhug",
+      admin: [
+        "hunterhug"
+      ],
+      createIssueManually: false,
+      distractionFreeMode: true
+    })
+  </script>
+
+  <!-- <script src="//unpkg.com/docsify-count/dist/countable.js"></script> -->
+  <script src="./picture/static/countable.js"></script> 
+  <!-- <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script> -->
+  <script src="./picture/static/prism-bash.min.js"></script>
+  <!-- <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script> -->
+  <script src="./picture/static/prism-go.min.js"></script>
+</body>
+</html>

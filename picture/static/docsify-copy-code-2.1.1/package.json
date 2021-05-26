@@ -1,0 +1,42 @@
+{
+  "name": "docsify-copy-code",
+  "version": "2.1.1",
+  "description": "A docsify plugin that copies a markdown code block to your clipboard",
+  "author": "JP Erasmus <jperasmus11@gmail.com>",
+  "contributors": [
+    "John Hildenbiddle <john@hildenbiddle.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jperasmus/docsify-copy-code",
+  "repository": "git@github.com:jperasmus/docsify-copy-code.git",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/docsify-copy-code.js",
+  "unpkg": "dist/docsify-copy-code.min.js",
+  "scripts": {
+    "build": "rollup -c",
+    "clean": "rimraf dist/*",
+    "dev": "node server.js & npm run start",
+    "prepare": "npm run clean && npm run build",
+    "start": "npm run build -- -w"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "autoprefixer": "^9.4.6",
+    "browser-sync": "^2.26.3",
+    "compression": "^1.7.3",
+    "eslint": "^5.12.1",
+    "lodash.merge": "^4.6.1",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-eslint": "^5.0.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-postcss": "^2.0.0",
+    "rollup-plugin-uglify": "^6.0.1"
+  }
+}

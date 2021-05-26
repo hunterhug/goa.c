@@ -1,4 +1,4 @@
-# 参考
+# 参考资料
 
 - [算法可视化: https://www.cs.usfca.edu/~galles/visualization/Algorithms.html](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
 - [Algorithms: https://algs4.cs.princeton.edu/home/](https://algs4.cs.princeton.edu/home/)
