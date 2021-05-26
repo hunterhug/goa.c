@@ -44,6 +44,7 @@
   <link rel="stylesheet" href="./picture/static/gitalk/dist/gitalk.css">
   <script src="./picture/static/gitalk/plugins.gitalk.min.js"></script>
   <script src="./picture/static/gitalk/dist/gitalk.min.js"></script>
+  <script src="./picture/static/md5.js"></script>
   <script>
     const gitalk = new Gitalk({
       clientID: "88bd6a753142024b3e6c",
@@ -53,7 +54,7 @@
       admin: [
         "hunterhug"
       ],
-      id: decodeURI(location.pathname),
+      id: md5(decodeURI(location.hash)),
       createIssueManually: false,
       distractionFreeMode: true
     })
