@@ -21,6 +21,10 @@
       name: '数据结构和算法',
       repo: 'https://github.com/hunterhug/goa.c',
       loadSidebar: true,
+      alias: {
+      '/.*/_sidebar.md': '/_sidebar.md',
+      '/.*/_navbar.md': '/_navbar.md'
+      },
       loadNavbar: true,
       // subMaxLevel: 2,
       auto2top: true,
@@ -54,7 +58,7 @@
       admin: [
         "hunterhug"
       ],
-      id: md5(decodeURI(location.hash)),
+      id: md5(decodeURI(location.href)),
       createIssueManually: false,
       distractionFreeMode: true
     })
