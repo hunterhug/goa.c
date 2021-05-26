@@ -13561,7 +13561,7 @@ var GitalkComponent = function (_Component) {
     };
 
     _this.options = (0, _assign2.default)({}, {
-      id: window.location.href,
+      id: window.location.hash,
       number: -1,
       labels: ['Gitalk'],
       title: window.document.title,

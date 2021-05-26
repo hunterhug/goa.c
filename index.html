@@ -50,6 +50,11 @@
   <script src="./picture/static/gitalk/dist/gitalk.min.js"></script>
   <script src="./picture/static/md5.js"></script>
   <script>
+    // var prefix = location.protocol + "//" +location.host + location.pathname
+    // console.log(prefix)
+    // console.log(location.href)
+    // console.log(location.href.replace(prefix,""))
+    // console.log(location.hash)
     const gitalk = new Gitalk({
       clientID: "88bd6a753142024b3e6c",
       clientSecret: "edb4b5730d40ce1b578d571d72a8b17585ccbafd",
@@ -58,7 +63,7 @@
       admin: [
         "hunterhug"
       ],
-      id: md5(decodeURI(location.href)),
+      // id: decodeURI(location.href.replace(location.protocol + "//" +location.host + location.pathname,"")),
       createIssueManually: false,
       distractionFreeMode: true
     })
