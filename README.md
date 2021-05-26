@@ -82,4 +82,4 @@
 
 所有章节的代码可以在 [这里](https://github.com/hunterhug/goa.c/tree/master/code) 找到。
 
-![/weixin.png](/weixin.png)
+![/weixin.png](./weixin.png)
