@@ -6,7 +6,9 @@
 
 系列文章首发于：
 
-[https://goalgorithm.github.io](https://goalgorithm.github.io) 。
+（🤔一直保持最新）Docsify风格的 [https://hunterhug.github.io/goa.c](https://hunterhug.github.io/goa.c) 。
+
+（可能🍒过时）Gitbook风格的 [https://goalgorithm.github.io](https://goalgorithm.github.io) 。
 
 
 联系作者：
