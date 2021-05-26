@@ -13563,7 +13563,7 @@ var GitalkComponent = function (_Component) {
     _this.options = (0, _assign2.default)({}, {
       id: window.location.hash,
       number: -1,
-      labels: ['Gitalk'],
+      labels: ['ArticleComment'],
       title: window.document.title,
       body: '', // window.location.href + header.meta[description]
       language: window.navigator.language || window.navigator.userLanguage,
