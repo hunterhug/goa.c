@@ -76,7 +76,7 @@
 
 ## 一起参与
 
-如何建议和贡献自己的知识库，可以前往 [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 的仓库提 `PR` 和 建议。
+如何建议和贡献自己的知识库，可以前往 [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 的仓库提 `PR` 和 建议，分支目前是 `gh-pages`。
 
 开源书籍的评论使用的是 `GitTalk`，可以打开 [网站](https://goalgorithm.github.io) 阅读后评论自己的心得，如果你想赞助作者买根辣条，可以点击每篇文章的最下方 `赞助我` 按钮:
 
