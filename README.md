@@ -60,8 +60,8 @@
 希望在本地阅读，请安装 `Docker` 后，克隆仓库到本地执行：
 
 ```
-./docker_build.sh
-./docker_run.sh
+./docker_build_docsify.sh
+./docker_run_docsify.sh
 ```
 
 打开 [http://127.0.0.1:12346](http://127.0.0.1:12346)
