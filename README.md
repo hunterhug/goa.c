@@ -60,8 +60,8 @@
 希望在本地阅读，请安装 `Docker` 后，克隆仓库到本地执行：
 
 ```
-./docker_build.sh
-./docker_run.sh
+./docker_build_docsify.sh
+./docker_run_docsify.sh
 ```
 
 打开 [http://127.0.0.1:12346](http://127.0.0.1:12346)
@@ -78,7 +78,7 @@
 
 如何建议和贡献自己的知识库，可以前往 [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 的仓库提 `PR` 和 建议，分支目前是 `gh-pages`。
 
-开源书籍的评论使用的是 `GitTalk`，可以打开 [网站](https://goalgorithm.github.io) 阅读后评论自己的心得，如果你想赞助作者买根辣条，可以点击每篇文章的最下方 `赞助我` 按钮:
+开源书籍的评论使用的是 `GitTalk`，可以打开 [网站](https://hunterhug.github.io/goa.c) 阅读后评论自己的心得，如果你想赞助作者买根辣条，可以点击每篇文章的最下方 `赞助我` 按钮:
 
 所有章节的代码可以在 [这里](https://github.com/hunterhug/goa.c/tree/master/code) 找到。
 

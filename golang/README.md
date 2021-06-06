@@ -6,7 +6,7 @@
 
 `Golang` 语言是谷歌 `Google` 公司在2007年启动，并在2009年正式发布并 `开源` 的高级编程语言。开源地址：[https://github.com/golang/go](https://github.com/golang/go)，官网地址：[https://golang.org](https://golang.org)。
 
-`Golang` 语言语法简单，支持多平台交叉编译（Linux/Mac/Windows），支持内存自动 `GC`（垃圾回收），支持嵌 `C/C++` 开发，并且实现了语法层面的线程调度，开发多线程程序十分方便。语法很像 `C/Python/JavaScript` 等高级编程语言。
+`Golang` 语言语法简单，支持多平台交叉编译（Linux/Mac/Windows），支持内存自动 `GC`（垃圾回收），支持嵌 `C` 开发，并且实现了语法层面的线程调度，开发多线程程序十分方便。语法很像 `C/Python/JavaScript` 等高级编程语言。
 
 设计这门语言的设计者有以下几位：
 
@@ -84,7 +84,7 @@ today times:2019-12-09 13:14:14.383118 +0800 CST m=+0.000199077
 4. `package` 包管理是怎样的，如何管理一个工程，官方提供哪些标准库，如时间处理，字符串处理，HTTP 库，加密库等。
 5. 有没有特殊的语言特征，其他语言没有的，比如某些语法糖。
 
-如果迫不及待想学习 `Golang`，可以安装 `Docker` 后，打开终端执行：
+如果迫不及待想学习 `Golang`，可以安装 [Docker](https://docs.docker.com/get-docker) 后，打开终端执行（我建议使用这个学习语法即可，因为没有必要去看其他的书籍）：
 
 ```
 # 拉镜像
