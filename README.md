@@ -10,6 +10,7 @@
 
  <del>（可能🍒过时）Gitbook风格的 [https://goalgorithm.github.io](https://goalgorithm.github.io) 。 </del>
 
+**目前有部分网站，未经许可分发了此系列内容，存在更新延后的风险，之前存在部分的笔误，都已经更正了，请以此网站为准。**
 
 联系作者：
 
