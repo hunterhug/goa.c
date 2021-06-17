@@ -6,6 +6,8 @@
 
 使用平衡树数据结构，可以提高查找元素的速度，我们在本章介绍 `2-3-4` 树，再用二叉树形式来实现 `2-3-4` 树，也就是普通的红黑树。
 
+具体源码实现可阅读：[https://github.com/hunterhug/gomap](https://github.com/hunterhug/gomap/blob/master/README_ZH.md) 。
+
 ## 一、`2-3-4` 树
 
 ### 1.1. `2-3-4` 树介绍
