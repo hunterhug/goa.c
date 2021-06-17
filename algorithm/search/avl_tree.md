@@ -2,6 +2,8 @@
 
 二叉查找树的树高度影响了查找的效率，需要尽量减小树的高度，AVL树正是这样的树。
 
+具体源码实现可阅读：[https://github.com/hunterhug/gomap](https://github.com/hunterhug/gomap/blob/master/README_ZH.md) 。
+
 ## 一、AVL树介绍
 
 AVL树是一棵严格自平衡的二叉查找树，1962年，发明者 `Adelson-Velsky` 和 `Landis` 发表了论文，以两个作者的名字命名了该数据结构，这是较早发明的平衡二叉树。
