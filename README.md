@@ -1,5 +1,11 @@
 # 数据结构和算法（Golang实现）
 
+[![GitHub forks](https://img.shields.io/github/forks/hunterhug/goa.c.svg?style=social&label=Forks)](https://github.com/hunterhug/marmot/network)
+[![GitHub stars](https://img.shields.io/github/stars/hunterhug/goa.c.svg?style=social&label=Stars)](https://github.com/hunterhug/marmot/stargazers)
+[![GitHub last commit](https://img.shields.io/github/last-commit/hunterhug/goa.c.svg)](https://github.com/hunterhug/marmot)
+[![GitHub issues](https://img.shields.io/github/issues/hunterhug/goa.c.svg)](https://github.com/hunterhug/marmot/issues)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+
 ## 前言
 
 数据结构和算法在计算机科学里，有非常重要的地位。此系列文章尝试使用 `Golang` 编程语言来实现各种数据结构和算法，并且适当进行算法分析。
@@ -10,12 +16,9 @@
 
  <del>（可能🍒过时）Gitbook风格的 [https://goalgorithm.github.io](https://goalgorithm.github.io) 。 </del>
 
-**目前有部分网站，未经许可分发了此系列内容，存在更新延后的风险，之前存在部分的笔误，都已经更正了，请以此网站为准。**
+**目前有部分网站，未经许可分发了此系列内容，存在更新延后的风险，之前存在部分的笔误，都已经更正了，请以此网站为准！**
 
-联系作者：
-
-1. Github: [https://github.com/hunterhug](https://github.com/hunterhug)
-2. 知乎：[https://www.zhihu.com/people/chen-xing-xing-57-62-13](https://www.zhihu.com/people/chen-xing-xing-57-62-13)
+联系作者： [https://github.com/hunterhug](https://github.com/hunterhug)
 
 ## 目录
 
@@ -65,7 +68,7 @@
 ./docker_run_docsify.sh
 ```
 
-打开 [http://127.0.0.1:12346](http://127.0.0.1:12346)
+打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 阅读。
 
 ## 作者寄语
 
@@ -77,10 +80,34 @@
 
 ## 一起参与
 
-如何建议和贡献自己的知识库，可以前往 [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 的仓库提 `PR` 和 建议，分支目前是 `gh-pages`。
+如何建议和贡献自己的知识库，可以前往 [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 的仓库提 `PR` 和 建议。
 
-开源书籍的评论使用的是 `GitTalk`，可以打开 [网站](https://hunterhug.github.io/goa.c) 阅读后评论自己的心得，如果你想赞助作者买根辣条，可以点击每篇文章的最下方 `赞助我` 按钮:
+开源书籍的评论使用的是 `GitTalk`，可以打开 [网站](https://hunterhug.github.io/goa.c) 阅读后评论自己的心得。
 
-所有章节的代码可以在 [这里](https://github.com/hunterhug/goa.c/tree/master/code) 找到。
+## 章节代码
+
+所有章节的代码可以在 [仓库的code文件夹中](https://github.com/hunterhug/goa.c/tree/master/code) 找到。
+
+## 赞助作者
+
+如果你想赞助作者买根辣条，可以扫描下方的二维码:
 
 ![/weixin.png](./weixin.png)
+
+## License
+
+本开源书籍分发使用 `Apache License`：
+
+```
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

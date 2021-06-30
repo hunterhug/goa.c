@@ -2,7 +2,7 @@
 
 二叉查找树的树高度影响了查找的效率，需要尽量减小树的高度，AVL树正是这样的树。
 
-具体源码实现可阅读：[https://github.com/hunterhug/gomap](https://github.com/hunterhug/gomap/blob/master/README_ZH.md) 。
+目前已经有更加完备的代码实现，请参考：[https://github.com/hunterhug/gomap](https://github.com/hunterhug/gomap/blob/master/README_ZH.md) 。
 
 ## 一、AVL树介绍
 
