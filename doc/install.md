@@ -1,21 +1,26 @@
 # 文档部署
 
-我们使用定制化的 Gitbook 部署（已过时，请直接看最下面的部署方式），参考以下步骤可以部署该文档。
+安装 `Docker` 后，参考以下步骤可以部署该文档。
 
-`Linux/Mac` 安装 `docker` 后，请按以下部署文档：
+## <del>Gitbook 容器部署（已过时）</del>
+
+可以使用这种方式部署，但我觉得样式有点丑，可以选择 `Docsify` 部署，会漂亮很多。
 
 ```
+git clone https://github.com/hunterhug/goa.c.git
+cd goa.c
+
 ./docker_build.sh
 ./docker_run.sh
 ```
 
-提示没有权限，请加上 `sudo`。
+如果提示没有权限，请加上 `sudo`。
 
 打开 [http://127.0.0.1:12346](http://127.0.0.1:12346)
 
-## Gitbook裸机部署（建议不用）
+## <del>Gitbook裸机部署（建议不用）</del>
 
-如果不想使用 `docker`，可以：
+如果不想使用 `Docker`，可以：
 
 ```
 # npm install -g  n
@@ -29,11 +34,22 @@ gitbook serve
 
 提示没有权限，请加上 `sudo`。
 
-## Docsify部署（强烈推荐）
+## Docsify 容器部署（强烈推荐）
 
 支持使用 [Docsify](https://docsify.js.org/#/zh-cn/quickstart) 部署：
 
 ```
+git clone https://github.com/hunterhug/goa.c.git
+cd goa.c
+
 ./docker_build_docsify.sh
 ./docker_run_docsify.sh
 ```
+
+如果你想在本地调试，可以执行：
+
+```
+./docker_debug_docsify.sh
+```
+
+打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 。

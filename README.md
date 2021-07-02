@@ -60,14 +60,7 @@
 * [书籍推荐](doc/book.md)
 * [参考资料](basic/refer.md)
 
-希望在本地阅读，请安装 `Docker` 后，克隆仓库到本地执行：
-
-```
-./docker_build_docsify.sh
-./docker_run_docsify.sh
-```
-
-打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 阅读。
+希望在本地阅读，可以部署该文档，请参考 [文档部署](doc/install.md) 。
 
 ## 作者寄语
 
@@ -91,7 +84,7 @@
 
 如果你想赞助作者买根辣条，可以扫描下方的二维码:
 
-![/weixin.png](./weixin.png)
+![/weixin.png](./picture/weixin.png)
 
 ## License
 

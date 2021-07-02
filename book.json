@@ -103,8 +103,8 @@
       "title": "",
       "alipayText": "微信",
       "wechatText": "微信",
-      "alipay": "/weixin.png",
-      "wechat": "/weixin.png"
+      "alipay": "/picture/weixin.png",
+      "wechat": "/picture/weixin.png"
     },
     "edit-link-plus": {
       "title": "编辑文章",
