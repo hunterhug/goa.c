@@ -47,20 +47,20 @@
                 ].join('');
 
 
-                hook.beforeEach(function(html) {
-                    var url =
-                        'https://github.com/hunterhug/goa.c/blob/master/' +
-                        vm.route.file;
-                    var editHtml = '[📝 修改文章](' + url + ')\n';
-
-                    return (
-                        editHtml +
-                        html +
-                        '\n----\n' +
-                        '文章更新于 {docsify-updated} ，您可以帮忙提 PR 来' +
-                        editHtml + '。'
-                    );
-                });
+                // hook.beforeEach(function(html) {
+                //     var url =
+                //         'https://github.com/hunterhug/goa.c/blob/master/' +
+                //         vm.route.file;
+                //     var editHtml = '[📝 修改文章](' + url + ')\n';
+                //
+                //     return (
+                //         editHtml +
+                //         html +
+                //         '\n----\n' +
+                //         '文章更新于 {docsify-updated} ，您可以帮忙提 PR 来' +
+                //         editHtml + '。'
+                //     );
+                // });
 
                 hook.afterEach(function(html) {
                     return html + footer;
