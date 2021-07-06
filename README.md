@@ -94,12 +94,15 @@
 | 20200922 |    胡小东  |   9.5RMB      |
 | 20200627 |    杨某  |   99.99RMB      |
 
+感谢她（他）们给作者送去温暖，让作者有更好的动力边吃辣条边写文章！
 
-## License
+## 版权所有
 
-本开源书籍分发使用 `Apache License`：
+本开源书籍分发使用 `Apache License`，您可以随意使用，但请保留以下内容：
 
 ```
+Copyright [2019-2021] [github.com/hunterhug]
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at

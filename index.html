@@ -34,7 +34,39 @@
             color: 'rgb(90,90,90)',
             language: 'chinese'
         },
-        ga: 'UA-109725015-1'
+        ga: 'UA-109725015-1',
+        formatUpdated: '{YYYY}/{MM}/{DD} {HH}:{mm}',
+        plugins: [
+            function(hook, vm) {
+                var footer = [
+                    '<hr/>',
+                    '<footer>',
+                    '<p style="text-align: center"><img src="./picture/weixin.png"></p>',
+                    '<p style="text-align: center"><span>微信扫一扫送一根辣条鼓励作者产出更好的文章吧～</span></p>',
+                    '</footer>'
+                ].join('');
+
+
+                hook.beforeEach(function(html) {
+                    var url =
+                        'https://github.com/hunterhug/goa.c/blob/master/' +
+                        vm.route.file;
+                    var editHtml = '[📝 修改文章](' + url + ')\n';
+
+                    return (
+                        editHtml +
+                        html +
+                        '\n----\n' +
+                        '文章更新于 {docsify-updated} ，您可以帮忙提 PR 来' +
+                        editHtml + '。'
+                    );
+                });
+
+                hook.afterEach(function(html) {
+                    return html + footer;
+                });
+            }
+        ]
     }
 </script>
 
