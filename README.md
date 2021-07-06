@@ -86,6 +86,15 @@
 
 ![/weixin.png](./picture/weixin.png)
 
+赞助情况（排名不分先后）：
+
+| 日期 | 组织/个人 | 说明 |
+| ----- | ------- | ------- |
+| 20210706 |   ![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png) JetBrains |    支持了一个全家桶的授权。     |
+| 20200922 |    胡小东  |   9.5RMB      |
+| 20200627 |    杨某  |   99.99RMB      |
+
+
 ## License
 
 本开源书籍分发使用 `Apache License`：
