@@ -7,7 +7,7 @@
   "gitbook": "3.2.3",
   "links": {
     "sidebar": {
-      "首页": "https://hunterhug.github.io"
+      "首页": "https://hunterhug.github.io/goa.c"
     }
   },
   "plugins": [
@@ -35,9 +35,7 @@
     "copy-code-button@^0.0.2",
     "donate@^1.0.2",
     "mygitalk@^0.2.6",
-    "tbfed-pagefooter@^0.0.1",
-    "edit-link-plus@^0.0.1",
-    "github-buttons@^3.0.0"
+    "tbfed-pagefooter@^0.0.1"
   ],
   "pluginsConfig": {
     "theme-default": {
@@ -105,30 +103,6 @@
       "wechatText": "微信",
       "alipay": "/picture/weixin.png",
       "wechat": "/picture/weixin.png"
-    },
-    "edit-link-plus": {
-      "title": "编辑文章",
-      "default": "编辑文章",
-      "required": false,
-      "base": "https://github.com/hunterhug/goa.c/edit/develop"
-    },
-    "github-buttons": {
-      "buttons": [
-        {
-          "user": "hunterhug",
-          "repo": "goa.c",
-          "type": "star",
-          "size": "small",
-          "count": true
-        },
-        {
-          "user": "hunterhug",
-          "type": "follow",
-          "width": "200",
-          "size": "small",
-          "count": true
-        }
-      ]
     }
   }
 }
