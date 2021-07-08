@@ -11,13 +11,13 @@
 
 系列文章首发于：
 
-（🤔一直保持最新）Docsify风格的 [https://hunterhug.github.io/goa.c](https://hunterhug.github.io/goa.c) 。
+（🧍‍♂️原始文档托管）Github代码仓库： [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 。
 
- <del>（可能🍒过时）Gitbook风格的 [https://goalgorithm.github.io](https://goalgorithm.github.io) 。 </del>
+（🤔一直保持最新）Docsify风格的网站： [https://hunterhug.github.io/goa.c](https://hunterhug.github.io/goa.c) 。
 
 **目前有部分网站，未经许可分发了此系列内容，存在更新延后的风险，之前存在部分的笔误，都已经更正了，请以此网站为准！**
 
-联系作者： [https://github.com/hunterhug](https://github.com/hunterhug)
+联系作者： [https://github.com/hunterhug](https://github.com/hunterhug) ，邮箱： gdccmcm14@live.com 。
 
 ## 目录
 
@@ -34,7 +34,7 @@
     * [分治法和递归](basic/rescuvie.md)
     * [算法复杂度及渐进符号](basic/dregee.md)
     * [算法复杂度主方法](basic/master_method.md)
-    * [延伸-计算理论：P和NP问题](basic/p.md)   
+    * [延伸-计算理论：P和NP问题](basic/p.md)
 * [常见数据结构及算法](algorithm/README.md)
     * [链表](algorithm/link.md)
     * [可变长数组](algorithm/array_change.md)
@@ -58,7 +58,7 @@
         * [2-3-4树和普通红黑树](algorithm/search/rb_tree.md)
 * [文档部署](doc/install.md)
 * [书籍推荐](doc/book.md)
-* [参考资料](basic/refer.md)
+* [参考](basic/refer.md)
 
 希望在本地阅读，可以部署该文档，请参考 [文档部署](doc/install.md) 。
 
@@ -78,7 +78,7 @@
 
 ## 章节代码
 
-所有章节的代码可以在 [仓库的code文件夹中](https://github.com/hunterhug/goa.c/tree/master/code) 找到。
+所有章节的代码可以在仓库的 [code](https://github.com/hunterhug/goa.c/tree/master/code) 文件夹中找到。
 
 ## 赞助作者
 
@@ -98,7 +98,7 @@
 
 ## 版权所有
 
-本开源书籍分发使用 `Apache License`，您可以随意使用，但请保留以下内容：
+本开源书籍分发使用 `Apache License`，您可以随意传阅，但请保留以下声明：
 
 ```
 Copyright [2019-2021] [github.com/hunterhug]
