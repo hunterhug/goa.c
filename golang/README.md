@@ -95,3 +95,7 @@ docker run -d -p 9999:9999 hunterhug/gotourzh
 ```
 
 浏览器输入：[http://127.0.0.1:9999](http://127.0.0.1:9999) 更全面地学习。
+
+## 附录
+
+代码下载： [https://github.com/hunterhug/goa.c/blob/master/code/hello_world/main.go](https://github.com/hunterhug/goa.c/blob/master/code/hello_world/main.go) 。

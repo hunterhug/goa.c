@@ -683,3 +683,7 @@ func A(num int) int {
 `Golang` 会智能进行变量分析。所以有一个叫变量逃逸的说法。
 
 也就是变量被分配到堆里面 `heap`，还是栈里面 `stack`，主要取决于后期该变量会不会继续使用，如果不会，那么就分配到栈里，如果会，分配到堆里。
+
+## 附录
+
+代码下载： [https://github.com/hunterhug/goa.c/tree/master/code/golang_learn](https://github.com/hunterhug/goa.c/tree/master/code/golang_learn) 。

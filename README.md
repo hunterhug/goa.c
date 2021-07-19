@@ -50,7 +50,7 @@
         * [插入排序](algorithm/sort/insert_sort.md)
         * [希尔排序](algorithm/sort/shell_sort.md)
         * [归并排序](algorithm/sort/merge_sort.md)
-        * [优先队列及堆排序](algorithm/heaplike/heaps.md)
+        * [优先队列及堆排序](algorithm/heaps.md)
         * [快速排序](algorithm/sort/quick_sort.md)
     * [查找算法](algorithm/search.md)
         * [哈希表：散列查找](algorithm/search/hash_find.md)
@@ -105,6 +105,16 @@
 | 20200627 |    杨某  |   99.99RMB      |
 
 感谢她（他）们给作者送去温暖，让作者有更好的动力边吃辣条边写文章！
+
+## 广告位招租
+
+广告位招租板块： 
+
+作者在多年实践中抽离出了多个轮子，特别推荐。
+
+1. Golang实现的Redis分布式锁：[gorlock](https://github.com/hunterhug/gorlock) ，支持续命，工程必备。
+2. Golang封装的爬虫请求库：[marmot](https://github.com/hunterhug/marmot) ，功能齐全，写爬虫，对接第三方HTTP接口非常方便。
+3. Golang实现的分布式Session库：[gosession](https://github.com/hunterhug/gosession) ，支持Web令牌操作，支持单点登录。
 
 ## 版权所有
 

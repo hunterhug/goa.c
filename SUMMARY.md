@@ -27,7 +27,7 @@
         * [插入排序](algorithm/sort/insert_sort.md)
         * [希尔排序](algorithm/sort/shell_sort.md)
         * [归并排序](algorithm/sort/merge_sort.md)
-        * [优先队列及堆排序](algorithm/heaplike/heaps.md)
+        * [优先队列及堆排序](algorithm/heaps.md)
         * [快速排序](algorithm/sort/quick_sort.md)
     * [查找算法](algorithm/search.md)
         * [哈希表：散列查找](algorithm/search/hash_find.md)

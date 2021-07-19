@@ -687,3 +687,7 @@ get 4 not found
 哈希表在添加元素时会进行伸缩，会造成较大的性能消耗，所以有时候会用到其他的查找算法：树查找算法。
 
 树查找算法在后面的章节会进行介绍。
+
+## 附录
+
+代码下载： [https://github.com/hunterhug/goa.c/blob/master/code/hashmap/main.go](https://github.com/hunterhug/goa.c/blob/master/code/hashmap/main.go) 。
