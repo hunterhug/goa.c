@@ -37,7 +37,7 @@
         ga: 'UA-109725015-1',
         formatUpdated: '{YYYY}/{MM}/{DD} {HH}:{mm}',
         plugins: [
-            function(hook, vm) {
+            function (hook, vm) {
                 var footer = [
                     '<hr/>',
                     '<footer>',
@@ -47,7 +47,7 @@
                 ].join('');
 
 
-                hook.beforeEach(function(html) {
+                hook.beforeEach(function (html) {
                     var url =
                         'https://github.com/hunterhug/goa.c/blob/master/' +
                         vm.route.file;
@@ -59,11 +59,21 @@
                     );
                 });
 
-                hook.afterEach(function(html) {
+                hook.afterEach(function (html) {
                     return html + footer;
                 });
             }
-        ]
+        ],
+        pagination: {
+            previousText: '上一章节',
+            nextText: '下一章节',
+            crossChapter: true,
+            crossChapterText: true,
+        },
+        toc: {
+            tocMaxLevel: 4,
+            target: 'h2, h3, h4, h5'
+        },
     }
 </script>
 
@@ -73,12 +83,15 @@
 <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+<script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+<script src="//unpkg.com/docsify-plugin-toc"></script>
 
 <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css"> -->
 <!--
      <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
      <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 -->
+
 <link rel="stylesheet" href="./picture/static/gitalk/dist/gitalk.css">
 <script src="./picture/static/gitalk/plugins.gitalk.min.js"></script>
 <script src="./picture/static/gitalk/dist/gitalk.js"></script>

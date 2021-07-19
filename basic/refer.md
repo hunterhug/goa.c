@@ -1,5 +1,9 @@
 # 参考资料
 
+大部分的章节都是按照自己在大学学习和工作实践过程中，形成的知识体系来写作的。
+
+遇到一些超出知识体系的，大部分在线参考了维基百科，以及某些论坛及博客，感谢这些作者。
+
 - [算法可视化: https://www.cs.usfca.edu/~galles/visualization/Algorithms.html](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
 - [Algorithms: https://algs4.cs.princeton.edu/home/](https://algs4.cs.princeton.edu/home/)
 - [为什么快速排序占用额外的空间：https://stackoverflow.com/questions/12573330/why-does-quicksort-use-ologn-extra-space/12573403](https://stackoverflow.com/questions/12573330/why-does-quicksort-use-ologn-extra-space/12573403)

@@ -34,7 +34,7 @@
     "sharing-plus@^0.0.2",
     "copy-code-button@^0.0.2",
     "donate@^1.0.2",
-    "mygitalk@^0.2.6",
+    "-mygitalk@^0.2.6",
     "tbfed-pagefooter@^0.0.1"
   ],
   "pluginsConfig": {
@@ -85,7 +85,7 @@
     "sectionx": {
       "tag": "b"
     },
-    "mygitalk": {
+    "fake_mygitalk": {
       "clientID": "88bd6a753142024b3e6c",
       "clientSecret": "edb4b5730d40ce1b578d571d72a8b17585ccbafd",
       "repo": "goa.c",
