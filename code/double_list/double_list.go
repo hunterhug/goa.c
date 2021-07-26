@@ -5,64 +5,64 @@ import (
 	"sync"
 )
 
-// 双端列表，双端队列
+// DoubleList 双端列表，双端队列
 type DoubleList struct {
 	head *ListNode  // 指向链表头部
 	tail *ListNode  // 指向链表尾部
 	len  int        // 列表长度
-	lock sync.Mutex // 为了进行并发安全pop操作
+	lock sync.Mutex // 为了进行并发安全pop弹出操作
 }
 
-// 列表节点
+// ListNode 列表节点
 type ListNode struct {
 	pre   *ListNode // 前驱节点
 	next  *ListNode // 后驱节点
 	value string    // 值
 }
 
-// 获取节点值
+// GetValue 获取节点值
 func (node *ListNode) GetValue() string {
 	return node.value
 }
 
-// 获取节点前驱节点
+// GetPre 获取节点前驱节点
 func (node *ListNode) GetPre() *ListNode {
 	return node.pre
 }
 
-// 获取节点后驱节点
+// GetNext 获取节点后驱节点
 func (node *ListNode) GetNext() *ListNode {
 	return node.next
 }
 
-// 是否存在后驱节点
+// HashNext 是否存在后驱节点
 func (node *ListNode) HashNext() bool {
 	return node.pre != nil
 }
 
-// 是否存在前驱节点
+// HashPre 是否存在前驱节点
 func (node *ListNode) HashPre() bool {
 	return node.next != nil
 }
 
-// 是否为空节点
+// IsNil 是否为空节点
 func (node *ListNode) IsNil() bool {
 	return node == nil
 }
 
-// 返回列表长度
+// Len 返回列表长度
 func (list *DoubleList) Len() int {
 	return list.len
 }
 
-// 添加节点到链表头部的第N个元素之前，N=0表示新节点成为新的头部
+// AddNodeFromHead 从头部开始，添加节点到第N+1个元素之前，N=0表示添加到第一个元素之前，表示新节点成为新的头部，N=1表示添加到第二个元素之前，以此类推
 func (list *DoubleList) AddNodeFromHead(n int, v string) {
 	// 加并发锁
 	list.lock.Lock()
 	defer list.lock.Unlock()
 
-	// 索引超过列表长度，一定找不到，panic
-	if n > list.len {
+	// 如果索引超过或等于列表长度，一定找不到，直接panic
+	if n != 0 && n >= list.len {
 		panic("index out")
 	}
 
@@ -110,14 +110,14 @@ func (list *DoubleList) AddNodeFromHead(n int, v string) {
 	list.len = list.len + 1
 }
 
-// 添加节点到链表尾部的第N个元素之后，N=0表示新节点成为新的尾部
+// AddNodeFromTail 从尾部开始，添加节点到第N+1个元素之后，N=0表示添加到第一个元素之后，表示新节点成为新的尾部，N=1表示添加到第二个元素之后，以此类推
 func (list *DoubleList) AddNodeFromTail(n int, v string) {
 	// 加并发锁
 	list.lock.Lock()
 	defer list.lock.Unlock()
 
-	// 索引超过列表长度，一定找不到，panic
-	if n > list.len {
+	// 如果索引超过或等于列表长度，一定找不到，直接panic
+	if n != 0 && n >= list.len {
 		panic("index out")
 	}
 
@@ -167,17 +167,17 @@ func (list *DoubleList) AddNodeFromTail(n int, v string) {
 	list.len = list.len + 1
 }
 
-// 返回列表链表头结点
+// First 返回列表链表头结点
 func (list *DoubleList) First() *ListNode {
 	return list.head
 }
 
-// 返回列表链表尾结点
+// Last 返回列表链表尾结点
 func (list *DoubleList) Last() *ListNode {
 	return list.tail
 }
 
-// 从头部开始往后找，获取第N+1个位置的节点，索引从0开始。
+// IndexFromHead 从头部开始往后找，获取第N+1个位置的节点，索引从0开始。
 func (list *DoubleList) IndexFromHead(n int) *ListNode {
 	// 索引超过或等于列表长度，一定找不到，返回空指针
 	if n >= list.len {
@@ -195,7 +195,7 @@ func (list *DoubleList) IndexFromHead(n int) *ListNode {
 	return node
 }
 
-// 从尾部开始往前找，获取第N+1个位置的节点，索引从0开始。
+// IndexFromTail 从尾部开始往前找，获取第N+1个位置的节点，索引从0开始。
 func (list *DoubleList) IndexFromTail(n int) *ListNode {
 	// 索引超过或等于列表长度，一定找不到，返回空指针
 	if n >= list.len {
@@ -213,7 +213,7 @@ func (list *DoubleList) IndexFromTail(n int) *ListNode {
 	return node
 }
 
-// 从头部开始往后找，获取第N+1个位置的节点，并移除返回
+// PopFromHead 从头部开始往后找，获取第N+1个位置的节点，并移除返回
 func (list *DoubleList) PopFromHead(n int) *ListNode {
 	// 加并发锁
 	list.lock.Lock()
@@ -259,7 +259,7 @@ func (list *DoubleList) PopFromHead(n int) *ListNode {
 	return node
 }
 
-// 从尾部开始往前找，获取第N+1个位置的节点，并移除返回
+// PopFromTail 从尾部开始往前找，获取第N+1个位置的节点，并移除返回
 func (list *DoubleList) PopFromTail(n int) *ListNode {
 	// 加并发锁
 	list.lock.Lock()
@@ -307,6 +307,7 @@ func (list *DoubleList) PopFromTail(n int) *ListNode {
 
 func main() {
 	list := new(DoubleList)
+
 	// 在列表头部插入新元素
 	list.AddNodeFromHead(0, "I")
 	list.AddNodeFromHead(0, "love")
@@ -315,7 +316,10 @@ func main() {
 	list.AddNodeFromTail(0, "may")
 	list.AddNodeFromTail(0, "happy")
 
-	// 正常遍历，比较慢
+	list.AddNodeFromTail(list.Len()-1, "begin second")
+	list.AddNodeFromHead(list.Len()-1, "end second")
+
+	// 正常遍历，比较慢，因为内部会遍历拿到值返回
 	for i := 0; i < list.Len(); i++ {
 		// 从头部开始索引
 		node := list.IndexFromHead(i)
@@ -328,7 +332,7 @@ func main() {
 
 	fmt.Println("----------")
 
-	// 正常遍历，特别快
+	// 正常遍历，特别快，因为直接拿到的链表节点
 	// 先取出第一个元素
 	first := list.First()
 	for !first.IsNil() {
