@@ -84,7 +84,7 @@ import (
 	"sync"
 )
 
-// 可变长数组
+// Array 可变长数组
 type Array struct {
 	array []int      // 固定大小的数组，用满容量和满大小的切片来代替
 	len   int        // 真正长度
@@ -97,8 +97,8 @@ type Array struct {
 
 创建一个 `len` 个元素，容量为 `cap` 的可变长数组：
 
-```
-// 新建一个可变长数组
+```go
+// Make 新建一个可变长数组
 func Make(len, cap int) *Array {
 	s := new(Array)
 	if len > cap {
@@ -123,7 +123,7 @@ func Make(len, cap int) *Array {
 ### 1.2. 添加元素
 
 ```go
-// 增加一个元素
+// Append 增加一个元素
 func (a *Array) Append(element int) {
 	// 并发锁
 	a.lock.Lock()
@@ -169,7 +169,7 @@ func (a *Array) Append(element int) {
 如何添加多个元素：
 
 ```go
-// 增加多个元素
+// AppendMany 增加多个元素
 func (a *Array) AppendMany(element ...int) {
 	for _, v := range element {
 		a.Append(v)
@@ -182,7 +182,7 @@ func (a *Array) AppendMany(element ...int) {
 ### 1.3. 获取指定下标元素
 
 ```go
-// 获取某个下标的元素
+// Get 获取某个下标的元素
 func (a *Array) Get(index int) int {
 	// 越界了
 	if a.len == 0 || index >= a.len {
@@ -199,12 +199,12 @@ func (a *Array) Get(index int) int {
 ### 1.4. 获取真实长度和容量
 
 ```go
-// 返回真实长度
+// Len 返回真实长度
 func (a *Array) Len() int {
 	return a.len
 }
 
-// 返回容量
+// Cap 返回容量
 func (a *Array) Cap() int {
 	return a.cap
 }
@@ -224,7 +224,7 @@ import (
 	"sync"
 )
 
-// 可变长数组
+// Array 可变长数组
 type Array struct {
 	array []int      // 固定大小的数组，用满容量和满大小的切片来代替
 	len   int        // 真正长度
@@ -232,7 +232,7 @@ type Array struct {
 	lock  sync.Mutex // 为了并发安全使用的锁
 }
 
-// 新建一个可变长数组
+// Make 新建一个可变长数组
 func Make(len, cap int) *Array {
 	s := new(Array)
 	if len > cap {
@@ -249,7 +249,7 @@ func Make(len, cap int) *Array {
 	return s
 }
 
-// 增加一个元素
+// Append 增加一个元素
 func (a *Array) Append(element int) {
 	// 并发锁
 	a.lock.Lock()
@@ -285,7 +285,7 @@ func (a *Array) Append(element int) {
 
 }
 
-// 增加多个元素
+// AppendMany 增加多个元素
 func (a *Array) AppendMany(element ...int) {
 	for _, v := range element {
 		a.Append(v)
@@ -293,7 +293,7 @@ func (a *Array) AppendMany(element ...int) {
 
 }
 
-// 获取某个下标的元素
+// Get 获取某个下标的元素
 func (a *Array) Get(index int) int {
 	// 越界了
 	if a.len == 0 || index >= a.len {
@@ -302,17 +302,17 @@ func (a *Array) Get(index int) int {
 	return a.array[index]
 }
 
-// 返回真实长度
+// Len 返回真实长度
 func (a *Array) Len() int {
 	return a.len
 }
 
-// 返回容量
+// Cap 返回容量
 func (a *Array) Cap() int {
 	return a.cap
 }
 
-// 辅助打印
+// Print 辅助打印
 func Print(array *Array) (result string) {
 	result = "["
 	for i := 0; i < array.Len(); i++ {
@@ -345,6 +345,7 @@ func main() {
 	a.AppendMany(8, 7)
 	fmt.Println("cap", a.Cap(), "len", a.Len(), "array:", Print(a))
 }
+
 ```
 
 将打印出：
@@ -363,3 +364,7 @@ cap 6 len 4 array: [10 9 8 7]
 可变长数组在实际开发上，经常会使用到，其在固定大小数组的基础上，会自动进行容量扩展。
 
 因为这一数据结构的使用频率太高了，所以，`Golang` 自动提供了这一数据类型：切片（可变长数组）。大家一般开发过程中，直接使用这一类型即可。
+
+## 附录
+
+代码下载： [https://github.com/hunterhug/goa.c/blob/master/code/slice/slice_example.go](https://github.com/hunterhug/goa.c/blob/master/code/slice/slice_example.go) 。

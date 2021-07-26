@@ -2,31 +2,6 @@ package main
 
 import "fmt"
 
-/*
-	// growslice handles slice growth during append.
-
-	newcap := old.cap
-	doublecap := newcap + newcap
-	if cap > doublecap {
-		newcap = cap
-	} else {
-		if old.len < 1024 {
-			newcap = doublecap
-		} else {
-			// Check 0 < newcap to detect overflow
-			// and prevent an infinite loop.
-			for 0 < newcap && newcap < cap {
-				newcap += newcap / 4
-			}
-			// Set newcap to the requested cap when
-			// the newcap calculation overflowed.
-			if newcap <= 0 {
-				newcap = cap
-			}
-		}
-	}
-
-*/
 func main() {
 	array := make([]int, 0)
 	newCap := cap(array)

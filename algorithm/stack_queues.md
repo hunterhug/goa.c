@@ -470,3 +470,7 @@ func (queue *LinkQueue) Remove() string {
 ```
 
 链表第一个节点出队即可，时间复杂度为：`O(1)`。
+
+## 附录
+
+代码下载： [https://github.com/hunterhug/goa.c/blob/master/code/stack/main.go](https://github.com/hunterhug/goa.c/blob/master/code/stack/main.go) 。

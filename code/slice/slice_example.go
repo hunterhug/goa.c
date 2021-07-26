@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-// 可变长数组
+// Array 可变长数组
 type Array struct {
 	array []int      // 固定大小的数组，用满容量和满大小的切片来代替
 	len   int        // 真正长度
@@ -13,7 +13,7 @@ type Array struct {
 	lock  sync.Mutex // 为了并发安全使用的锁
 }
 
-// 新建一个可变长数组
+// Make 新建一个可变长数组
 func Make(len, cap int) *Array {
 	s := new(Array)
 	if len > cap {
@@ -30,7 +30,7 @@ func Make(len, cap int) *Array {
 	return s
 }
 
-// 增加一个元素
+// Append 增加一个元素
 func (a *Array) Append(element int) {
 	// 并发锁
 	a.lock.Lock()
@@ -66,7 +66,7 @@ func (a *Array) Append(element int) {
 
 }
 
-// 增加多个元素
+// AppendMany 增加多个元素
 func (a *Array) AppendMany(element ...int) {
 	for _, v := range element {
 		a.Append(v)
@@ -74,7 +74,7 @@ func (a *Array) AppendMany(element ...int) {
 
 }
 
-// 获取某个下标的元素
+// Get 获取某个下标的元素
 func (a *Array) Get(index int) int {
 	// 越界了
 	if a.len == 0 || index >= a.len {
@@ -83,17 +83,17 @@ func (a *Array) Get(index int) int {
 	return a.array[index]
 }
 
-// 返回真实长度
+// Len 返回真实长度
 func (a *Array) Len() int {
 	return a.len
 }
 
-// 返回容量
+// Cap 返回容量
 func (a *Array) Cap() int {
 	return a.cap
 }
 
-// 辅助打印
+// Print 辅助打印
 func Print(array *Array) (result string) {
 	result = "["
 	for i := 0; i < array.Len(); i++ {
