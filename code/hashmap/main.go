@@ -9,7 +9,7 @@ import (
 
 const (
 	// 扩容因子
-	expandFactor = 1.0 / 2.0
+	expandFactor = 0.75
 )
 
 // 哈希表
