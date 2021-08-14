@@ -13,7 +13,7 @@
 
 （🧍‍♂️原始文档托管）Github代码仓库： [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 。
 
-（🤔一直保持最新）Docsify风格的网站： [https://www.lenggirl.com/goa.c/](https://www.lenggirl.com/goa.c/) 。
+（🤔一直保持最新）Docsify风格的网站： [https://hunterhug.github.io/goa.c/](https://hunterhug.github.io/goa.c/) 。
 
 希望在本地阅读，可以部署该文档，请参考 [文档部署](doc/install.md) 指导。
 
