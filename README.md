@@ -108,13 +108,7 @@
 
 ## 广告位招租
 
-广告位招租板块： 
-
-作者在多年实践中抽离出了多个轮子，特别推荐。
-
-1. Golang实现的Redis分布式锁：[gorlock](https://github.com/hunterhug/gorlock) ，支持续命，工程必备。
-2. Golang封装的爬虫请求库：[marmot](https://github.com/hunterhug/marmot) ，功能齐全，写爬虫，对接第三方HTTP接口非常方便。
-3. Golang实现的分布式Session库：[gosession](https://github.com/hunterhug/gosession) ，支持Web令牌操作，支持单点登录。
+广告位招租板块。
 
 ## 版权所有
 
