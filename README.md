@@ -13,7 +13,7 @@
 
 （🧍‍♂️原始文档托管）Github代码仓库： [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 。
 
-（🤔一直保持最新）Docsify风格的网站： [https://hunterhug.github.io/goa.c/](https://hunterhug.github.io/goa.c/) 。
+（🤔一直保持最新）Docsify风格的网站： [https://goa.lenggirl.com](https://goa.lenggirl.com) 。
 
 希望在本地阅读，可以部署该文档，请参考 [文档部署](doc/install.md) 指导。
 
@@ -84,7 +84,7 @@
 
 如何建议和贡献自己的知识库，可以前往 [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 的仓库提 `PR` 和 建议。
 
-开源书籍的评论使用的是 `GitTalk`，可以打开 [网站](https://hunterhug.github.io/goa.c) 阅读后评论自己的心得。
+开源书籍的评论使用的是 `GitTalk`，可以打开 [网站](https://goa.lenggirl.com) 阅读后评论自己的心得。
 
 ## 章节代码
 
