@@ -3,10 +3,21 @@ image: alpine:latest
 pages:
   stage: deploy
   script:
-    - mv . public/
+    - mkdir public
+    - ls .
+    - echo "go..."
+    - mv ./algorithm public/algorithm
+    - mv ./basic public/basic
+    - mv ./doc public/doc
+    - mv ./golang public/golang
+    - mv ./picture public/picture
+    - cp -r ./*.md public/
+    - cp -r ./*.html public/
+    - cp -r ./*.js public/
+    - cp ./.nojekyll public/
   artifacts:
     paths:
       - public
-    expire_in: 2 day
+    expire_in: 1 day
   only:
     - master
