@@ -321,7 +321,7 @@ import (
 在入口文件 `main.go` 文件夹下执行以下命令：
 
 ```
-go mod int
+go mod init
 ```
 
 该命令会解析 `main.go` 文件的第一行 `package main // import "golang"`，注意注释 `//` 后面的 `import "golang"`，会生成 `go.mod` 文件：
