@@ -211,14 +211,14 @@ func sum(a, b int64) int64 {
 
 进入文件所在目录，打开命令行终端，执行：
 
-```
+```go
 go mod init
 go run main.go
 ```
 
 会显示一些打印结果：
 
-```
+```go
 init hello world
 1 2 3
 hello world
@@ -285,7 +285,7 @@ map[string]int64{},len:0
 
 我们的项目结构是：
 
-```
+```go
 ├── diy
 │   └── diy.go
 └── main.go
@@ -320,13 +320,13 @@ import (
 
 在入口文件 `main.go` 文件夹下执行以下命令：
 
-```
+```go
 go mod init
 ```
 
 该命令会解析 `main.go` 文件的第一行 `package main // import "golang"`，注意注释 `//` 后面的 `import "golang"`，会生成 `go.mod` 文件：
 
-```
+```go
 module golang
 
 go 1.13
@@ -419,7 +419,7 @@ func main(){
 
 如果执行将会报错：
 
-```
+```go
 go run main.go
 
 ./main.go:26:2: cannot declared and not used
@@ -549,7 +549,7 @@ type:map[string]int64:map[a:3 b:4]
 
 打印：
 
-```
+```go
 []int64(nil)
 []int64{1}
 ```

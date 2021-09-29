@@ -18,17 +18,17 @@
 
 ## 二、安装并简单使用
 
-安装 [Golang：https://golang.org/dl](https://golang.org/dl)：Windows 操作系统点击 `msi` 按提示安装，Mac 操作系统可以使用 `brew install golang` 安装。
+安装 [Golang：https://golang.org/dl](https://golang.org/dl) ：Windows 操作系统点击 `msi` 按提示安装，Mac 操作系统可以使用 `brew install golang` 安装。
 
 打开命令行终端输入：
 
-```
+```go
 go version
 ```
 
 显示以下结果即为成功：
 
-```
+```go
 go version go1.13 darwin/amd64
 ```
 
@@ -54,7 +54,7 @@ func main() {
 
 打开命令行终端进行编译：
 
-```
+```go
 go build main.go
 ```
 

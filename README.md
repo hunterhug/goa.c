@@ -5,6 +5,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/goa.c.svg)](https://github.com/hunterhug/goa.c/issues)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
+**v2.2.0**
+
 心灵一问：在面试中，你是否对面试官喋喋不休，反复问你关于快速排序，红黑树的各种细节问题而感到无奈，并且感觉面试官在为难你，并且面试官很牛气，如果是，你不妨读读这本书，然后下次面试可以牛回去。
 
 简单总结：此书作者将通过几个简单的章节教大家入门 Golang 编程语言，然后开始介绍计算机科学基本的方法论，如分治法，递归和算法复杂度，紧接着从基本数据结构开始，慢慢介绍到排序和查找算法。
@@ -21,9 +23,9 @@
 
 **目前有部分网站，未经许可分发了此系列内容，存在更新延后的风险，之前存在部分的笔误，都已经更正了，请以此网站为准！**
 
-联系作者： [https://github.com/hunterhug](https://github.com/hunterhug) ，邮箱： gdccmcm14@live.com 。
+本地离线阅读： `docker run --name algorithm_docsify -d -p 12346:3000 hunterhug/algorithm:docsify` ，打开 [http://127.0.0.1:123456](http://127.0.0.1:12346) 。
 
-希望在本地阅读，可以部署该文档，请参考 [文档部署](doc/install.md) 指导。
+联系作者： [https://github.com/hunterhug](https://github.com/hunterhug) ，邮箱： gdccmcm14@live.com 。
 
 ## 目录
 
@@ -83,7 +85,7 @@
 
 ## 章节代码
 
-所有章节的代码可以在仓库的 [code](https://github.com/hunterhug/goa.c/tree/master/code) 文件夹中找到。
+所有章节的代码可以在 Github 仓库根目录下的 [code](https://github.com/hunterhug/goa.c/tree/master/code) 文件夹中找到。
 
 ## 赞助作者
 
