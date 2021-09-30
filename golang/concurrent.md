@@ -180,7 +180,7 @@ func Send(ch chan int) {
 }
 
 func main() {
-	// 新建一个5个缓冲的信道
+	// 新建一个10个缓冲的信道
 	ch := make(chan int, 10)
 
 	// 将信道传入函数，开启协程
