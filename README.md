@@ -5,7 +5,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/goa.c.svg)](https://github.com/hunterhug/goa.c/issues)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-**v2.2.0**
+**v2.2.1**
 
 心灵一问：在面试中，你是否对面试官喋喋不休，反复问你关于快速排序，红黑树的各种细节问题而感到无奈，并且感觉面试官在为难你，并且面试官很牛气，如果是，你不妨读读这本书，然后下次面试可以牛回去。
 
@@ -32,6 +32,7 @@
 * [目录](README.md)
 * [前言](basic/before.md)
 * [简单入门Golang](golang/README.md)
+    * [思考：关于码农生涯中编程语言的选择](golang/think.md)  
     * [包、变量和函数](golang/basic.md)
     * [流程控制语句](golang/logic.md)
     * [结构体和方法](golang/struct.md)
