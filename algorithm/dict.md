@@ -276,7 +276,7 @@ func (s *Set) Add(item int) {
 // 移除一个元素
 func (s *Set) Remove(item int) {
 	s.Lock()
-	s.Unlock()
+	defer s.Unlock()
 
 	// 集合没元素直接返回
 	if s.len == 0 {
