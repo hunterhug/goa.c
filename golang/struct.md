@@ -31,7 +31,7 @@ func main() {
 	c = &b
 	fmt.Println("b的内存地址：", c)
 
-	// 将指针变量 c 指向的内存里面的值设置为4
+	// 将指针变量 c 指向的内存里面的值设置为8
 	*c = 8
 	fmt.Println("a的值：", a)
 	fmt.Println("b的值：", b)
@@ -41,7 +41,7 @@ func main() {
 	fmt.Println("c的内存地址：", c)
 	fmt.Println("c1的内存地址：", c1)
 
-	// 将指针变量 c 指向的内存里面的值设置为4
+	// 将指针变量 c 指向的内存里面的值设置为9
 	*c = 9
 	fmt.Println("c指向的内存地址的值", *c)
 	fmt.Println("c1指向的内存地址的值", *c1)
