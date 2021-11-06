@@ -1,7 +1,7 @@
 * [目录](README.md)
 * [前言](basic/before.md)
 * [简单入门Golang](golang/README.md)
-    * [思考：关于码农生涯中编程语言的选择](golang/think.md)
+    * [思考：关于IT职业生涯中编程语言的选择](golang/think.md)
     * [包、变量和函数](golang/basic.md)
     * [流程控制语句](golang/logic.md)
     * [结构体和方法](golang/struct.md)
