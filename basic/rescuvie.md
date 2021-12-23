@@ -74,7 +74,7 @@ func main() {
 
 他的递归过程如下:
 
-```
+```go
 RescuvieTail(5, 1)
 RescuvieTail(4, 1*5)=RescuvieTail(4, 5)
 RescuvieTail(3, 5*4)=RescuvieTail(3, 20)
@@ -126,7 +126,7 @@ func main() {
 
 输出：
 
-```
+```go
 1
 2
 3

@@ -55,7 +55,7 @@ func main() {
 
 输出：
 
-```
+```go
 int,2
 2
 3
@@ -80,7 +80,7 @@ a is type: int
 
 我们也可以将函数的参数也定为 `interface`，和变量的定义一样：
 
-```
+```go
 func print(i interface{}) {
 	fmt.Println(i)
 }
@@ -99,7 +99,7 @@ func print(i interface{}) {
 
 当然，结构体里面的字段也可以是 `interface{}`：
 
-```
+```go
 type H struct {
     A interface{}
     B interface{}
@@ -258,7 +258,7 @@ a2: i love you
 
 我们可以定义一个接口类型，使用 `type 接口名 interface`，这时候不再是 `interface{}`：
 
-```
+```go
 // 定义一个接口，有一个方法
 type A interface {
 	Println()
@@ -303,7 +303,7 @@ func (a2 *A2Instance) Printf() int {
 
 我们要求结构体必须实现某些方法，所以可以定义一个接口类型的变量，然后将结构体赋值给它：
 
-```
+```go
 	// 定义一个A接口类型的变量
 	var a A
 	// 将具体的结构体赋予该变量

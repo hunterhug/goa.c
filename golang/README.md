@@ -62,13 +62,13 @@ go build main.go
 
 执行二进制：
 
-```
+```go
 ./main
 ```
 
 将会打印出以下结果：
 
-```
+```go
 init will be before hello world
 hello world
 today times:2019-12-09 13:14:14.383118 +0800 CST m=+0.000199077

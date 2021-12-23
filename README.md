@@ -21,13 +21,13 @@
 
 （🧍‍♂️原始文档托管）Github 代码仓库： [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 。
 
-（🤔一直保持最新）Docsify风格的网站： [https://goa.lenggirl.com](https://goa.lenggirl.com) 。
+（🤔一直保持最新）Docsify 风格的网站： [https://goa.lenggirl.com](https://goa.lenggirl.com) 。
 
 **目前有部分网站，未经许可分发了此系列内容，存在更新延后的风险，之前存在部分的笔误，都已经更正了，请以此网站为准！**
 
 本地离线阅读： `docker run --name algorithm_docsify -d -p 12346:3000 hunterhug/algorithm:docsify` ，打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 。
 
-联系作者： [https://github.com/hunterhug](https://github.com/hunterhug) ，邮箱： gdccmcm14@live.com，微信： ChenPika2021
+联系作者： [https://github.com/hunterhug](https://github.com/hunterhug) ，邮箱： gdccmcm14@live.com ，知乎： [https://www.zhihu.com/people/chenpika](https://www.zhihu.com/people/chenpika) 。
 
 ## 目录
 
@@ -100,9 +100,12 @@
 
 | 日期 | 组织/个人 | 说明 |
 | ----- | ------- | ------- |
-| 20210918 |    古寒飞  |   200.00RMB      |
-| 20200922 |    胡小东  |   9.50RMB      |
-| 20200627 |    杨某  |   99.99RMB      |
+| 2021.11.11 |    peter锦锋  |   18.50 RMB      |
+| 2021.09.18 |    古寒飞  |   200.00 RMB      |
+| 2021.08.31 |    crypto ivil  |   9.50 RMB      |
+| 2021.08.19 |    礼服黑面侠  |   9.50 RMB      |
+| 2020.09.22 |    胡小东  |   9.50 RMB      |
+| 2020.06.27 |    杨某  |   99.99 RMB      |
 
 感谢她（他）们给作者送去温暖，让作者有更好的动力边吃辣条边写文章！
 

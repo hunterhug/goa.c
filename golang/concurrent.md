@@ -279,7 +279,7 @@ fatal error: all goroutines are asleep - deadlock!
 
 因为 `range` 会一直读取消息，如果没有消息将会堵塞，主协程堵塞了，`Golang` 会认为死锁了，这时候我们可以关闭信道后再打印，如：
 
-```
+```go
 package main
 
 import "fmt"
@@ -370,7 +370,7 @@ func main() {
 
 我们需要实现并发安全，同一时间只能允许一个协程修改金额，我们需要加锁，如下：
 
-```
+```go
 type Money struct {
 	lock   sync.Mutex // 锁
 	amount int64
