@@ -27,7 +27,7 @@
 
 本地离线阅读： `docker run --name algorithm_docsify -d -p 12346:3000 hunterhug/algorithm:docsify` ，打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 。
 
-联系作者： [https://github.com/hunterhug](https://github.com/hunterhug) ，邮箱： gdccmcm14@live.com ，知乎： [https://www.zhihu.com/people/chenpika](https://www.zhihu.com/people/chenpika) 。
+联系作者： [https://github.com/hunterhug](https://github.com/hunterhug) ，邮箱： gdccmcm14@live.com。
 
 ## 目录
 
