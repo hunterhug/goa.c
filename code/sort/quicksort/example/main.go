@@ -2,22 +2,15 @@ package main
 
 import "fmt"
 
-// 伪尾递归快速排序
-func QuickSort3(array []int, begin, end int) {
-	for begin < end {
+// QuickSort 普通快速排序
+func QuickSort(array []int, begin, end int) {
+	if begin < end {
 		// 进行切分
 		loc := partition(array, begin, end)
-
-		// 那边元素少先排哪边
-		if loc-begin < end-loc {
-			// 先排左边
-			QuickSort3(array, begin, loc-1)
-			begin = loc + 1
-		} else {
-			// 先排右边
-			QuickSort3(array, loc+1, end)
-			end = loc - 1
-		}
+		// 对左部分进行快排
+		QuickSort(array, begin, loc-1)
+		// 对右部分进行快排
+		QuickSort(array, loc+1, end)
 	}
 }
 
@@ -36,8 +29,8 @@ func partition(array []int, begin, end int) int {
 		}
 	}
 
-	/* 跳出while循环后，i = j。
-	 * 此时数组被分割成两个部分  -->  array[begin+1] ~ array[i-1] < array[begin]
+	/* 跳出 for 循环后，i = j。
+	 * 此时数组被分割成两个部分   -->  array[begin+1] ~ array[i-1] < array[begin]
 	 *                        -->  array[i+1] ~ array[end] > array[begin]
 	 * 这个时候将数组array分成两个部分，再将array[i]与array[begin]进行比较，决定array[i]的位置。
 	 * 最后将array[i]与array[begin]交换，进行两个分割部分的排序！以此类推，直到最后i = j不满足条件就退出！
@@ -52,18 +45,18 @@ func partition(array []int, begin, end int) int {
 
 func main() {
 	list := []int{5}
-	QuickSort3(list, 0, len(list)-1)
+	QuickSort(list, 0, len(list)-1)
 	fmt.Println(list)
 
 	list1 := []int{5, 9}
-	QuickSort3(list1, 0, len(list1)-1)
+	QuickSort(list1, 0, len(list1)-1)
 	fmt.Println(list1)
 
 	list2 := []int{5, 9, 1}
-	QuickSort3(list2, 0, len(list2)-1)
+	QuickSort(list2, 0, len(list2)-1)
 	fmt.Println(list2)
 
 	list3 := []int{5, 9, 1, 6, 8, 14, 6, 49, 25, 4, 6, 3}
-	QuickSort3(list3, 0, len(list3)-1)
+	QuickSort(list3, 0, len(list3)-1)
 	fmt.Println(list3)
 }

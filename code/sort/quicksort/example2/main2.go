@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// 三切分的快速排序
+// QuickSort2 三切分的快速排序
 func QuickSort2(array []int, begin, end int) {
 	if begin < end {
 		// 三向切分函数，返回左边和右边下标

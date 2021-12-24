@@ -75,7 +75,7 @@ void quicksort(int array[], int maxlen, int begin, int end)
         }
 
         /* 跳出while循环后，i = j。
-         * 此时数组被分割成两个部分  -->  array[begin+1] ~ array[i-1] < array[begin]
+         * 此时数组被分割成两个部分   -->  array[begin+1] ~ array[i-1] < array[begin]
          *                           -->  array[i+1] ~ array[end] > array[begin]
          * 这个时候将数组array分成两个部分，再将array[i]与array[begin]进行比较，决定array[i]的位置。
          * 最后将array[i]与array[begin]交换，进行两个分割部分的排序！以此类推，直到最后i = j不满足条件就退出！

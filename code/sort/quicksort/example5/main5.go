@@ -5,20 +5,20 @@ import (
 	"sync"
 )
 
-// 链表栈，后进先出
+// LinkStack 链表栈，后进先出
 type LinkStack struct {
 	root *LinkNode  // 链表起点
 	size int        // 栈的元素数量
 	lock sync.Mutex // 为了并发安全使用的锁
 }
 
-// 链表节点
+// LinkNode 链表节点
 type LinkNode struct {
 	Next  *LinkNode
 	Value int
 }
 
-// 入栈
+// Push 入栈
 func (stack *LinkStack) Push(v int) {
 	stack.lock.Lock()
 	defer stack.lock.Unlock()
@@ -47,7 +47,7 @@ func (stack *LinkStack) Push(v int) {
 	stack.size = stack.size + 1
 }
 
-// 出栈
+// Pop 出栈
 func (stack *LinkStack) Pop() int {
 	stack.lock.Lock()
 	defer stack.lock.Unlock()
@@ -70,12 +70,12 @@ func (stack *LinkStack) Pop() int {
 	return v
 }
 
-// 栈是否为空
+// IsEmpty 栈是否为空
 func (stack *LinkStack) IsEmpty() bool {
 	return stack.size == 0
 }
 
-// 非递归快速排序
+// QuickSort5 非递归快速排序
 func QuickSort5(array []int) {
 
 	// 人工栈
@@ -108,7 +108,7 @@ func QuickSort5(array []int) {
 	}
 }
 
-// 非递归快速排序优化
+// QuickSort6 非递归快速排序优化
 func QuickSort6(array []int) {
 
 	// 人工栈
@@ -184,8 +184,8 @@ func partition(array []int, begin, end int) int {
 		}
 	}
 
-	/* 跳出while循环后，i = j。
-	 * 此时数组被分割成两个部分  -->  array[begin+1] ~ array[i-1] < array[begin]
+	/* 跳出 for 循环后，i = j。
+	 * 此时数组被分割成两个部分   -->  array[begin+1] ~ array[i-1] < array[begin]
 	 *                        -->  array[i+1] ~ array[end] > array[begin]
 	 * 这个时候将数组array分成两个部分，再将array[i]与array[begin]进行比较，决定array[i]的位置。
 	 * 最后将array[i]与array[begin]交换，进行两个分割部分的排序！以此类推，直到最后i = j不满足条件就退出！

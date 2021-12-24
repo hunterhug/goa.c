@@ -57,6 +57,8 @@
 
 快速排序主要靠基准数进行切分，将数列分成两部分，一部分比基准数都小，一部分比基准数都大。
 
+### 1.1 时间复杂度
+
 在最好情况下，每一轮都能平均切分，每一轮遍历比较元素 `n` 次就可以把数列分成两部分，每一轮的时间复杂度都是：`O(n)`。因为问题规模每次被折半，折半的数列继续递归进行切分，也就是总的时间复杂度计算公式为： `T(n) = 2*T(n/2) + O(n)`。按照主定理公式计算，我们可以知道时间复杂度为：`O(nlogn)`，当然我们可以来具体计算一下：
 
 ```
@@ -108,25 +110,33 @@ T(n) = T(n-1) + n
 
 根据熵的概念，数量越大，随机性越高，越自发无序，所以待排序数据规模非常大时，出现最差情况的情形较少。在综合情况下，快速排序的平均时间复杂度为：`O(nlogn)`。对比之前介绍的排序算法，快速排序比那些动不动就是平方级别的初级排序算法更佳。
 
-切分的结果极大地影响快速排序的性能，为了避免切分不均匀情况的发生，有几种方法改进：
+### 1.2 空间复杂度
 
-1. 每次进行快速排序切分时，先将数列随机打乱，再进行切分，这样随机加了个震荡，减少不均匀的情况。当然，也可以随机选择一个基准数，而不是选第一个数。
-2. 每次取数列头部，中部，尾部三个数，取三个数的中位数为基准数进行切分。
-
-方法 1 相对好，而方法 2 引入了额外的比较操作，一般情况下我们可以随机选择一个基准数。
-
-快速排序使用原地排序，存储空间复杂度为：`O(1)`。而因为递归栈的影响，递归的程序栈开辟的层数范围在 `logn~n`，所以递归栈的空间复杂度为：`O(logn)~log(n)`，最坏为：`log(n)`，当元素较多时，程序栈可能溢出。通过改进算法，使用伪尾递归进行优化，递归栈的空间复杂度可以减小到 `O(logn)`，可以见下面算法优化。
+快速排序使用原地排序，存储空间复杂度为：`O(1)`。而因为递归栈的影响，递归的程序栈开辟的层数范围在 `logn ~ n`，所以递归栈的空间复杂度为：`O(logn) ~ log(n)`，最坏为：`log(n)`，当元素较多时，程序栈可能溢出。通过改进算法，使用伪尾递归进行优化，递归栈的空间复杂度可以减小到 `O(logn)`，可以见下面算法优化。
 
 快速排序是不稳定的，因为切分过程中进行了交换，相同值的元素可能发生位置变化。
 
+### 1.3 切分优化
+
+切分的结果极大地影响快速排序的性能，比如每次切分的时候选择的基数数都是数组中最大或者最小的，会出现最坏情况，为了避免切分不均匀情况的发生，有几种方法改进：
+
+1. 随机基准数选择：每次进行快速排序切分时，先将数列随机打乱，再进行切分，这样随机加了个震荡，减少不均匀的情况。当然，也可以随机选择一个基准数，而不是选第一个数。
+2. 中位数选择：每次取数列头部，中部，尾部三个数，取三个数的中位数为基准数进行切分。
+
+方法 1 相对好，而方法 2 引入了额外的比较操作，一般情况下我们可以随机选择一个基准数。
+
+从一个数组中随机选择一个数，或者取中位数都比较容易实现，我们在此就不实现了，避免造成心智负担，下文代码实现都取第一个数为基准数。
+
 ## 二、算法实现
+
+这是最普通的一种实现。
 
 ```go
 package main
 
 import "fmt"
 
-// 普通快速排序
+// QuickSort 普通快速排序
 func QuickSort(array []int, begin, end int) {
 	if begin < end {
 		// 进行切分
@@ -153,8 +163,8 @@ func partition(array []int, begin, end int) int {
 		}
 	}
 
-	/* 跳出while循环后，i = j。
-	 * 此时数组被分割成两个部分  -->  array[begin+1] ~ array[i-1] < array[begin]
+	/* 跳出 for 循环后，i = j。
+	 * 此时数组被分割成两个部分   -->  array[begin+1] ~ array[i-1] < array[begin]
 	 *                        -->  array[i+1] ~ array[end] > array[begin]
 	 * 这个时候将数组array分成两个部分，再将array[i]与array[begin]进行比较，决定array[i]的位置。
 	 * 最后将array[i]与array[begin]交换，进行两个分割部分的排序！以此类推，直到最后i = j不满足条件就退出！
@@ -207,11 +217,32 @@ func main() {
 
 1. 在小规模数组的情况下，直接插入排序的效率最好，当快速排序递归部分进入小数组范围，可以切换成直接插入排序。
 2. 排序数列可能存在大量重复值，使用三向切分快速排序，将数组分成三部分，大于基准数，等于基准数，小于基准数，这个时候需要维护三个下标。
-3. 使用伪尾递归减少程序栈空间占用，使得栈空间复杂度从 `O(logn)~log(n)` 变为：`O(logn)`。
+3. 使用伪尾递归减少程序栈空间占用，使得栈空间复杂度从 `O(logn) ~ log(n)` 变为：`O(logn)`。
 
 ### 3.1 改进：小规模数组使用直接插入排序
 
+在小规模数组的情况下，直接插入排序的效率最好，当快速排序递归部分进入小数组范围，可以切换成直接插入排序。
+
 ```go
+// InsertSort 改进：当数组规模小时使用直接插入排序
+func InsertSort(list []int) {
+	n := len(list)
+	// 进行 N-1 轮迭代
+	for i := 1; i <= n-1; i++ {
+		deal := list[i] // 待排序的数
+		j := i - 1      // 待排序的数左边的第一个数的位置
+
+		// 如果第一次比较，比左边的已排好序的第一个数小，那么进入处理
+		if deal < list[j] {
+			// 一直往左边找，比待排序大的数都往后挪，腾空位给待排序插入
+			for ; j >= 0 && deal < list[j]; j-- {
+				list[j+1] = list[j] // 某数后移，给待排序留空位
+			}
+			list[j+1] = deal // 结束了，待排序的数插入空位
+		}
+	}
+}
+
 func QuickSort1(array []int, begin, end int) {
 	if begin < end {
 		// 当数组小于 4 时使用直接插入排序
@@ -234,12 +265,14 @@ func QuickSort1(array []int, begin, end int) {
 
 ### 3.2 改进：三向切分
 
+排序数列可能存在大量重复值，使用三向切分快速排序，将数组分成三部分，大于基准数，等于基准数，小于基准数，这个时候需要维护三个下标。
+
 ```go
 package main
 
 import "fmt"
 
-// 三切分的快速排序
+// QuickSort2 三切分的快速排序
 func QuickSort2(array []int, begin, end int) {
 	if begin < end {
 		// 三向切分函数，返回左边和右边下标
@@ -308,17 +341,19 @@ func partition3(array []int, begin, end int) (int, int) {
 
 如果存在大量重复元素，排序速度将极大提高，将会是线性时间，因为相同的元素将会聚集在中间，这些元素不再进入下一个递归迭代。
 
-三向切分主要来自荷兰国旗三色问题，该问题由 `Dijkstra` 提出。
-
-![](../../picture/quick_sort_three_flag.png)
-
-假设有一条绳子，上面有红、白、蓝三种颜色的旗子，起初绳子上的旗子颜色并没有顺序，您希望将之分类，并排列为蓝、白、红的顺序，要如何移动次数才会最少，注意您只能在绳子上进行这个动作，而且一次只能调换两个旗子。
-
-可以看到，上面的解答相当于使用三向切分一次，只要我们将白色旗子的值设置为 `100`，蓝色的旗子值设置为 `0`，红色旗子值设置为 `200`，以 `100` 作为基准数，第一次三向切分后三种颜色的旗就排好了，因为 `蓝(0)白(100)红(200)`。
-
-注：艾兹格·W·迪科斯彻(`Edsger Wybe Dijkstra`，1930年5月11日~2002年8月6日)，荷兰人，计算机科学家，曾获图灵奖。
+> 三向切分主要来自荷兰国旗三色问题，该问题由 `Dijkstra` 提出。
+> 
+> ![](../../picture/quick_sort_three_flag.png)
+>
+>假设有一条绳子，上面有红、白、蓝三种颜色的旗子，起初绳子上的旗子颜色并没有顺序，您希望将之分类，并排列为蓝、白、红的顺序，要如何移动次数才会最少，注意您只能在绳子上进行这个动作，而且一次只能调换两个旗子。
+> 
+>可以看到，上面的解答相当于使用三向切分一次，只要我们将白色旗子的值设置为 `100`，蓝色的旗子值设置为 `0`，红色旗子值设置为 `200`，以 `100` 作为基准数，第一次三向切分后三种颜色的旗就排好了，因为 `蓝(0)白(100)红(200)`。
+>
+>注：艾兹格·W·迪科斯彻(`Edsger Wybe Dijkstra`，1930年5月11日~2002年8月6日)，荷兰人，计算机科学家，曾获图灵奖。
 
 ### 3.3 改进：伪尾递归优化
+
+使用伪尾递归减少程序栈空间占用，使得栈空间复杂度从 `O(logn) ~ log(n)` 变为：`O(logn)`。
 
 ```go
 // 伪尾递归快速排序
@@ -390,11 +425,11 @@ func QuickSort5(array []int) {
 
 我们可以看到没有递归，程序栈空间复杂度变为了：`O(1)`，但额外的存储空间产生了。
 
-辅助人工栈结构 `helpStack` 占用了额外的空间，存储空间由原地排序的 `O(1)` 变成了 `O(logn)~log(n)`。
+辅助人工栈结构 `helpStack` 占用了额外的空间，存储空间由原地排序的 `O(1)` 变成了 `O(logn) ~ log(n)`。
 
 我们可以参考上面的伪尾递归版本，继续优化非递归版本，先让短一点的范围入栈，这样存储复杂度可以变为：`O(logn)`。如：
 
-```
+```go
 // 非递归快速排序优化
 func QuickSort6(array []int) {
 
@@ -467,20 +502,20 @@ import (
 	"sync"
 )
 
-// 链表栈，后进先出
+// LinkStack 链表栈，后进先出
 type LinkStack struct {
 	root *LinkNode  // 链表起点
 	size int        // 栈的元素数量
 	lock sync.Mutex // 为了并发安全使用的锁
 }
 
-// 链表节点
+// LinkNode 链表节点
 type LinkNode struct {
 	Next  *LinkNode
 	Value int
 }
 
-// 入栈
+// Push 入栈
 func (stack *LinkStack) Push(v int) {
 	stack.lock.Lock()
 	defer stack.lock.Unlock()
@@ -509,7 +544,7 @@ func (stack *LinkStack) Push(v int) {
 	stack.size = stack.size + 1
 }
 
-// 出栈
+// Pop 出栈
 func (stack *LinkStack) Pop() int {
 	stack.lock.Lock()
 	defer stack.lock.Unlock()
@@ -532,12 +567,12 @@ func (stack *LinkStack) Pop() int {
 	return v
 }
 
-// 栈是否为空
+// IsEmpty 栈是否为空
 func (stack *LinkStack) IsEmpty() bool {
 	return stack.size == 0
 }
 
-// 非递归快速排序
+// QuickSort5 非递归快速排序
 func QuickSort5(array []int) {
 
 	// 人工栈
@@ -570,7 +605,7 @@ func QuickSort5(array []int) {
 	}
 }
 
-// 非递归快速排序优化
+// QuickSort6 非递归快速排序优化
 func QuickSort6(array []int) {
 
 	// 人工栈
@@ -646,8 +681,8 @@ func partition(array []int, begin, end int) int {
 		}
 	}
 
-	/* 跳出while循环后，i = j。
-	 * 此时数组被分割成两个部分  -->  array[begin+1] ~ array[i-1] < array[begin]
+	/* 跳出 for 循环后，i = j。
+	 * 此时数组被分割成两个部分   -->  array[begin+1] ~ array[i-1] < array[begin]
 	 *                        -->  array[i+1] ~ array[end] > array[begin]
 	 * 这个时候将数组array分成两个部分，再将array[i]与array[begin]进行比较，决定array[i]的位置。
 	 * 最后将array[i]与array[begin]交换，进行两个分割部分的排序！以此类推，直到最后i = j不满足条件就退出！
@@ -695,7 +730,67 @@ func main() {
 
 对栈，存储空间有要求的可以使用堆排序，比如 `Linux` 内核栈小，快速排序占用程序栈太大了，使用快速排序可能栈溢出，所以使用了堆排序。
 
-在 `Golang` 中，标准库 `sort` 中对切片进行稳定排序：
+## 六、补充：Golang 内置排序库 sort
+
+在 `Golang` 中，标准库 `sort` 中使用了多种排序算法，值得研究。
+
+例子：
+
+```go
+package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func InnerSort() {
+	list := []struct {
+		Name string
+		Age  int
+	}{
+		{"A", 75},
+		{"B", 4},
+		{"C", 5},
+		{"D", 5},
+		{"E", 2},
+		{"F", 5},
+		{"G", 5},
+	}
+
+	sort.SliceStable(list, func(i, j int) bool { return list[i].Age < list[j].Age })
+	fmt.Println(list)
+
+	list2 := []struct {
+		Name string
+		Age  int
+	}{
+		{"A", 75},
+		{"B", 4},
+		{"C", 5},
+		{"D", 5},
+		{"E", 2},
+		{"F", 5},
+		{"G", 5},
+	}
+
+	sort.Slice(list2, func(i, j int) bool { return list2[i].Age < list2[j].Age })
+	fmt.Println(list2)
+}
+
+func main() {
+	InnerSort()
+}
+```
+
+输出：
+
+```
+[{E 2} {B 4} {C 5} {D 5} {F 5} {G 5} {A 75}]
+[{E 2} {B 4} {G 5} {C 5} {D 5} {F 5} {A 75}]
+```
+
+其中 `SliceStable` 是稳定排序，使用了插入排序和归并排序：
 
 ```go
 func SliceStable(slice interface{}, less func(i, j int) bool) {
@@ -728,9 +823,9 @@ func stable_func(data lessSwap, n int) {
 }
 ```
 
-会先按照 `20` 个元素的范围，对整个切片分段进行插入排序，因为小数组插入排序效率高，然后再对这些已排好序的小数组进行归并排序。其中归并排序还使用了原地排序，节约了辅助空间。
+会先按照 `20` 个元素的范围，对整个切片分段进行插入排序，因为小数组插入排序效率高。然后再对这些已排好序的小数组进行归并排序。其中归并排序还使用了原地排序，节约了辅助空间。
 
-而一般的排序:
+而 `Slice` 是一般的排序，不追求稳定排序，使用了快速排序:
 
 ```go
 func Slice(slice interface{}, less func(i, j int) bool) {
@@ -830,6 +925,10 @@ func doPivot_func(data lessSwap, lo, hi int) (midlo, midhi int) {
 }
 ```
 
-快速排序限制程序栈的层数为： `2*ceil(log(n+1))`，当递归超过该层时表示程序栈过深，那么转为堆排序。
+快速排序限制程序栈的层数为： `2 * ceil( log(n+1) )`，当递归超过该层时表示程序栈过深，内部会转为堆排序。
 
-上述快速排序还使用了三种优化，第一种是递归时小数组转为插入排序，第二种是使用了中位数基准数，第三种使用了三切分。
+上述快速排序还使用了三种优化，第一种是递归时小数组转为插入排序，第二种是使用了中位数基准数，第三种使用了三向切分。
+
+## 附录
+
+代码下载： [https://github.com/hunterhug/goa.c/tree/master/code/sort/quicksort](https://github.com/hunterhug/goa.c/tree/master/code/sort/quicksort)  。
