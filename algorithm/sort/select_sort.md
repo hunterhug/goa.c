@@ -176,3 +176,7 @@ func main() {
 ```
 
 优化后的选择排序还是很慢，它很好理解，但是还是不建议在工程上使用。
+
+## 附录
+
+代码下载： [https://github.com/hunterhug/goa.c/blob/master/code/sort](https://github.com/hunterhug/goa.c/blob/master/code/sort)  。
