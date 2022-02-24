@@ -311,8 +311,11 @@ func (a2 *A2Instance) Printf() int {
 	// 调用接口的方法
 	a.Println()
 ```
-
-如果结构体没有实现该方法，将编译不通过，无法编译二进制。
+a = &A1Instance{Data:"i love you"}而不是 a = A1Instance{Data:"i love you"}
+指针类型的receiver 方法实现接口时，只有指针类型的对象实现了该接口。
+对应上面的例子来说，只有&A1Instance实现了Println接口，而A1Instance根本没有实现该接口
+当写成a = A1Instance{Data:"i love you"}
+结构体没有实现该方法，将编译不通过，无法编译二进制。
 
 当然也可以使用断言和反射来判断接口类型是属于哪个实际的结构体 `struct`。
 
