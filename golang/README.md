@@ -4,7 +4,7 @@
 
 ## 一、前言
 
-`Golang` 语言是谷歌 `Google` 公司在2007年启动，并在2009年正式发布并 `开源` 的高级编程语言。开源地址：[https://github.com/golang/go](https://github.com/golang/go)，官网地址：[https://golang.org](https://golang.org)。
+`Golang` 语言是谷歌 `Google` 公司在2007年启动，并在2009年正式发布并 `开源` 的高级编程语言。开源地址：[https://github.com/golang/go](https://github.com/golang/go)，官网地址：[https://go.dev](https://golang.org)。
 
 `Golang` 语言语法简单，支持多平台交叉编译（Linux/Mac/Windows），支持内存自动 `GC`（垃圾回收），支持嵌 `C` 开发，并且实现了语法层面的线程调度，开发多线程程序十分方便。语法很像 `C/Python/JavaScript` 等高级编程语言。
 
@@ -18,7 +18,7 @@
 
 ## 二、安装并简单使用
 
-安装 [Golang：https://golang.org/dl](https://golang.org/dl) ：Windows 操作系统点击 `msi` 按提示安装，Mac 操作系统可以使用 `brew install golang` 安装。
+安装 [Golang：https://go.dev/dl](https://go.dev/dl) ：Windows 操作系统点击 `msi` 按提示安装，Mac 操作系统可以使用 `brew install golang` 安装。
 
 打开命令行终端输入：
 
