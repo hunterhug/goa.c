@@ -4,7 +4,7 @@
 
 ## 一、前言
 
-`Golang` 语言是谷歌 `Google` 公司在2007年启动，并在2009年正式发布并 `开源` 的高级编程语言。开源地址：[https://github.com/golang/go](https://github.com/golang/go)，官网地址：[https://go.dev](https://golang.org)。
+`Golang` 语言是谷歌 `Google` 公司在2007年启动，并在2009年正式发布并 `开源` 的高级编程语言。开源地址：[https://github.com/golang/go](https://github.com/golang/go)，官网地址：[https://go.dev](https://go.dev)。
 
 `Golang` 语言语法简单，支持多平台交叉编译（Linux/Mac/Windows），支持内存自动 `GC`（垃圾回收），支持嵌 `C` 开发，并且实现了语法层面的线程调度，开发多线程程序十分方便。语法很像 `C/Python/JavaScript` 等高级编程语言。
 

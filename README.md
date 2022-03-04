@@ -5,13 +5,13 @@
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/goa.c.svg)](https://github.com/hunterhug/goa.c/issues)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-**v2.2.4**
+**v2.2.5**
 
 心灵一问：在面试中，你是否对面试官喋喋不休，反复问你关于快速排序，红黑树的各种细节问题而感到无奈，在工作多年后，已经在工程实践中岁月蹉跎的你，想重拾数据结构和算法的回忆，不妨读读这本书。
 
 > 盛年不重来，一日难再晨，及时当勉励，岁月不待人。
 
-简单总结：此书作者将通过几个简单的章节教大家入门 `Golang` 编程语言，然后开始介绍计算机科学基本的方法论，如分治法，递归和算法复杂度，紧接着从基本数据结构开始，慢慢介绍到排序和查找算法。
+简单总结：作者通过几个基础的章节教大家入门 `Golang` 编程语言，然后开始介绍计算机科学与技术中基本的方法论，如分治法，递归和算法复杂度，紧接着从基本数据结构开始，慢慢介绍到排序算法和查找算法。
 
 ## 前言
 
@@ -25,7 +25,7 @@
 
 **目前有部分网站，未经许可分发了此系列内容，存在更新延后的风险，之前存在部分的笔误，都已经更正了，请以此网站为准！**
 
-本地离线阅读： `docker run --name algorithm_docsify -d -p 12346:3000 hunterhug/algorithm:docsify` ，打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 。
+本地[离线阅读](doc/install.md)： `docker run --name algorithm_docsify -d -p 12346:3000 hunterhug/algorithm:docsify` ，浏览器打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 。
 
 联系作者： [https://github.com/hunterhug](https://github.com/hunterhug) ，邮箱： gdccmcm14@live.com。
 
@@ -100,6 +100,9 @@
 
 | 日期 | 组织/个人 | 说明 |
 | ----- | ------- | ------- |
+| 2022.03.02 |    古寒飞  |   9.50 RMB      |
+| 2022.02.08 |    罗博贤  |   9.50 RMB      |
+| 2022.01.21 |    匿名  |   1.50 RMB      |
 | 2021.11.11 |    peter锦锋  |   18.50 RMB      |
 | 2021.09.18 |    古寒飞  |   200.00 RMB      |
 | 2021.08.31 |    crypto ivil  |   9.50 RMB      |
@@ -113,17 +116,17 @@
 
 广告位招租板块。
 
-- 💐 Memory Cache Implement By Golang: https://github.com/hunterhug/gocache
-- 💐 Log The World Very Easy With Zap: https://github.com/hunterhug/golog
-- 💐 Marmot A Golang HTTP Download: https://github.com/hunterhug/marmot
-- 💐 Redis Distributed Lock By Golang: https://github.com/hunterhug/gorlock
+- 💐 Memory Cache Implement By Golang: [https://github.com/hunterhug/gocache](https://github.com/hunterhug/gocache)
+- 💐 Log The World Very Easy With Zap: [https://github.com/hunterhug/golog](https://github.com/hunterhug/golog)
+- 💐 Marmot A Golang HTTP Download: [https://github.com/hunterhug/marmot](https://github.com/hunterhug/marmot)
+- 💐 Redis Distributed Lock By Golang: [https://github.com/hunterhug/gorlock](https://github.com/hunterhug/gorlock)
 
 ## 版权所有
 
 本开源书籍分发使用 `Apache License`，您可以随意传阅，但请保留以下声明：
 
 ```
-Copyright [2019-2021] [github.com/hunterhug]
+Copyright [2019-2022] [github.com/hunterhug]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
