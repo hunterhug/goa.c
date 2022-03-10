@@ -1,9 +1,7 @@
 # Summary
 
 * [目录](README.md)
-* [前言](basic/before.md)
-* [简单入门Golang](golang/README.md)
-    * [思考：关于IT职业生涯中编程语言的选择](golang/think.md)  
+* [简单入门Golang](golang/README.md) 
     * [包、变量和函数](golang/basic.md)
     * [流程控制语句](golang/logic.md)
     * [结构体和方法](golang/struct.md)
@@ -36,7 +34,6 @@
         * [AVL树](algorithm/search/avl_tree.md)
         * [2-3树和左倾红黑树](algorithm/search/llrb_tree.md)
         * [2-3-4树和普通红黑树](algorithm/search/rb_tree.md)
-* [后记](basic/after.md)
 * [文档部署](doc/install.md)
 * [书籍推荐](doc/book.md)
 * [参考](basic/refer.md)
