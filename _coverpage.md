@@ -10,4 +10,4 @@
 > 盛年不重来，一日难再晨，及时当勉励，岁月不待人。
 
 [GitHub](https://github.com/hunterhug/goa.c)
-[开始阅读](README)
+<a href="/#/README" target="_blank">开始阅读</a>
