@@ -11,5 +11,3 @@
 
 [GitHub](https://github.com/hunterhug/goa.c)
 [开始阅读](README)
-
-![mylove](picture/mylove.jpeg)
