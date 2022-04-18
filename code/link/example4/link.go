@@ -27,14 +27,14 @@ func main() {
 	// 按顺序打印数据
 	nowNode := node
 	for {
-		if nowNode != nil {
-			// 打印节点值
-			fmt.Println(nowNode.Data)
-			// 获取下一个节点
-			nowNode = nowNode.NextNode
+		if nowNode == nil {
+			// 如果下一个节点为空，表示链表结束了
+			break
 		}
-
-		// 如果下一个节点为空，表示链表结束了
-		break
+		
+		// 打印节点值
+		fmt.Println(nowNode.Data)
+		// 获取下一个节点
+		nowNode = nowNode.NextNode
 	}
 }
