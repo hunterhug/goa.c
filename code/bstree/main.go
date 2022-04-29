@@ -4,12 +4,12 @@ import (
 	"fmt"
 )
 
-// 二叉查找树
+// BinarySearchTree 二叉查找树
 type BinarySearchTree struct {
 	Root *BinarySearchTreeNode // 树根节点
 }
 
-// 二叉查找树节点
+// BinarySearchTreeNode 二叉查找树节点
 type BinarySearchTreeNode struct {
 	Value int64                 // 值
 	Times int64                 // 值出现的次数
@@ -17,12 +17,12 @@ type BinarySearchTreeNode struct {
 	Right *BinarySearchTreeNode // 右字树
 }
 
-// 初始化一个二叉查找树
+// NewBinarySearchTree 初始化一个二叉查找树
 func NewBinarySearchTree() *BinarySearchTree {
 	return new(BinarySearchTree)
 }
 
-// 添加元素
+// Add 添加元素
 func (tree *BinarySearchTree) Add(value int64) {
 	// 如果没有树根，证明是棵空树，添加树根后返回
 	if tree.Root == nil {
@@ -59,7 +59,7 @@ func (node *BinarySearchTreeNode) Add(value int64) {
 	}
 }
 
-// 找出最小值的节点
+// FindMinValue 找出最小值的节点
 func (tree *BinarySearchTree) FindMinValue() *BinarySearchTreeNode {
 	if tree.Root == nil {
 		// 如果是空树，返回空
@@ -79,7 +79,7 @@ func (node *BinarySearchTreeNode) FindMinValue() *BinarySearchTreeNode {
 	return node.Left.FindMinValue()
 }
 
-// 找出最大值的节点
+// FindMaxValue 找出最大值的节点
 func (tree *BinarySearchTree) FindMaxValue() *BinarySearchTreeNode {
 	if tree.Root == nil {
 		// 如果是空树，返回空
@@ -99,7 +99,7 @@ func (node *BinarySearchTreeNode) FindMaxValue() *BinarySearchTreeNode {
 	return node.Right.FindMaxValue()
 }
 
-// 查找指定节点
+// Find 查找指定节点
 func (tree *BinarySearchTree) Find(value int64) *BinarySearchTreeNode {
 	if tree.Root == nil {
 		// 如果是空树，返回空
@@ -130,7 +130,7 @@ func (node *BinarySearchTreeNode) Find(value int64) *BinarySearchTreeNode {
 	}
 }
 
-// 查找指定节点的父亲
+// FindParent 查找指定节点的父亲
 func (tree *BinarySearchTree) FindParent(value int64) *BinarySearchTreeNode {
 	if tree.Root == nil {
 		// 如果是空树，返回空
@@ -178,7 +178,7 @@ func (node *BinarySearchTreeNode) FindParent(value int64) *BinarySearchTreeNode 
 	}
 }
 
-// 删除指定的元素
+// Delete 删除指定的元素
 func (tree *BinarySearchTree) Delete(value int64) {
 	if tree.Root == nil {
 		// 如果是空树，直接返回
@@ -257,7 +257,7 @@ func (tree *BinarySearchTree) Delete(value int64) {
 	}
 }
 
-// 中序遍历
+// MidOrder 中序遍历
 func (tree *BinarySearchTree) MidOrder() {
 	tree.Root.MidOrder()
 }

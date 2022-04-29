@@ -11,17 +11,17 @@ const (
 	BLACK = false
 )
 
-// 普通红黑树
+// RBTree 普通红黑树
 type RBTree struct {
 	Root *RBTNode // 树根节点
 }
 
-// 新建一棵空树
+// NewRBTree 新建一棵空树
 func NewRBTree() *RBTree {
 	return &RBTree{}
 }
 
-// 普通红黑树节点
+// RBTNode 普通红黑树节点
 type RBTNode struct {
 	Value  int64    // 值
 	Times  int64    // 值出现的次数
@@ -31,7 +31,7 @@ type RBTNode struct {
 	Color  bool     // 父亲指向该节点的链接颜色
 }
 
-// 节点的颜色
+// IsRed 节点的颜色
 func IsRed(node *RBTNode) bool {
 	if node == nil {
 		return false
@@ -39,7 +39,7 @@ func IsRed(node *RBTNode) bool {
 	return node.Color == RED
 }
 
-// 返回节点的父亲节点
+// ParentOf 返回节点的父亲节点
 func ParentOf(node *RBTNode) *RBTNode {
 	if node == nil {
 		return nil
@@ -48,7 +48,7 @@ func ParentOf(node *RBTNode) *RBTNode {
 	return node.Parent
 }
 
-// 返回节点的左子节点
+// LeftOf 返回节点的左子节点
 func LeftOf(node *RBTNode) *RBTNode {
 	if node == nil {
 		return nil
@@ -57,7 +57,7 @@ func LeftOf(node *RBTNode) *RBTNode {
 	return node.Left
 }
 
-// 返回节点的右子节点
+// RightOf 返回节点的右子节点
 func RightOf(node *RBTNode) *RBTNode {
 	if node == nil {
 		return nil
@@ -66,14 +66,14 @@ func RightOf(node *RBTNode) *RBTNode {
 	return node.Right
 }
 
-// 设置节点颜色
+// SetColor 设置节点颜色
 func SetColor(node *RBTNode, color bool) {
 	if node != nil {
 		node.Color = color
 	}
 }
 
-// 对某节点左旋转
+// RotateLeft 对某节点左旋转
 func (tree *RBTree) RotateLeft(h *RBTNode) {
 	if h != nil {
 
@@ -98,7 +98,7 @@ func (tree *RBTree) RotateLeft(h *RBTNode) {
 	}
 }
 
-// 对某节点右旋转
+// RotateRight 对某节点右旋转
 func (tree *RBTree) RotateRight(h *RBTNode) {
 	if h != nil {
 
@@ -123,7 +123,7 @@ func (tree *RBTree) RotateRight(h *RBTNode) {
 	}
 }
 
-// 普通红黑树添加元素
+// Add 普通红黑树添加元素
 func (tree *RBTree) Add(value int64) {
 	// 根节点为空
 	if tree.Root == nil {
@@ -246,7 +246,7 @@ func (tree *RBTree) fixAfterInsertion(node *RBTNode) {
 	tree.Root.Color = BLACK
 }
 
-// 普通红黑树删除元素
+// Delete 普通红黑树删除元素
 func (tree *RBTree) Delete(value int64) {
 	// 查找元素是否存在，不存在则退出
 	p := tree.Find(value)
@@ -422,7 +422,7 @@ func (tree *RBTree) fixAfterDeletion(node *RBTNode) {
 	SetColor(node, BLACK)
 }
 
-// 找出最小值的节点
+// FindMinValue 找出最小值的节点
 func (tree *RBTree) FindMinValue() *RBTNode {
 	if tree.Root == nil {
 		// 如果是空树，返回空
@@ -442,7 +442,7 @@ func (node *RBTNode) FindMinValue() *RBTNode {
 	return node.Left.FindMinValue()
 }
 
-// 找出最大值的节点
+// FindMaxValue 找出最大值的节点
 func (tree *RBTree) FindMaxValue() *RBTNode {
 	if tree.Root == nil {
 		// 如果是空树，返回空
@@ -462,7 +462,7 @@ func (node *RBTNode) FindMaxValue() *RBTNode {
 	return node.Right.FindMaxValue()
 }
 
-// 查找指定节点
+// Find 查找指定节点
 func (tree *RBTree) Find(value int64) *RBTNode {
 	if tree.Root == nil {
 		// 如果是空树，返回空
@@ -493,7 +493,7 @@ func (node *RBTNode) Find(value int64) *RBTNode {
 	}
 }
 
-// 中序遍历
+// MidOrder 中序遍历
 func (tree *RBTree) MidOrder() {
 	tree.Root.MidOrder()
 }
@@ -515,7 +515,7 @@ func (node *RBTNode) MidOrder() {
 	node.Right.MidOrder()
 }
 
-// 验证是不是棵红黑树
+// IsRBTree 验证是不是棵红黑树
 func (tree *RBTree) IsRBTree() bool {
 	if tree == nil || tree.Root == nil {
 		return true
@@ -548,7 +548,7 @@ func (tree *RBTree) IsRBTree() bool {
 	return true
 }
 
-// 节点所在的子树是否是一棵二分查找树
+// IsBST 节点所在的子树是否是一棵二分查找树
 func (node *RBTNode) IsBST() bool {
 	if node == nil {
 		return true
@@ -585,7 +585,7 @@ func (node *RBTNode) IsBST() bool {
 	return true
 }
 
-// 节点所在的子树是否遵循2-3-4树
+// Is234 节点所在的子树是否遵循2-3-4树
 func (node *RBTNode) Is234() bool {
 	if node == nil {
 		return true
@@ -615,7 +615,7 @@ func (node *RBTNode) Is234() bool {
 	return true
 }
 
-// 节点所在的子树是否平衡，是否有 blackNum 个黑链接
+// IsBalanced 节点所在的子树是否平衡，是否有 blackNum 个黑链接
 func (node *RBTNode) IsBalanced(blackNum int) bool {
 	if node == nil {
 		return blackNum == 0

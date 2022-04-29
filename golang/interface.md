@@ -169,38 +169,38 @@ import (
 	"reflect"
 )
 
-// 定义一个接口，有一个方法
+// A 定义一个接口，有一个方法
 type A interface {
 	Println()
 }
 
-// 定义一个接口，有两个方法
+// B 定义一个接口，有两个方法
 type B interface {
 	Println()
 	Printf() int
 }
 
-// 定义一个结构体
+// A1Instance 定义一个结构体
 type A1Instance struct {
 	Data string
 }
 
-// 结构体实现了Println()方法，现在它是一个 A 接口
+// Println 结构体实现了Println()方法，现在它是一个 A 接口
 func (a1 *A1Instance) Println() {
 	fmt.Println("a1:", a1.Data)
 }
 
-// 定义一个结构体
+// A2Instance 定义一个结构体
 type A2Instance struct {
 	Data string
 }
 
-// 结构体实现了Println()方法，现在它是一个 A 接口
+// Println 结构体实现了Println()方法，现在它是一个 A 接口
 func (a2 *A2Instance) Println() {
 	fmt.Println("a2:", a2.Data)
 }
 
-// 结构体实现了Printf()方法，现在它是一个 B 接口，它既是 A 又是 B 接口
+// Printf 结构体实现了Printf()方法，现在它是一个 B 接口，它既是 A 又是 B 接口
 func (a2 *A2Instance) Printf() int {
 	fmt.Println("a2:", a2.Data)
 	return 0
@@ -212,35 +212,42 @@ func main() {
 
 	// 将具体的结构体赋予该变量
 	a = &A1Instance{Data: "i love you"}
+
 	// 调用接口的方法
 	a.Println()
+
 	// 断言类型
 	if v, ok := a.(*A1Instance); ok {
 		fmt.Println(v)
 	} else {
 		fmt.Println("not a A1")
 	}
+
 	fmt.Println(reflect.TypeOf(a).String())
 
 	// 将具体的结构体赋予该变量
 	a = &A2Instance{Data: "i love you"}
+
 	// 调用接口的方法
 	a.Println()
+
 	// 断言类型
 	if v, ok := a.(*A1Instance); ok {
 		fmt.Println(v)
 	} else {
 		fmt.Println("not a A1")
 	}
+
 	fmt.Println(reflect.TypeOf(a).String())
 
 	// 定义一个B接口类型的变量
 	var b B
+
 	//b = &A1Instance{Data: "i love you"} // 不是 B 类型
 	b = &A2Instance{Data: "i love you"}
+
 	fmt.Println(b.Printf())
 }
-
 ```
 
 输出：
@@ -259,12 +266,12 @@ a2: i love you
 我们可以定义一个接口类型，使用 `type 接口名 interface`，这时候不再是 `interface{}`：
 
 ```go
-// 定义一个接口，有一个方法
+// A 定义一个接口，有一个方法
 type A interface {
 	Println()
 }
 
-// 定义一个接口，有两个方法
+// B 定义一个接口，有两个方法
 type B interface {
 	Println()
 	Printf() int
@@ -274,27 +281,27 @@ type B interface {
 可以看到接口 `A` 和 `B` 是一种抽象的结构，每个接口都有一些方法在里面，只要结构体 `struct` 实现了这些方法，那么这些结构体都是这种接口的类型。如：
 
 ```go
-// 定义一个结构体
+// A1Instance 定义一个结构体
 type A1Instance struct {
 	Data string
 }
 
-// 结构体实现了Println()方法，现在它是一个 A 接口
+// Println 结构体实现了Println()方法，现在它是一个 A 接口
 func (a1 *A1Instance) Println() {
 	fmt.Println("a1:", a1.Data)
 }
 
-// 定义一个结构体
+// A2Instance 定义一个结构体
 type A2Instance struct {
 	Data string
 }
 
-// 结构体实现了Println()方法，现在它是一个 A 接口
+// Println 结构体实现了Println()方法，现在它是一个 A 接口
 func (a2 *A2Instance) Println() {
 	fmt.Println("a2:", a2.Data)
 }
 
-// 结构体实现了Printf()方法，现在它是一个 B 接口，它既是 A 又是 B 接口
+// Printf 结构体实现了Printf()方法，现在它是一个 B 接口，它既是 A 又是 B 接口
 func (a2 *A2Instance) Printf() int {
 	fmt.Println("a2:", a2.Data)
 	return 0
@@ -306,18 +313,19 @@ func (a2 *A2Instance) Printf() int {
 ```go
 	// 定义一个A接口类型的变量
 	var a A
+
 	// 将具体的结构体赋予该变量
 	a = &A1Instance{Data: "i love you"}
+
 	// 调用接口的方法
 	a.Println()
 ```
-a = &A1Instance{Data:"i love you"}而不是 a = A1Instance{Data:"i love you"}
-指针类型的receiver 方法实现接口时，只有指针类型的对象实现了该接口。
-对应上面的例子来说，只有&A1Instance实现了Println接口，而A1Instance根本没有实现该接口
-当写成a = A1Instance{Data:"i love you"}
-结构体没有实现该方法，将编译不通过，无法编译二进制。
 
-当然也可以使用断言和反射来判断接口类型是属于哪个实际的结构体 `struct`。
+我们写成 `a = &A1Instance{Data:"i love you"`} 而不是 `a = A1Instance{Data:"i love you"}`，是因为只有指针类型的对象实现了该接口，而结构体类型的结构没有实现该接口。
+
+对应上面的例子来说，只有 `&A1Instance` 实现了 `Println` 接口，而 `A1Instance`根本没有实现该接口，写成 `a = A1Instance{Data:"i love you"}` 将编译不通过，无法编译二进制。
+
+我们也可以使用断言和反射来判断接口类型是属于哪个实际的结构体 `struct`。
 
 ```go
 	// 断言类型
@@ -326,7 +334,15 @@ a = &A1Instance{Data:"i love you"}而不是 a = A1Instance{Data:"i love you"}
 	} else {
 		fmt.Println("not a A1")
 	}
+
 	fmt.Println(reflect.TypeOf(a).String())
 ```
 
 `Golang` 很智能判断结构体是否实现了接口的方法，如果实现了，那么该结构体就是该接口类型。我们灵活的运用接口结构的特征，使用组合的形式就可以开发出更灵活的程序了。
+
+## 附录
+
+代码下载： 
+
+1. [https://github.com/hunterhug/goa.c/blob/master/code/interface/main.go](https://github.com/hunterhug/goa.c/blob/master/code/interface/main.go)
+2. [https://github.com/hunterhug/goa.c/blob/master/code/interface/main2.go](https://github.com/hunterhug/goa.c/blob/master/code/interface/main2.go)

@@ -432,7 +432,7 @@ func (tree *RBTree) fixAfterInsertion(node *RBTNode) {
 
 否则，需要找到叶子节点，方便新节点插进去：
 
-```
+```go
 	// 辅助变量 t，表示新元素要插入到该子树，t是该子树的根节点
 	t := tree.Root
 
@@ -2033,3 +2033,7 @@ is a rb tree
 红黑树可以用来作为字典 `Map` 的基础数据结构，可以存储键值对，然后通过一个键，可以快速找到键对应的值，相比哈希表查找，不需要占用额外的空间。我们以上的代码实现只有 `value`，没有 `key:value`，可以简单改造实现字典。 
 
 `Java` 语言基础类库中的 `HashMap`，`TreeSet`，`TreeMap` 都有使用到，`C++` 语言的 `STL` 标准模板库中，`map` 和 `set` 类也有使用到。很多中间件也有使用到，比如 `Nginx`，但 `Golang` 语言标准库并没有它。
+
+## 附录
+
+代码下载：[https://github.com/hunterhug/goa.c/blob/master/code/rbt/main.go](https://github.com/hunterhug/goa.c/blob/master/code/rbt/main.go) 。
