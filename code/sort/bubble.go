@@ -4,11 +4,12 @@ import "fmt"
 
 func BubbleSort(list []int) {
 	n := len(list)
-	// 在一轮中有没有交换过
-	didSwap := false
 
 	// 进行 N-1 轮迭代
 	for i := n - 1; i > 0; i-- {
+		// 在一轮中有没有交换过
+		didSwap := false
+
 		// 每次从第一位开始比较，比较到第 i 位就不比较了，因为前一轮该位已经有序了
 		for j := 0; j < i; j++ {
 			// 如果前面的数比后面的大，那么交换
