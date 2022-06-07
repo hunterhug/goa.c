@@ -11,4 +11,4 @@
 
 [GitHub](https://github.com/hunterhug/goa.c)
 [Blog](https://hunterhug.gitlab.io/blog)
-<a href="/#/README" target="_blank">开始阅读</a>
+<a href="/goa.c/#/README" target="_blank">开始阅读</a>
