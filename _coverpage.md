@@ -1,6 +1,6 @@
 <!-- _coverpage.md -->
 
-# [数据结构和算法（Golang实现） **v2.2.7**](https://hunterhug.gitlab.io/blog)
+# [数据结构和算法（Golang实现） **v2.2.7**](https://hunterhug.gitlab.io/goa.c)
 
 [![GitHub stars](https://img.shields.io/github/stars/hunterhug/goa.c.svg?style=social&label=Stars)](https://github.com/hunterhug/goa.c/stargazers)
 [![GitHub last commit](https://img.shields.io/github/last-commit/hunterhug/goa.c.svg)](https://github.com/hunterhug/goa.c)
@@ -11,4 +11,4 @@
 
 [GitHub](https://github.com/hunterhug/goa.c)
 [Blog](https://hunterhug.gitlab.io/blog)
-<a href="/goa.c/#/README" target="_blank">开始阅读</a>
+<a href="./#/README" target="_blank">开始阅读</a>
