@@ -11,7 +11,7 @@
 执行：
 
 ```
-docker run --name algorithm_docsify -d -p 12346:3000 hunterhug/algorithm:docsify
+docker run --name algorithm -d -p 12346:3000 hunterhug/algorithm:docsify
 ```
 
 打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 。

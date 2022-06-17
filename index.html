@@ -12,11 +12,11 @@
 </head>
 <body>
 <div id="app">正在火速加载中</div>
-<script>
-    if (typeof navigator.serviceWorker !== 'undefined') {
-        navigator.serviceWorker.register('sw.js')
-    }
-</script>
+<!--<script>-->
+<!--    if (typeof navigator.serviceWorker !== 'undefined') {-->
+<!--        navigator.serviceWorker.register('sw.js')-->
+<!--    }-->
+<!--</script>-->
 <script>
     window.$docsify = {
         name: '数据结构和算法',
@@ -27,8 +27,8 @@
             '/.*/_navbar.md': '/_navbar.md'
         },
         loadNavbar: true,
-        coverpage: true,
-        onlyCover: true,
+        // coverpage: true,
+        // onlyCover: true,
         // subMaxLevel: 2,
         auto2top: true,
         count: {
@@ -73,10 +73,10 @@
             crossChapter: true,
             crossChapterText: true,
         },
-        toc: {
-            tocMaxLevel: 4,
-            target: 'h2, h3, h4, h5'
-        },
+        // toc: {
+        //     tocMaxLevel: 4,
+        //     target: 'h2, h3, h4, h5'
+        // },
     }
 </script>
 
@@ -87,7 +87,7 @@
 <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
 <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
-<script src="//unpkg.com/docsify-plugin-toc"></script>
+<!--<script src="//unpkg.com/docsify-plugin-toc"></script>-->
 
 <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css"> -->
 <!--

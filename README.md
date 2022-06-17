@@ -23,7 +23,18 @@
 
 **目前有部分网站，未经许可分发了此系列内容，存在更新延后的风险，之前存在部分的笔误，都已经更正了，请以此网站为准！**
 
-本地[离线阅读](doc/install.md)： `docker run --name algorithm_docsify -d -p 12346:3000 hunterhug/algorithm:docsify` ，浏览器打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 。
+本地[离线阅读](doc/install.md)，执行： 
+
+
+```bash
+# 方式1
+docker run --name algorithm -d -p 12346:3000 hunterhug/algorithm:docsify
+
+# 方式2
+docker run --name algorithm -d -p 12346:3000 hunterhug/algorithm:latest
+```
+
+浏览器打开 [http://127.0.0.1:12346](http://127.0.0.1:12346) 。
 
 联系作者： [https://github.com/hunterhug](https://github.com/hunterhug) ，邮箱： gdccmcm14@live.com。
 
@@ -95,6 +106,7 @@
 
 | 日期 | 组织/个人 | 说明 |
 | ----- | ------- | ------- |
+| 2022.04.21 |    最爱茶叶蛋.  |   4.50 RMB      |
 | 2022.04.21 |    cy  |   4.50 RMB      |
 | 2022.04.13 |    cy  |   1.50 RMB      |
 | 2022.04.02 |    skywalker  |   9.50 RMB      |
