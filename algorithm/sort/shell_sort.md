@@ -65,7 +65,7 @@ O( (n/d8)^2 + (n/d7)^2 + (n/d6)^2 + ... + (n/d2)^2 + n^2)
 
 我们先看一下直接插入排序的实现（具体介绍请看 《插入排序》章节）：
 
-```
+```go
 func InsertSort(list []int) {
     n := len(list)
     // 进行 N-1 轮迭代
@@ -87,7 +87,7 @@ func InsertSort(list []int) {
 
 然后我们再来实现希尔排序：
 
-```
+```go
 // ShellSort 增量序列折半的希尔排序
 func ShellSort(list []int) {
 	// 数组长度
