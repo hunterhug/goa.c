@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// 增量序列折半的希尔排序
+// ShellSort 增量序列折半的希尔排序
 func ShellSort(list []int) {
 	// 数组长度
 	n := len(list)
@@ -10,16 +10,24 @@ func ShellSort(list []int) {
 	// 每次减半，直到步长为 1
 	for step := n / 2; step >= 1; step /= 2 {
 		// 开始插入排序，每一轮的步长为 step
-		for i := step; i < n; i += step {
-			for j := i - step; j >= 0; j -= step {
-				// 满足插入那么交换元素
-				if list[j+step] < list[j] {
-					list[j], list[j+step] = list[j+step], list[j]
-					continue
+		// 直接插入排序算法请看 《插入排序》章节
+
+		// 插入排序开始
+		for i := step; i <= n-1; i += step {
+			deal := list[i] // 待排序的数
+			j := i - step   // 待排序的数左边的最近一个数的位置
+
+			// 如果第一次比较，比左边的已排好序的第一个数小，那么进入处理
+			if deal < list[j] {
+				// 一直往左边找，比待排序大的数都往后挪，腾空位给待排序插入
+				for ; j >= 0 && deal < list[j]; j -= step {
+					list[j+1] = list[j] // 某数后移，给待排序留空位
 				}
-				break
+				list[j+step] = deal // 结束了，待排序的数插入空位
 			}
 		}
+		// 插入排序结束
+
 	}
 }
 
