@@ -107,7 +107,7 @@ func ShellSort(list []int) {
 			if deal < list[j] {
 				// 一直往左边找，比待排序大的数都往后挪，腾空位给待排序插入
 				for ; j >= 0 && deal < list[j]; j -= step {
-					list[j+1] = list[j] // 某数后移，给待排序留空位
+                    list[j+step] = list[j] // 某数后移，给待排序留空位(注意移动是以step为步长)
 				}
 				list[j+step] = deal // 结束了，待排序的数插入空位
 			}
