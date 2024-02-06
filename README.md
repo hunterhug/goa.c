@@ -94,7 +94,7 @@ docker run --name algorithm -d -p 12346:3000 hunterhug/algorithm:docsify
 
 ## 赞助作者
 
-如果你想赞助作者买根辣条，可以扫描下方的二维码:
+如果你想赞助作者买根辣条，可以打开微信扫描下方的二维码:
 
 ![/weixin.png](./picture/weixin.png)
 
@@ -102,6 +102,8 @@ docker run --name algorithm -d -p 12346:3000 hunterhug/algorithm:docsify
 
 | 日期         | 组织/个人       | 说明        |
 |------------|-------------|-----------|
+| 2023.09.14 | 长江          | 6.66 RMB  |
+| 2023.08.22 | 无名          | 6.66 RMB  |
 | 2023.04.15 | min         | 6.66 RMB  |
 | 2022.09.18 | 放下          | 66.66 RMB |
 | 2022.07.22 | Perry       | 6.66 RMB  |
