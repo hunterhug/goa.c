@@ -129,10 +129,17 @@ docker run --name algorithm -d -p 12346:3000 hunterhug/algorithm:docsify
 
 广告位招租板块。
 
+### 开源项目
+
 - 💐 Memory Cache Implement By Golang: [https://github.com/hunterhug/gocache](https://github.com/hunterhug/gocache)
 - 💐 Log The World Very Easy With Zap: [https://github.com/hunterhug/golog](https://github.com/hunterhug/golog)
 - 💐 Marmot A Golang HTTP Download: [https://github.com/hunterhug/marmot](https://github.com/hunterhug/marmot)
 - 💐 Redis Distributed Lock By Golang: [https://github.com/hunterhug/gorlock](https://github.com/hunterhug/gorlock)
+
+### 特别推荐
+
+推荐中华书籍阅读：[红楼梦](https://hunterhug.github.io/china-literary/%E7%BA%A2%E6%A5%BC%E6%A2%A6/%E7%BA%A2%E6%A5%BC%E6%A2%A6.html)，[西游记](https://hunterhug.github.io/china-literary/%E8%A5%BF%E6%B8%B8%E8%AE%B0/%E8%A5%BF%E6%B8%B8%E8%AE%B0.html)，[水浒传](https://hunterhug.github.io/china-literary/%E6%B0%B4%E6%B5%92%E4%BC%A0/%E6%B0%B4%E6%B5%92%E4%BC%A0.html)，[三国演义](https://hunterhug.github.io/china-literary/%E4%B8%89%E5%9B%BD%E6%BC%94%E4%B9%89/%E4%B8%89%E5%9B%BD%E6%BC%94%E4%B9%89.html)，[史记](https://hunterhug.github.io/china-history/%E5%8F%B2%E8%AE%B0/%E5%8F%B2%E8%AE%B0.html)。
+
 
 ## 版权所有
 
