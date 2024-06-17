@@ -383,7 +383,7 @@ func (tree *RBTree) fixAfterDeletion(node *RBTNode) {
 		} else {
 			// 要删除的节点在父亲右边，对应图例3，4
 			// 找出兄弟
-			brother := RightOf(ParentOf(node))
+			brother := LeftOf(ParentOf(node))
 
 			// 兄弟是红色的，对应图例3，那么兄弟变黑，父亲变红，然后对父亲右旋，进入图例41,42,43
 			if IsRed(brother) {
