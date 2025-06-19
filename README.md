@@ -106,8 +106,6 @@ docker run --name algorithm -d -p 12346:3000 hunterhug/algorithm:docsify
 
 如何建议和贡献自己的知识库，可以前往 [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 的仓库提 `PR` 和 建议。
 
-开源书籍的评论使用的是 `GitTalk`，可以打开 [https://hunterhug.github.io/goa.c](https://hunterhug.github.io/goa.c) 阅读后评论自己的心得。
-
 ## 章节代码
 
 所有章节的代码可以在 `Github` 仓库根目录下的 [https://github.com/hunterhug/goa.c/tree/master/code](https://github.com/hunterhug/goa.c/tree/master/code) 文件夹中找到。
