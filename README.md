@@ -39,7 +39,7 @@
 
 （🧍️国内专用）Gitee 代码仓库： [https://gitee.com/hunterhug/goa.c](https://gitee.com/hunterhug/goa.c) 。
 
-（🤔一直保持最新）Docsify 风格的网站： [https://hunterhug.gitlab.io/goa.c](https://hunterhug.gitlab.io/goa.c) 。
+（🤔一直保持最新）Docsify 风格的网站： [https://hunterhug.github.io/goa.c](https://hunterhug.github.io/goa.c) 。
 
 **目前有部分网站，未经许可分发了此系列内容，存在更新延后的风险，之前存在部分的笔误，都已经更正了，请以此网站为准！**
 
@@ -106,7 +106,7 @@ docker run --name algorithm -d -p 12346:3000 hunterhug/algorithm:docsify
 
 如何建议和贡献自己的知识库，可以前往 [https://github.com/hunterhug/goa.c](https://github.com/hunterhug/goa.c) 的仓库提 `PR` 和 建议。
 
-开源书籍的评论使用的是 `GitTalk`，可以打开 [https://hunterhug.gitlab.io/goa.c](https://hunterhug.gitlab.io/goa.c) 阅读后评论自己的心得。
+开源书籍的评论使用的是 `GitTalk`，可以打开 [https://hunterhug.github.io/goa.c](https://hunterhug.github.io/goa.c) 阅读后评论自己的心得。
 
 ## 章节代码
 
