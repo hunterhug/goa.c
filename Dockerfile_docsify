@@ -1,3 +1,6 @@
-FROM hunterhug/docsify:latest
+FROM node:18-alpine
+RUN npm install -g docsify-cli@latest
 WORKDIR /docs
-COPY . /docs/
+COPY . /docs
+EXPOSE 3000/tcp
+ENTRYPOINT ["docsify", "serve", "."]
