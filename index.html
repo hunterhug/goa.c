@@ -8,10 +8,229 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="./picture/b.jpeg"/>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- 主题在渲染前同步确定，避免刷新闪烁 -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('docsify-theme');
+                var dark = saved
+                    ? saved === 'dark'
+                    : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+
+    <!-- 暗黑模式样式覆盖（仅在 data-theme="dark" 时生效） -->
+    <style>
+        html[data-theme="dark"] body {
+            background-color: #1e2124;
+            color: #c9d1d9;
+        }
+        html[data-theme="dark"] body { scrollbar-color: #3a3f47 #1e2124; }
+
+        /* 正文 */
+        html[data-theme="dark"] .markdown-section { color: #c9d1d9; }
+        html[data-theme="dark"] .markdown-section h1,
+        html[data-theme="dark"] .markdown-section h2,
+        html[data-theme="dark"] .markdown-section h3,
+        html[data-theme="dark"] .markdown-section h4,
+        html[data-theme="dark"] .markdown-section h5,
+        html[data-theme="dark"] .markdown-section h6 { color: #e6edf3; }
+        html[data-theme="dark"] .markdown-section a { color: #5bb59a; }
+        html[data-theme="dark"] .markdown-section hr { border-top-color: #2d3138; }
+
+        /* 侧边栏 */
+        html[data-theme="dark"] .sidebar {
+            background-color: #21252b;
+            color: #b0b8c1;
+            border-right-color: #2d3138;
+        }
+        html[data-theme="dark"] .sidebar-nav > ul > li > a,
+        html[data-theme="dark"] .sidebar-nav a,
+        html[data-theme="dark"] .sidebar-nav li a { color: #b0b8c1; }
+        html[data-theme="dark"] .sidebar-nav a:hover,
+        html[data-theme="dark"] .sidebar-nav a.active,
+        html[data-theme="dark"] .sidebar ul li.active > a { color: #5bb59a; }
+        html[data-theme="dark"] .app-name-link { color: #e6edf3; }
+        html[data-theme="dark"] .sidebar-toggle {
+            background-color: rgba(40, 44, 52, 0.85);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #c9d1d9;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+        }
+        html[data-theme="dark"] .sidebar-toggle:hover { color: #5bb59a; }
+
+        /* 顶部导航 */
+        html[data-theme="dark"] .app-nav { color: #b0b8c1; }
+        html[data-theme="dark"] .app-nav a { color: #b0b8c1; }
+        html[data-theme="dark"] .app-nav li a:hover,
+        html[data-theme="dark"] .app-nav a.active { color: #5bb59a; }
+
+        /* 搜索 */
+        html[data-theme="dark"] .search input {
+            background-color: #1b1e22;
+            color: #c9d1d9;
+            border-color: #2d3138;
+        }
+        html[data-theme="dark"] .search .matching-post { border-color: #2d3138; }
+        html[data-theme="dark"] .search h2,
+        html[data-theme="dark"] .search p { color: #c9d1d9; }
+        html[data-theme="dark"] .search a { color: #5bb59a; }
+        html[data-theme="dark"] .search .matching-post { background-color: transparent; }
+        html[data-theme="dark"] .search input::placeholder { color: #6b7280; }
+
+        /* 代码块 */
+        html[data-theme="dark"] .markdown-section pre,
+        html[data-theme="dark"] .markdown-section pre > code {
+            background-color: #282c34;
+            color: #abb2bf;
+        }
+        html[data-theme="dark"] .markdown-section code {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #e06c75;
+        }
+
+        /* 引用、表格 */
+        html[data-theme="dark"] .markdown-section blockquote {
+            border-left-color: #4b5260;
+            color: #9aa4af;
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        html[data-theme="dark"] .markdown-section table tr,
+        html[data-theme="dark"] .markdown-section table th,
+        html[data-theme="dark"] .markdown-section table td { border-color: #3a3f47; }
+        html[data-theme="dark"] .markdown-section table th {
+            background-color: #2c313a;
+            color: #e6edf3;
+        }
+        html[data-theme="dark"] .markdown-section table tr:nth-child(2n) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        /* 复制代码按钮 */
+        html[data-theme="dark"] .docsify-copy-code-button {
+            background-color: #2c313a;
+            color: #c9d1d9;
+        }
+        html[data-theme="dark"] .docsify-copy-code-button:hover { background-color: #3a3f47; }
+
+        /* 分页插件 */
+        html[data-theme="dark"] .docsify-pagination-container { border-top-color: #2d3138; }
+        html[data-theme="dark"] .pagination-item-label,
+        html[data-theme="dark"] .pagination-item-label-title { color: #c9d1d9; }
+        html[data-theme="dark"] .pagination-item-index { color: #6b7280; }
+
+        /* 字数统计插件（内联色被覆盖） */
+        html[data-theme="dark"] .markdown-section [class*="count"],
+        html[data-theme="dark"] #docsify-plugin-count { color: #9aa4af !important; }
+
+        /* Gitalk 评论基础适配 */
+        html[data-theme="dark"] .gt-container { color: #c9d1d9; }
+        html[data-theme="dark"] .gt-container a { color: #5bb59a; }
+        html[data-theme="dark"] .gt-container .gt-header-textarea,
+        html[data-theme="dark"] .gt-container .gt-header-preview { background-color: #1b1e22; }
+
+        /* 侧边栏收起按钮：常驻左下角，点击可收起/展开整个侧边栏 */
+        .sidebar-toggle {
+            position: fixed !important;
+            bottom: 18px;
+            left: 18px;
+            z-index: 999;
+            display: inline-flex !important;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 40px !important;
+            height: 40px !important;
+            padding: 0 !important;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.85);
+            color: #5a5a5a;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+        }
+        .sidebar-toggle:hover { color: #42b983; }
+        .sidebar-toggle span {
+            width: 16px;
+            height: 2px;
+            margin: 0 0 3px;
+            background-color: currentColor;
+        }
+        .sidebar-toggle span:last-child { margin-bottom: 0; }
+        .sidebar-toggle-button {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar-toggle:hover .sidebar-toggle-button { opacity: 1; }
+
+        /* 主题切换按钮 */
+        .theme-toggle {
+            position: fixed;
+            bottom: 18px;
+            right: 18px;
+            z-index: 999;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #5a5a5a;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+        }
+        .theme-toggle:hover { color: #42b983; }
+        html[data-theme="dark"] .theme-toggle {
+            background-color: rgba(40, 44, 52, 0.85);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #c9d1d9;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+        }
+        html[data-theme="dark"] .theme-toggle:hover { color: #5bb59a; }
+        .theme-toggle .icon-sun { display: none; }
+        .theme-toggle .icon-moon { display: inline-flex; }
+        html[data-theme="dark"] .theme-toggle .icon-sun { display: inline-flex; }
+        html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    </style>
 
 </head>
 <body>
+<script>try{if(localStorage.getItem('goac-sidebar')==='close'&&window.innerWidth>768){document.body.classList.add('close');}}catch(e){}</script>
 <div id="app">正在火速加载中</div>
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+</button>
+<script>
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+        var root = document.documentElement;
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('docsify-theme', next); } catch (e) {}
+    });
+    // 记住侧边栏收起/展开状态（.sidebar-toggle 由 docsify 动态生成，用事件委托）
+    document.addEventListener('click', function (e) {
+        if (window.innerWidth > 768 && e.target.closest && e.target.closest('.sidebar-toggle')) {
+            setTimeout(function () {
+                try {
+                    localStorage.setItem('goac-sidebar', document.body.classList.contains('close') ? 'close' : 'open');
+                } catch (err) {}
+            }, 50);
+        }
+    });
+</script>
 <!--<script>-->
 <!--    if (typeof navigator.serviceWorker !== 'undefined') {-->
 <!--        navigator.serviceWorker.register('sw.js')-->
