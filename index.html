@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>数据结构和算法（Golang实现）</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="./picture/b.jpeg"/>
+    <link rel="shortcut icon" href="./picture/b.jpeg" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css">
     <meta name="color-scheme" content="light dark">
 
@@ -31,18 +32,32 @@
             background-color: #1e2124;
             color: #c9d1d9;
         }
-        html[data-theme="dark"] body { scrollbar-color: #3a3f47 #1e2124; }
+
+        html[data-theme="dark"] body {
+            scrollbar-color: #3a3f47 #1e2124;
+        }
 
         /* 正文 */
-        html[data-theme="dark"] .markdown-section { color: #c9d1d9; }
+        html[data-theme="dark"] .markdown-section {
+            color: #c9d1d9;
+        }
+
         html[data-theme="dark"] .markdown-section h1,
         html[data-theme="dark"] .markdown-section h2,
         html[data-theme="dark"] .markdown-section h3,
         html[data-theme="dark"] .markdown-section h4,
         html[data-theme="dark"] .markdown-section h5,
-        html[data-theme="dark"] .markdown-section h6 { color: #e6edf3; }
-        html[data-theme="dark"] .markdown-section a { color: #5bb59a; }
-        html[data-theme="dark"] .markdown-section hr { border-top-color: #2d3138; }
+        html[data-theme="dark"] .markdown-section h6 {
+            color: #e6edf3;
+        }
+
+        html[data-theme="dark"] .markdown-section a {
+            color: #5bb59a;
+        }
+
+        html[data-theme="dark"] .markdown-section hr {
+            border-top-color: #2d3138;
+        }
 
         /* 侧边栏 */
         html[data-theme="dark"] .sidebar {
@@ -50,26 +65,47 @@
             color: #b0b8c1;
             border-right-color: #2d3138;
         }
-        html[data-theme="dark"] .sidebar-nav > ul > li > a,
+
+        html[data-theme="dark"] .sidebar-nav>ul>li>a,
         html[data-theme="dark"] .sidebar-nav a,
-        html[data-theme="dark"] .sidebar-nav li a { color: #b0b8c1; }
+        html[data-theme="dark"] .sidebar-nav li a {
+            color: #b0b8c1;
+        }
+
         html[data-theme="dark"] .sidebar-nav a:hover,
         html[data-theme="dark"] .sidebar-nav a.active,
-        html[data-theme="dark"] .sidebar ul li.active > a { color: #5bb59a; }
-        html[data-theme="dark"] .app-name-link { color: #e6edf3; }
+        html[data-theme="dark"] .sidebar ul li.active>a {
+            color: #5bb59a;
+        }
+
+        html[data-theme="dark"] .app-name-link {
+            color: #e6edf3;
+        }
+
         html[data-theme="dark"] .sidebar-toggle {
             background-color: rgba(40, 44, 52, 0.85);
             border-color: rgba(255, 255, 255, 0.12);
             color: #c9d1d9;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
         }
-        html[data-theme="dark"] .sidebar-toggle:hover { color: #5bb59a; }
+
+        html[data-theme="dark"] .sidebar-toggle:hover {
+            color: #5bb59a;
+        }
 
         /* 顶部导航 */
-        html[data-theme="dark"] .app-nav { color: #b0b8c1; }
-        html[data-theme="dark"] .app-nav a { color: #b0b8c1; }
+        html[data-theme="dark"] .app-nav {
+            color: #b0b8c1;
+        }
+
+        html[data-theme="dark"] .app-nav a {
+            color: #b0b8c1;
+        }
+
         html[data-theme="dark"] .app-nav li a:hover,
-        html[data-theme="dark"] .app-nav a.active { color: #5bb59a; }
+        html[data-theme="dark"] .app-nav a.active {
+            color: #5bb59a;
+        }
 
         /* 搜索 */
         html[data-theme="dark"] .search input {
@@ -77,19 +113,35 @@
             color: #c9d1d9;
             border-color: #2d3138;
         }
-        html[data-theme="dark"] .search .matching-post { border-color: #2d3138; }
+
+        html[data-theme="dark"] .search .matching-post {
+            border-color: #2d3138;
+        }
+
         html[data-theme="dark"] .search h2,
-        html[data-theme="dark"] .search p { color: #c9d1d9; }
-        html[data-theme="dark"] .search a { color: #5bb59a; }
-        html[data-theme="dark"] .search .matching-post { background-color: transparent; }
-        html[data-theme="dark"] .search input::placeholder { color: #6b7280; }
+        html[data-theme="dark"] .search p {
+            color: #c9d1d9;
+        }
+
+        html[data-theme="dark"] .search a {
+            color: #5bb59a;
+        }
+
+        html[data-theme="dark"] .search .matching-post {
+            background-color: transparent;
+        }
+
+        html[data-theme="dark"] .search input::placeholder {
+            color: #6b7280;
+        }
 
         /* 代码块 */
         html[data-theme="dark"] .markdown-section pre,
-        html[data-theme="dark"] .markdown-section pre > code {
+        html[data-theme="dark"] .markdown-section pre>code {
             background-color: #282c34;
             color: #abb2bf;
         }
+
         html[data-theme="dark"] .markdown-section code {
             background-color: rgba(255, 255, 255, 0.08);
             color: #e06c75;
@@ -101,13 +153,18 @@
             color: #9aa4af;
             background-color: rgba(255, 255, 255, 0.03);
         }
+
         html[data-theme="dark"] .markdown-section table tr,
         html[data-theme="dark"] .markdown-section table th,
-        html[data-theme="dark"] .markdown-section table td { border-color: #3a3f47; }
+        html[data-theme="dark"] .markdown-section table td {
+            border-color: #3a3f47;
+        }
+
         html[data-theme="dark"] .markdown-section table th {
             background-color: #2c313a;
             color: #e6edf3;
         }
+
         html[data-theme="dark"] .markdown-section table tr:nth-child(2n) {
             background-color: rgba(255, 255, 255, 0.03);
         }
@@ -117,59 +174,44 @@
             background-color: #2c313a;
             color: #c9d1d9;
         }
-        html[data-theme="dark"] .docsify-copy-code-button:hover { background-color: #3a3f47; }
+
+        html[data-theme="dark"] .docsify-copy-code-button:hover {
+            background-color: #3a3f47;
+        }
 
         /* 分页插件 */
-        html[data-theme="dark"] .docsify-pagination-container { border-top-color: #2d3138; }
+        html[data-theme="dark"] .docsify-pagination-container {
+            border-top-color: #2d3138;
+        }
+
         html[data-theme="dark"] .pagination-item-label,
-        html[data-theme="dark"] .pagination-item-label-title { color: #c9d1d9; }
-        html[data-theme="dark"] .pagination-item-index { color: #6b7280; }
+        html[data-theme="dark"] .pagination-item-label-title {
+            color: #c9d1d9;
+        }
+
+        html[data-theme="dark"] .pagination-item-index {
+            color: #6b7280;
+        }
 
         /* 字数统计插件（内联色被覆盖） */
         html[data-theme="dark"] .markdown-section [class*="count"],
-        html[data-theme="dark"] #docsify-plugin-count { color: #9aa4af !important; }
+        html[data-theme="dark"] #docsify-plugin-count {
+            color: #9aa4af !important;
+        }
 
         /* Gitalk 评论基础适配 */
-        html[data-theme="dark"] .gt-container { color: #c9d1d9; }
-        html[data-theme="dark"] .gt-container a { color: #5bb59a; }
-        html[data-theme="dark"] .gt-container .gt-header-textarea,
-        html[data-theme="dark"] .gt-container .gt-header-preview { background-color: #1b1e22; }
+        html[data-theme="dark"] .gt-container {
+            color: #c9d1d9;
+        }
 
-        /* 侧边栏收起按钮：常驻左下角，点击可收起/展开整个侧边栏 */
-        .sidebar-toggle {
-            position: fixed !important;
-            bottom: 18px;
-            left: 18px;
-            z-index: 999;
-            display: inline-flex !important;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 40px !important;
-            height: 40px !important;
-            padding: 0 !important;
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.85);
-            color: #5a5a5a;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-            transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+        html[data-theme="dark"] .gt-container a {
+            color: #5bb59a;
         }
-        .sidebar-toggle:hover { color: #42b983; }
-        .sidebar-toggle span {
-            width: 16px;
-            height: 2px;
-            margin: 0 0 3px;
-            background-color: currentColor;
+
+        html[data-theme="dark"] .gt-container .gt-header-textarea,
+        html[data-theme="dark"] .gt-container .gt-header-preview {
+            background-color: #1b1e22;
         }
-        .sidebar-toggle span:last-child { margin-bottom: 0; }
-        .sidebar-toggle-button {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .sidebar-toggle:hover .sidebar-toggle-button { opacity: 1; }
 
         /* 主题切换按钮 */
         .theme-toggle {
@@ -191,156 +233,191 @@
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
             transition: background-color .25s ease, color .25s ease, border-color .25s ease;
         }
-        .theme-toggle:hover { color: #42b983; }
+
+        .theme-toggle:hover {
+            color: #42b983;
+        }
+
         html[data-theme="dark"] .theme-toggle {
             background-color: rgba(40, 44, 52, 0.85);
             border-color: rgba(255, 255, 255, 0.12);
             color: #c9d1d9;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
         }
-        html[data-theme="dark"] .theme-toggle:hover { color: #5bb59a; }
-        .theme-toggle .icon-sun { display: none; }
-        .theme-toggle .icon-moon { display: inline-flex; }
-        html[data-theme="dark"] .theme-toggle .icon-sun { display: inline-flex; }
-        html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+        html[data-theme="dark"] .theme-toggle:hover {
+            color: #5bb59a;
+        }
+
+        .theme-toggle .icon-sun {
+            display: none;
+        }
+
+        .theme-toggle .icon-moon {
+            display: inline-flex;
+        }
+
+        html[data-theme="dark"] .theme-toggle .icon-sun {
+            display: inline-flex;
+        }
+
+        html[data-theme="dark"] .theme-toggle .icon-moon {
+            display: none;
+        }
     </style>
 
 </head>
+
 <body>
-<script>try{if(localStorage.getItem('goac-sidebar')==='close'&&window.innerWidth>768){document.body.classList.add('close');}}catch(e){}</script>
-<div id="app">正在火速加载中</div>
-<button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
-    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-</button>
-<script>
-    document.getElementById('theme-toggle').addEventListener('click', function () {
-        var root = document.documentElement;
-        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', next);
-        try { localStorage.setItem('docsify-theme', next); } catch (e) {}
-    });
-    // 记住侧边栏收起/展开状态（.sidebar-toggle 由 docsify 动态生成，用事件委托）
-    document.addEventListener('click', function (e) {
-        if (window.innerWidth > 768 && e.target.closest && e.target.closest('.sidebar-toggle')) {
-            setTimeout(function () {
-                try {
-                    localStorage.setItem('goac-sidebar', document.body.classList.contains('close') ? 'close' : 'open');
-                } catch (err) {}
-            }, 50);
-        }
-    });
-</script>
-<!--<script>-->
-<!--    if (typeof navigator.serviceWorker !== 'undefined') {-->
-<!--        navigator.serviceWorker.register('sw.js')-->
-<!--    }-->
-<!--</script>-->
-<script>
-    window.$docsify = {
-        name: '数据结构和算法',
-        repo: 'https://github.com/hunterhug/goa.c',
-        loadSidebar: true,
-        alias: {
-            '/.*/_sidebar.md': '/_sidebar.md',
-            '/.*/_navbar.md': '/_navbar.md'
-        },
-        loadNavbar: true,
-        // coverpage: true,
-        // onlyCover: true,
-        // subMaxLevel: 2,
-        auto2top: true,
-        count: {
-            countable: true,
-            fontsize: '0.9em',
-            color: 'rgb(90,90,90)',
-            language: 'chinese'
-        },
-        ga: 'UA-109725015-1',
-        formatUpdated: '{YYYY}/{MM}/{DD} {HH}:{mm}',
-        plugins: [
-            function (hook, vm) {
-                var footer = [
-                    '<hr/>',
-                    '<footer>',
-                    '<p style="text-align: center"><img src="./picture/weixin.png"></p>',
-                    '<p style="text-align: center"><span>微信扫一扫送一根辣条鼓励作者产出更好的文章吧～ PS: 如果你想参与写作的话可以直接提<a href="https://github.com/hunterhug/goa.c/pulls">PR</a></span></p>',
-                    '</footer>'
-                ].join('');
-
-
-                hook.beforeEach(function (html) {
-                    var url =
-                        'https://github.com/hunterhug/goa.c/blob/master/' +
-                        vm.route.file;
-                    var editHtml = '[📝 修改文章](' + url + ')\n';
-
-                    return (
-                        editHtml +
-                        html
-                    );
-                });
-
-                hook.afterEach(function (html) {
-                    return html + footer;
-                });
+    <script>try { if (localStorage.getItem('goac-sidebar') === 'close' && window.innerWidth > 768) { document.body.classList.add('close'); } } catch (e) { }</script>
+    <div id="app">正在火速加载中</div>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </button>
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            var root = document.documentElement;
+            var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', next);
+            try { localStorage.setItem('docsify-theme', next); } catch (e) { }
+        });
+        // 记住侧边栏收起/展开状态（.sidebar-toggle 由 docsify 动态生成，用事件委托）
+        document.addEventListener('click', function (e) {
+            if (window.innerWidth > 768 && e.target.closest && e.target.closest('.sidebar-toggle')) {
+                setTimeout(function () {
+                    try {
+                        localStorage.setItem('goac-sidebar', document.body.classList.contains('close') ? 'close' : 'open');
+                    } catch (err) { }
+                }, 50);
             }
-        ],
-        pagination: {
-            previousText: '上一篇文章',
-            nextText: '下一篇文章',
-            crossChapter: true,
-            crossChapterText: true,
-        },
-        // toc: {
-        //     tocMaxLevel: 4,
-        //     target: 'h2, h3, h4, h5'
-        // },
-    }
-</script>
+        });
+    </script>
+    <!--<script>-->
+    <!--    if (typeof navigator.serviceWorker !== 'undefined') {-->
+    <!--        navigator.serviceWorker.register('sw.js')-->
+    <!--    }-->
+    <!--</script>-->
+    <script>
+        window.$docsify = {
+            name: '数据结构和算法',
+            repo: 'https://github.com/hunterhug/goa.c',
+            loadSidebar: true,
+            alias: {
+                '/.*/_sidebar.md': '/_sidebar.md',
+                '/.*/_navbar.md': '/_navbar.md'
+            },
+            loadNavbar: true,
+            // coverpage: true,
+            // onlyCover: true,
+            // subMaxLevel: 2,
+            auto2top: true,
+            count: {
+                countable: true,
+                fontsize: '0.9em',
+                color: 'rgb(90,90,90)',
+                language: 'chinese'
+            },
+            ga: 'UA-109725015-1',
+            formatUpdated: '{YYYY}/{MM}/{DD} {HH}:{mm}',
+            plugins: [
+                function (hook, vm) {
+                    var footer = [
+                        '<hr/>',
+                        '<footer>',
+                        '<p style="text-align: center"><img src="./picture/weixin.png"></p>',
+                        '<p style="text-align: center"><span>微信扫一扫送一根辣条鼓励作者产出更好的文章吧～ PS: 如果你想参与写作的话可以直接提<a href="https://github.com/hunterhug/goa.c/pulls">PR</a></span></p>',
+                        '</footer>'
+                    ].join('');
 
 
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/ga.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-<script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
-<!--<script src="//unpkg.com/docsify-plugin-toc"></script>-->
+                    hook.beforeEach(function (html) {
+                        var url =
+                            'https://github.com/hunterhug/goa.c/blob/master/' +
+                            vm.route.file;
+                        var editHtml = '[📝 修改文章](' + url + ')\n';
 
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css"> -->
-<!--
+                        return (
+                            editHtml +
+                            html
+                        );
+                    });
+
+                    hook.afterEach(function (html) {
+                        return html + footer;
+                    });
+                }
+            ],
+            pagination: {
+                previousText: '上一篇文章',
+                nextText: '下一篇文章',
+                crossChapter: true,
+                crossChapterText: true,
+            },
+            // toc: {
+            //     tocMaxLevel: 4,
+            //     target: 'h2, h3, h4, h5'
+            // },
+        }
+    </script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/ga.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+    <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+    <!--<script src="//unpkg.com/docsify-plugin-toc"></script>-->
+
+    <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css"> -->
+    <!--
      <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
      <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 -->
 
-<link rel="stylesheet" href="./picture/static/gitalk/dist/gitalk.css">
-<script src="./picture/static/gitalk/plugins.gitalk.min.js"></script>
-<script src="./picture/static/gitalk/dist/gitalk.js"></script>
-<script src="./picture/static/md5.js"></script>
+    <link rel="stylesheet" href="./picture/static/gitalk/dist/gitalk.css">
+    <script src="./picture/static/gitalk/plugins.gitalk.min.js"></script>
+    <script src="./picture/static/gitalk/dist/gitalk.js"></script>
+    <script src="./picture/static/md5.js"></script>
 
-<script>
-    // var prefix = location.protocol + "//" +location.host + location.pathname
-    // console.log(prefix)
-    // console.log(location.href)
-    // console.log(location.href.replace(prefix,""))
-    // console.log(location.hash)
-    const gitalk = new Gitalk({
-        clientID: "88bd6a753142024b3e6c",
-        clientSecret: "edb4b5730d40ce1b578d571d72a8b17585ccbafd",
-        repo: "goa.c",
-        owner: "hunterhug",
-        admin: [
-            "hunterhug"
-        ],
-        // id: decodeURI(location.href.replace(location.protocol + "//" +location.host + location.pathname,"")),
-        createIssueManually: false,
-        distractionFreeMode: true
-    })
-</script>
+    <script>
+        // var prefix = location.protocol + "//" +location.host + location.pathname
+        // console.log(prefix)
+        // console.log(location.href)
+        // console.log(location.href.replace(prefix,""))
+        // console.log(location.hash)
+        const gitalk = new Gitalk({
+            clientID: "88bd6a753142024b3e6c",
+            clientSecret: "edb4b5730d40ce1b578d571d72a8b17585ccbafd",
+            repo: "goa.c",
+            owner: "hunterhug",
+            admin: [
+                "hunterhug"
+            ],
+            // id: decodeURI(location.href.replace(location.protocol + "//" +location.host + location.pathname,"")),
+            createIssueManually: false,
+            distractionFreeMode: true
+        })
+    </script>
 
-<script src="//unpkg.com/docsify-count/dist/countable.js"></script>
-<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
+    <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
 </body>
+
 </html>
